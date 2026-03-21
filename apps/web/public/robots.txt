@@ -1,0 +1,62 @@
+User-agent: *
+Disallow: /api/
+Disallow: /compose
+Disallow: /notifications
+Disallow: /settings
+
+# AI crawlers — all disallowed
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+Sitemap: https://solbook.app/sitemap.xml

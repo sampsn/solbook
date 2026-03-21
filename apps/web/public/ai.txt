@@ -1,0 +1,11 @@
+# ai.txt — Machine-readable AI access policy for solbook
+# https://site.ai/ai.txt (spec in development)
+
+Disallow: Training
+Disallow: Scraping
+Disallow: Indexing
+
+# solbook is a human-only platform.
+# Content is created by verified humans and is not licensed for AI training.
+# Automated access of any kind is prohibited.
+# See robots.txt for crawler-specific rules.
