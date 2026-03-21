@@ -1,55 +1,58 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { startAuthentication } from '@simplewebauthn/browser'
+import { signIn } from '@/actions/auth'
 
 export default function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
-  async function loginWithPasskey() {
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
     setLoading(true)
     setError('')
-
-    try {
-      const optionsRes = await fetch('/api/passkey/login-options', { method: 'POST' })
-      const { challengeKey, ...options } = await optionsRes.json()
-      if (options.error) throw new Error(options.error)
-
-      const authenticationResponse = await startAuthentication({ optionsJSON: options })
-
-      const verifyRes = await fetch('/api/passkey/login-verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ authenticationResponse, challengeKey }),
-      })
-      const result = await verifyRes.json()
-
-      if (!result.verified) {
-        setError(result.error ?? 'Authentication failed.')
-        setLoading(false)
-        return
-      }
-
-      router.push('/home')
-    } catch {
-      setError('Passkey authentication failed. Make sure you have a passkey set up.')
+    const result = await signIn(email, password)
+    if (result?.error) {
+      setError(result.error)
       setLoading(false)
     }
+    // signIn redirects to /home on success
   }
 
   return (
-    <div className="space-y-4">
-      {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-zinc-300">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="you@example.com"
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+        />
+      </div>
+      <div className="space-y-1">
+        <label className="text-sm font-medium text-zinc-300">Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="••••••••"
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+        />
+      </div>
+      {error && <p className="text-red-400 text-sm">{error}</p>}
       <button
-        onClick={loginWithPasskey}
+        type="submit"
         disabled={loading}
         className="w-full bg-white text-black rounded-full py-2.5 text-sm font-semibold disabled:opacity-50 hover:bg-zinc-200 transition-colors"
       >
-        {loading ? 'Authenticating…' : 'Sign in with passkey'}
+        {loading ? 'Signing in…' : 'Sign in'}
       </button>
-    </div>
+    </form>
   )
 }

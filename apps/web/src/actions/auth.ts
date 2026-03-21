@@ -13,42 +13,28 @@ async function setSessionCookie(userId: string) {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    maxAge: 60 * 60 * 24 * 30,
   })
-  return token
 }
 
-export async function sendPhoneOtp(phone: string): Promise<{ error?: string }> {
+export async function signUp(
+  email: string,
+  password: string,
+): Promise<{ error?: string; userId?: string }> {
   const supabase = createServerClient()
-  const { error } = await supabase.auth.signInWithOtp({
-    phone,
-    options: { channel: 'sms' },
-  })
+  const { data, error } = await supabase.auth.signUp({ email, password })
   if (error) return { error: error.message }
-  return {}
+  if (!data.user) return { error: 'Signup failed.' }
+  await setSessionCookie(data.user.id)
+  return { userId: data.user.id }
 }
 
-export async function verifyPhoneOtp(
-  phone: string,
-  token: string,
-): Promise<{ error?: string; accessToken?: string; userId?: string }> {
+export async function signIn(email: string, password: string): Promise<{ error?: string }> {
   const supabase = createServerClient()
-  const { data, error } = await supabase.auth.verifyOtp({
-    phone,
-    token,
-    type: 'sms',
-  })
-
-  if (error || !data.session || !data.user) {
-    return { error: error?.message ?? 'Verification failed.' }
-  }
-
-  // Set persistent HttpOnly session cookie
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) return { error: error.message }
   await setSessionCookie(data.user.id)
-
-  // Also return the Supabase access token so the signup flow can use it
-  // for passkey registration (which requires auth.admin.getUser validation)
-  return { accessToken: data.session.access_token, userId: data.user.id }
+  redirect('/home')
 }
 
 export async function logout() {
