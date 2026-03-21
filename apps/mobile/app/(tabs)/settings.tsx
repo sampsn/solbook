@@ -3,12 +3,14 @@ import {
   View, Text, TextInput, TouchableOpacity,
   StyleSheet, Alert, ScrollView, ActivityIndicator,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
 import { validateDisplayName } from '@solbook/shared/validation'
 
 export default function SettingsScreen() {
+  const insets = useSafeAreaInsets()
   const [profile, setProfile] = useState<{ username: string; display_name: string; bio: string | null } | null>(null)
   const [displayName, setDisplayName] = useState('')
   const [bio, setBio] = useState('')
@@ -40,12 +42,16 @@ export default function SettingsScreen() {
     if (!user) return
 
     setSaving(true)
-    await supabase
+    const { error } = await supabase
       .from('profiles')
       .update({ display_name: displayName.trim(), bio: bio.trim() || null })
       .eq('id', user.id)
     setSaving(false)
-    Alert.alert('Saved', 'Profile updated.')
+    if (error) {
+      Alert.alert('Error', 'Failed to save profile.')
+    } else {
+      Alert.alert('Saved', 'Profile updated.')
+    }
   }
 
   async function handleSignOut() {
@@ -59,7 +65,7 @@ export default function SettingsScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <Text style={styles.headerText}>settings</Text>
       </View>
 
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: 32 },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  header: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12, paddingTop: 52 },
+  header: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
   headerText: { fontFamily: font.bold, fontSize: 14, color: colors.accent },
   section: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 16, gap: 8 },
   sectionTitle: { fontFamily: font.regular, fontSize: 11, color: colors.muted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 },

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useFocusEffect } from 'expo-router'
 import { colors, font } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
@@ -7,6 +8,7 @@ import { PostComposer } from '@/components/PostComposer'
 import { getHomeFeed, FeedPost } from '@/lib/api'
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets()
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [isFollowFeed, setIsFollowFeed] = useState(false)
@@ -51,7 +53,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <Text style={styles.headerText}>home</Text>
       </View>
       <FlatList

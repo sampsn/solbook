@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { router, useFocusEffect } from 'expo-router'
 import { colors, font } from '@/lib/theme'
 import { getNotifications, Notification } from '@/lib/api'
 
 export default function NotificationsScreen() {
+  const insets = useSafeAreaInsets()
   const [items, setItems] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -48,7 +50,7 @@ export default function NotificationsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <Text style={styles.headerText}>notifications</Text>
       </View>
       <FlatList
@@ -65,7 +67,7 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  header: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12, paddingTop: 52 },
+  header: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
   headerText: { fontFamily: font.bold, fontSize: 14, color: colors.accent },
   item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
   itemText: { fontFamily: font.regular, fontSize: 14, lineHeight: 20 },

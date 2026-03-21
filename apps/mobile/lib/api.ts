@@ -241,6 +241,7 @@ export async function getNotifications(): Promise<Notification[]> {
       .from('likes')
       .select(`id, created_at, posts!likes_post_id_fkey ( id, content, user_id ), profiles!likes_user_id_fkey ( username, display_name )`)
       .neq('user_id', user.id)
+      .eq('posts.user_id', user.id)
       .gte('created_at', since)
       .order('created_at', { ascending: false })
       .limit(50),
@@ -270,7 +271,7 @@ export async function getNotifications(): Promise<Notification[]> {
   for (const l of likes ?? []) {
     const post = Array.isArray(l.posts) ? l.posts[0] : l.posts
     const p = Array.isArray(l.profiles) ? l.profiles[0] : l.profiles
-    if (!post || !p || post.user_id !== user.id) continue
+    if (!post || !p) continue
     notifications.push({
       type: 'like',
       id: l.id,

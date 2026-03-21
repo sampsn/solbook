@@ -3,6 +3,7 @@ import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { router, useLocalSearchParams } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
@@ -10,6 +11,7 @@ import { PostCard } from '@/components/PostCard'
 import { getProfile, toggleFollow, FeedPost, Profile } from '@/lib/api'
 
 export default function ProfileScreen() {
+  const insets = useSafeAreaInsets()
   const { username } = useLocalSearchParams<{ username: string }>()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [posts, setPosts] = useState<FeedPost[]>([])
@@ -53,7 +55,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.navBar}>
+      <View style={[styles.navBar, { paddingTop: insets.top + 12 }]}>
         <TouchableOpacity onPress={() => router.back()}>
           <Text style={styles.back}>← back</Text>
         </TouchableOpacity>
@@ -97,7 +99,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  navBar: { paddingTop: 52, paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
+  navBar: { paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
   back: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
   profileHeader: { borderBottomWidth: 1, borderBottomColor: colors.border, padding: 16 },
   profileTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },

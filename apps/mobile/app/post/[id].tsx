@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { router, useLocalSearchParams } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
@@ -7,6 +8,7 @@ import { PostCard } from '@/components/PostCard'
 import { FeedPost } from '@/lib/api'
 
 export default function PostDetailScreen() {
+  const insets = useSafeAreaInsets()
   const { id } = useLocalSearchParams<{ id: string }>()
   const [post, setPost] = useState<FeedPost | null>(null)
   const [loading, setLoading] = useState(true)
@@ -50,7 +52,7 @@ export default function PostDetailScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.navBar}>
+      <View style={[styles.navBar, { paddingTop: insets.top + 12 }]}>
         <TouchableOpacity onPress={() => router.back()}>
           <Text style={styles.back}>← back</Text>
         </TouchableOpacity>
@@ -63,6 +65,6 @@ export default function PostDetailScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  navBar: { paddingTop: 52, paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
+  navBar: { paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
   back: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
 })
