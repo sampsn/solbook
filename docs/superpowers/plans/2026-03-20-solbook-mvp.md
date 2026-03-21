@@ -302,8 +302,10 @@ Expected: Local Supabase stack running. Note the printed `API URL`, `anon key`, 
 # apps/web/.env.local.example
 SUPABASE_URL=http://127.0.0.1:54321
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
-NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
-# Note: no NEXT_PUBLIC_SUPABASE_ANON_KEY — anon role has no permissions
+# No NEXT_PUBLIC_SUPABASE_URL — client code never talks to Supabase directly
+# No NEXT_PUBLIC_SUPABASE_ANON_KEY — anon role has no permissions
+NEXT_PUBLIC_RP_ID=localhost
+NEXT_PUBLIC_ORIGIN=http://localhost:3000
 UPSTASH_REDIS_REST_URL=your-upstash-url
 UPSTASH_REDIS_REST_TOKEN=your-upstash-token
 ```
@@ -1752,7 +1754,7 @@ export async function createProfile(accessToken: string, username: string, displ
   if (!displayNameResult.valid) return { error: displayNameResult.error }
 
   const supabase = createServerClient()
-  const { data: { user } } = await supabase.auth.getUser(accessToken)
+  const { data: { user } } = await supabase.auth.admin.getUser(accessToken)
   if (!user) return { error: 'Session expired. Please sign in again.' }
 
   const { error } = await supabase.from('profiles').insert({
@@ -2674,9 +2676,12 @@ Create `apps/web/src/components/posts/PostCard.tsx`:
 import Link from 'next/link'
 import { Post } from '@solbook/shared/types'
 
+// onLike must be a pre-bound server action passed from the parent server component.
+// Example from a parent: <PostCard post={p} onLike={toggleLike.bind(null, p.id)} />
+// This avoids inline 'use server' closures in JSX, which are not supported by Next.js 15.
 interface Props {
   post: Post
-  onLike: (postId: string) => Promise<void>
+  onLike: () => Promise<void>
 }
 
 export default function PostCard({ post, onLike }: Props) {
@@ -2701,7 +2706,8 @@ export default function PostCard({ post, onLike }: Props) {
         <p className="text-sm leading-relaxed">{post.content}</p>
       </Link>
       <div className="flex items-center gap-4 pt-1">
-        <form action={async () => { 'use server'; await onLike(post.id) }}>
+        {/* onLike is a pre-bound server action — safe to pass to form action */}
+        <form action={onLike}>
           <button
             type="submit"
             className={`text-xs flex items-center gap-1 ${post.liked_by_me ? 'text-red-500' : 'text-gray-400 hover:text-red-400'}`}
@@ -2811,7 +2817,8 @@ export default function PostFeed({ posts, nextCursor, loadMoreHref }: Props) {
   return (
     <div>
       {posts.map((post) => (
-        <PostCard key={post.id} post={post} onLike={toggleLike} />
+        // toggleLike.bind(null, post.id) creates a pre-bound server action — no inline 'use server' needed
+        <PostCard key={post.id} post={post} onLike={toggleLike.bind(null, post.id)} />
       ))}
       {nextCursor && loadMoreHref && (
         <div className="py-4 text-center">
