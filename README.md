@@ -120,6 +120,10 @@ If you add a new data-access endpoint or public page, ensure:
 
 See `apps/web/.env.local.example` for required variables. All Supabase access is server-side only — no `NEXT_PUBLIC_SUPABASE_URL` or anon key is ever exposed to the client.
 
+## Roadmap
+
+See [ROADMAP.md](./ROADMAP.md) for planned features, MVP progress, and the ongoing anti-AI hardening backlog.
+
 ## License
 
 MIT
