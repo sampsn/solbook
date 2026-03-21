@@ -3286,7 +3286,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div>
-      <PostCard post={enriched} onLike={toggleLike} />
+      <PostCard post={enriched} onLike={toggleLike.bind(null, enriched.id)} />
     </div>
   )
 }
