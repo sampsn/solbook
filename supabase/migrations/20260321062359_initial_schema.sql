@@ -1,6 +1,3 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
-
 -- Profiles (extends auth.users)
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -22,7 +19,7 @@ create table public.profiles (
 
 -- Posts
 create table public.posts (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   content text not null,
   created_at timestamptz not null default now(),
@@ -31,7 +28,7 @@ create table public.posts (
 
 -- Likes
 create table public.likes (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   post_id uuid not null references public.posts(id) on delete cascade,
   created_at timestamptz not null default now(),
@@ -49,7 +46,7 @@ create table public.follows (
 
 -- Passkey credentials (for SimpleWebAuthn)
 create table public.passkey_credentials (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   credential_id text unique not null,
   public_key text not null,
