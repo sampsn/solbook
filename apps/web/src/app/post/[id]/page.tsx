@@ -1,4 +1,9 @@
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import type { Metadata } from 'next'
+import { createServerClient } from '@solbook/shared/supabase'
+import { getSession } from '@/lib/auth'
+import { PostCard } from '@/components/posts/PostCard'
 
 export const metadata: Metadata = { title: 'Post' }
 
@@ -8,10 +13,44 @@ interface Props {
 
 export default async function PostPage({ params }: Props) {
   const { id } = await params
+  const session = await getSession()
+  const supabase = createServerClient()
+
+  const { data: post } = await supabase
+    .from('posts')
+    .select(`
+      id,
+      content,
+      created_at,
+      profiles!posts_user_id_fkey ( username, display_name ),
+      likes ( id, user_id )
+    `)
+    .eq('id', id)
+    .single()
+
+  if (!post) notFound()
+
+  const profile = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+  const likes = post.likes ?? []
+
   return (
-    <div className="max-w-xl mx-auto px-4 py-6">
-      <h1 className="text-xl font-bold mb-2">Post</h1>
-      <p className="text-[#888880]">Post {id} coming soon.</p>
+    <div className="max-w-xl mx-auto">
+      <div className="border-b border-[#333333] px-4 py-3">
+        <Link href="/home" className="text-xs text-[#888880] hover:text-[#ff6600] transition-colors">
+          ← back
+        </Link>
+      </div>
+      <PostCard
+        id={post.id}
+        content={post.content}
+        createdAt={post.created_at}
+        author={{
+          username: profile?.username ?? 'unknown',
+          displayName: profile?.display_name ?? 'Unknown',
+        }}
+        likeCount={likes.length}
+        likedByMe={likes.some((l: { user_id: string }) => l.user_id === session?.userId)}
+      />
     </div>
   )
 }

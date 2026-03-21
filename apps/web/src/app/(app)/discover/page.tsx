@@ -1,12 +1,54 @@
+import { unstable_noStore as noStore } from 'next/cache'
 import type { Metadata } from 'next'
+import { createServerClient } from '@solbook/shared/supabase'
+import { requireSession } from '@/lib/auth'
+import { PostCard } from '@/components/posts/PostCard'
 
 export const metadata: Metadata = { title: 'Discover' }
 
-export default function DiscoverPage() {
+export default async function DiscoverPage() {
+  noStore()
+  const session = await requireSession()
+  const supabase = createServerClient()
+
+  const { data: rows } = await supabase.rpc('get_discover_feed', {
+    window_hours: 48,
+    page_size: 20,
+  })
+
+  const postIds = (rows ?? []).map((r: any) => r.id)
+  const { data: myLikes } = postIds.length > 0
+    ? await supabase
+        .from('likes')
+        .select('post_id')
+        .eq('user_id', session.userId)
+        .in('post_id', postIds)
+    : { data: [] }
+
+  const likedSet = new Set((myLikes ?? []).map((l: any) => l.post_id))
+
+  const feed = (rows ?? []).map((r: any) => ({
+    id: r.id,
+    content: r.content,
+    createdAt: r.created_at,
+    author: {
+      username: r.username,
+      displayName: r.display_name,
+    },
+    likeCount: Number(r.like_count),
+    likedByMe: likedSet.has(r.id),
+  }))
+
   return (
-    <div className="max-w-xl mx-auto px-4 py-6">
-      <h1 className="text-xl font-bold mb-6">Discover</h1>
-      <p className="text-[#888880]">Trending posts will appear here.</p>
+    <div className="max-w-xl mx-auto">
+      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
+        <h1 className="text-sm font-bold text-[#ff6600]">discover</h1>
+      </div>
+      {feed.length === 0 ? (
+        <p className="text-[#888880] text-center py-12 text-sm">no trending posts yet.</p>
+      ) : (
+        feed.map((post: any) => <PostCard key={post.id} {...post} />)
+      )}
     </div>
   )
 }
