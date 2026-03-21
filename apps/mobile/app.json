@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "solbook",
+    "slug": "solbook",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "solbook",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#1c1c1c",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.solbook.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1c1c1c"
+      },
+      "package": "com.solbook.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
