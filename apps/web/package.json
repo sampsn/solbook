@@ -10,7 +10,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@simplewebauthn/browser": "^13.3.0",
+    "@simplewebauthn/server": "^13.3.0",
     "@solbook/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.99.3",
+    "@upstash/redis": "^1.37.0",
     "next": "15",
     "react": "19",
     "react-dom": "19"

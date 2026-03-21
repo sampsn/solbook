@@ -1,13 +1,115 @@
-import type { Metadata } from 'next'
+'use client'
 
-export const metadata: Metadata = { title: 'Create account' }
+import { useState } from 'react'
+import Link from 'next/link'
+import { signUp } from '@/actions/auth'
+import { createProfile } from '@/actions/profiles'
 
 export default function SignupPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [displayName, setDisplayName] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    const signUpResult = await signUp(email, password)
+    if (signUpResult.error) {
+      setError(signUpResult.error)
+      setLoading(false)
+      return
+    }
+
+    const profileResult = await createProfile(signUpResult.userId!, username, displayName)
+    if (profileResult?.error) {
+      setError(profileResult.error)
+      setLoading(false)
+    }
+    // createProfile redirects to /home on success
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full space-y-6">
-        <h1 className="text-2xl font-bold text-center">Create your account</h1>
-        <p className="text-zinc-500 text-center text-sm">Auth coming soon.</p>
+        <div className="text-center space-y-1">
+          <h1 className="text-2xl font-bold">Join solbook</h1>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-zinc-300">Display name</label>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              maxLength={50}
+              required
+              placeholder="Your name"
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-zinc-300">Username</label>
+            <div className="flex items-center bg-zinc-900 border border-zinc-700 rounded-lg overflow-hidden focus-within:border-zinc-500">
+              <span className="px-3 py-2 text-sm text-zinc-500">@</span>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value.toLowerCase())}
+                maxLength={20}
+                pattern="[a-zA-Z0-9_]{3,20}"
+                required
+                placeholder="username"
+                className="flex-1 bg-transparent px-0 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
+              />
+            </div>
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-zinc-300">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="you@example.com"
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-zinc-300">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              minLength={6}
+              required
+              placeholder="Min. 6 characters"
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+            />
+          </div>
+
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-white text-black rounded-full py-2.5 text-sm font-semibold disabled:opacity-50 hover:bg-zinc-200 transition-colors"
+          >
+            {loading ? 'Creating account…' : 'Create account'}
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-zinc-600">
+          Already have an account?{' '}
+          <Link href="/login" className="text-white hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </main>
   )
