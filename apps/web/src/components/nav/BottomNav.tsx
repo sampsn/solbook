@@ -1,24 +1,23 @@
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { href: '/home', label: 'Home', icon: '⌂' },
-  { href: '/discover', label: 'Discover', icon: '◎' },
-  { href: '/compose', label: 'Compose', icon: '+' },
-  { href: '/notifications', label: 'Alerts', icon: '○' },
-  { href: '/settings', label: 'Settings', icon: '⚙' },
+  { href: '/home', label: 'home' },
+  { href: '/discover', label: 'discover' },
+  { href: '/compose', label: 'new' },
+  { href: '/notifications', label: 'alerts' },
+  { href: '/settings', label: 'settings' },
 ] as const
 
 export function BottomNav() {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-zinc-800 bg-black flex">
-      {NAV_ITEMS.map(({ href, label, icon }) => (
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[#333333] bg-[#1c1c1c] flex">
+      {NAV_ITEMS.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
-          className="flex flex-col items-center justify-center flex-1 py-3 gap-1 hover:bg-zinc-900 transition-colors"
+          className="flex items-center justify-center flex-1 py-3 text-xs text-[#888880] hover:text-[#ff6600] transition-colors"
         >
-          <span className="text-lg leading-none">{icon}</span>
-          <span className="text-xs text-zinc-400">{label}</span>
+          {label}
         </Link>
       ))}
     </nav>

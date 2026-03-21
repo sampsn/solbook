@@ -31,7 +31,7 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="you@example.com"
-          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+          className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
         />
       </div>
       <div className="space-y-1">
@@ -42,14 +42,14 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           placeholder="••••••••"
-          className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+          className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
         />
       </div>
       {error && <p className="text-red-400 text-sm">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-white text-black rounded-full py-2.5 text-sm font-semibold disabled:opacity-50 hover:bg-zinc-200 transition-colors"
+        className="w-full bg-[#ff6600] text-[#1c1c1c] py-2 text-sm font-bold disabled:opacity-40 hover:bg-[#ff7722] transition-colors"
       >
         {loading ? 'Signing in…' : 'Sign in'}
       </button>
