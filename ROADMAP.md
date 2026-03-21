@@ -2,19 +2,19 @@
 
 This is a living document. Features move between phases as priorities shift.
 
-## MVP (in progress)
+## MVP ✅
 
-Core human-only social experience.
+Core human-only social experience — shipped.
 
 - [x] Turborepo monorepo — bun workspaces, shared package, DB schema
-- [ ] Anti-AI infrastructure — robots.txt, ai.txt, middleware UA blocking, meta tags
-- [ ] App shell — root layout, landing page, authenticated layout, sidebar/nav
-- [ ] Auth — phone OTP signup, passkey registration + login, profile creation
-- [ ] Posts — compose (paste-blocked), 280 chars, server-validated
-- [ ] Social — follow/unfollow, home feed (cursor-paginated), public profiles
-- [ ] Likes & Discovery — like/unlike, discovery feed (ranked by recent likes)
-- [ ] Notifications — computed on read (no notification table for MVP)
-- [ ] Settings — display name, bio, username update
+- [x] Anti-AI infrastructure — robots.txt, ai.txt, middleware UA blocking, meta tags
+- [x] App shell — root layout, landing page, authenticated layout, sidebar/nav
+- [x] Auth — email + password signup, HMAC session tokens, profile creation
+- [x] Posts — compose (paste-blocked), 280 chars, server-validated
+- [x] Social — follow/unfollow, home feed (cursor-paginated), public profiles
+- [x] Likes & Discovery — like/unlike, discovery feed (ranked by recent likes via Postgres RPC)
+- [x] Notifications — computed on read (likes + new followers, 7-day window)
+- [x] Settings — display name, bio edit, sign out
 
 ## Near-Term
 
@@ -23,7 +23,7 @@ Features planned after MVP ships.
 - [ ] **IP blacklisting** — Upstash Redis-backed, triggered by honeypot hits and UA blocks
 - [ ] **Replies** — threaded replies on posts
 - [ ] **Reposts** — share a post with optional quote
-- [ ] **Mobile app** — React Native / Expo (stub exists)
+- [ ] **Mobile app** — React Native / Expo (in progress)
 - [ ] **Image posts** — single image with caption, stored in Supabase Storage
 - [ ] **Lists** — curated user lists for feed filtering
 - [ ] **Bookmarks** — private saved posts
