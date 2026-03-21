@@ -11,7 +11,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <div className="max-w-xl mx-auto px-4 py-6">
       <h1 className="text-xl font-bold mb-2">Post</h1>
-      <p className="text-zinc-500">Post {id} coming soon.</p>
+      <p className="text-[#888880]">Post {id} coming soon.</p>
     </div>
   )
 }

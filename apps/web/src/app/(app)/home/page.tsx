@@ -42,12 +42,12 @@ export default async function HomePage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="sticky top-0 bg-black/80 backdrop-blur border-b border-zinc-800 px-4 py-3">
-        <h1 className="text-lg font-bold">Home</h1>
+      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
+        <h1 className="text-sm font-bold text-[#ff6600]">home</h1>
       </div>
       <PostComposer />
       {feed.length === 0 ? (
-        <p className="text-zinc-500 text-center py-12">No posts yet. Be the first!</p>
+        <p className="text-[#888880] text-center py-12">No posts yet. Be the first!</p>
       ) : (
         feed.map((post) => <PostCard key={post.id} {...post} />)
       )}

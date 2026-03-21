@@ -42,7 +42,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-300">Display name</label>
+            <label className="text-sm font-medium text-[#e8e6d9]">Display name</label>
             <input
               type="text"
               value={displayName}
@@ -50,13 +50,13 @@ export default function SignupPage() {
               maxLength={50}
               required
               placeholder="Your name"
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-300">Username</label>
-            <div className="flex items-center bg-zinc-900 border border-zinc-700 rounded-lg overflow-hidden focus-within:border-zinc-500">
-              <span className="px-3 py-2 text-sm text-zinc-500">@</span>
+            <label className="text-sm font-medium text-[#e8e6d9]">Username</label>
+            <div className="flex items-center bg-[#242424] border border-[#333333] overflow-hidden focus-within:border-[#ff6600]">
+              <span className="px-3 py-2 text-sm text-[#888880]">@</span>
               <input
                 type="text"
                 value={username}
@@ -65,23 +65,23 @@ export default function SignupPage() {
                 pattern="[a-zA-Z0-9_]{3,20}"
                 required
                 placeholder="username"
-                className="flex-1 bg-transparent px-0 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
+                className="flex-1 bg-transparent px-0 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none"
               />
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-300">Email</label>
+            <label className="text-sm font-medium text-[#e8e6d9]">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="you@example.com"
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-zinc-300">Password</label>
+            <label className="text-sm font-medium text-[#e8e6d9]">Password</label>
             <input
               type="password"
               value={password}
@@ -89,7 +89,7 @@ export default function SignupPage() {
               minLength={6}
               required
               placeholder="Min. 6 characters"
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
             />
           </div>
 
@@ -98,15 +98,15 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white text-black rounded-full py-2.5 text-sm font-semibold disabled:opacity-50 hover:bg-zinc-200 transition-colors"
+            className="w-full bg-[#ff6600] text-[#1c1c1c] py-2 text-sm font-bold disabled:opacity-40 hover:bg-[#ff7722] transition-colors"
           >
             {loading ? 'Creating account…' : 'Create account'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-zinc-600">
+        <p className="text-center text-sm text-[#888880]">
           Already have an account?{' '}
-          <Link href="/login" className="text-white hover:underline">
+          <Link href="/login" className="text-[#ff6600] hover:underline">
             Sign in
           </Link>
         </p>

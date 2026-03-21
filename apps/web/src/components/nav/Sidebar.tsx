@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { href: '/home', label: 'Home', icon: '⌂' },
-  { href: '/discover', label: 'Discover', icon: '◎' },
-  { href: '/compose', label: 'Compose', icon: '+' },
-  { href: '/notifications', label: 'Notifications', icon: '○' },
-  { href: '/settings', label: 'Settings', icon: '⚙' },
+  { href: '/home', label: 'home' },
+  { href: '/discover', label: 'discover' },
+  { href: '/compose', label: 'compose' },
+  { href: '/notifications', label: 'notifications' },
+  { href: '/settings', label: 'settings' },
 ] as const
 
 interface SidebarProps {
@@ -14,32 +14,25 @@ interface SidebarProps {
 
 export function Sidebar({ username }: SidebarProps) {
   return (
-    <aside className="hidden md:flex flex-col w-64 h-screen sticky top-0 border-r border-zinc-800 px-4 py-6 shrink-0">
-      <Link href="/home" className="text-xl font-bold mb-8 px-2">
+    <aside className="hidden md:flex flex-col w-44 h-screen sticky top-0 bg-[#242424] border-r border-[#333333] px-4 py-5 shrink-0">
+      <Link href="/home" className="text-lg font-bold text-[#ff6600] mb-6 block hover:text-[#ff7722] transition-colors">
         solbook
       </Link>
 
-      <nav className="flex flex-col gap-1 flex-1">
-        {NAV_ITEMS.map(({ href, label, icon }) => (
+      <nav className="flex flex-col flex-1 gap-0.5">
+        {NAV_ITEMS.map(({ href, label }) => (
           <Link
             key={href}
             href={href}
-            className="flex items-center gap-4 px-3 py-3 rounded-full hover:bg-zinc-900 transition-colors text-lg"
+            className="py-1 text-sm text-[#e8e6d9] hover:text-[#ff6600] transition-colors"
           >
-            <span className="w-6 text-center">{icon}</span>
-            <span>{label}</span>
+            {label}
           </Link>
         ))}
       </nav>
 
-      <Link
-        href={`/${username}`}
-        className="flex items-center gap-3 px-3 py-3 rounded-full hover:bg-zinc-900 transition-colors"
-      >
-        <div className="w-9 h-9 rounded-full bg-zinc-700 flex items-center justify-center text-sm font-medium">
-          {username[0].toUpperCase()}
-        </div>
-        <span className="text-sm text-zinc-400">@{username}</span>
+      <Link href={`/${username}`} className="text-xs text-[#888880] hover:text-[#ff6600] transition-colors">
+        @{username}
       </Link>
     </aside>
   )

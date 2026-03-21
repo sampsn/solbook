@@ -1,1 +1,44 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@theme {
+  --font-mono: 'Courier Prime', 'Courier New', monospace;
+
+  --color-bg: #1c1c1c;
+  --color-surface: #242424;
+  --color-border: #333333;
+  --color-text: #e8e6d9;
+  --color-muted: #888880;
+  --color-accent: #ff6600;
+  --color-accent-hover: #ff7722;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+}
+
+body {
+  background-color: #1c1c1c;
+  color: #e8e6d9;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+}
+
+/* Links */
+a {
+  color: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1c1c1c;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+}

@@ -3,32 +3,33 @@ import Link from 'next/link'
 export default function LandingPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-8 text-center">
-        <div className="space-y-3">
-          <h1 className="text-4xl font-bold tracking-tight">solbook</h1>
-          <p className="text-zinc-400 text-lg">
-            The human-only social network.
-            <br />
-            No bots. No AI. Just people.
+      <div className="max-w-sm w-full space-y-8">
+        <div className="space-y-2">
+          <h1 className="text-4xl font-bold text-[#ff6600]">solbook</h1>
+          <p className="text-[#888880] text-sm leading-relaxed">
+            Text-based social for humans.<br />
+            No bots. No AI. No noise.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="space-y-2">
           <Link
             href="/signup"
-            className="w-full rounded-full bg-white text-black font-semibold py-3 px-6 hover:bg-zinc-200 transition-colors"
+            className="block w-full text-center bg-[#ff6600] text-[#1c1c1c] font-bold py-2 px-4 hover:bg-[#ff7722] transition-colors text-sm"
           >
-            Create account
+            create account
           </Link>
           <Link
             href="/login"
-            className="w-full rounded-full border border-zinc-700 text-white font-semibold py-3 px-6 hover:bg-zinc-900 transition-colors"
+            className="block w-full text-center border border-[#333333] text-[#e8e6d9] py-2 px-4 hover:border-[#ff6600] hover:text-[#ff6600] transition-colors text-sm"
           >
-            Sign in
+            sign in
           </Link>
         </div>
 
-        <p className="text-zinc-600 text-sm">Verified humans only. Passkey required.</p>
+        <p className="text-[#888880] text-xs">
+          Human verification required at signup.
+        </p>
       </div>
     </main>
   )
