@@ -1,8 +1,10 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { createServerClient } from '@solbook/shared/supabase'
 import { validateUsername, validateDisplayName } from '@solbook/shared/validation'
+import { requireSession } from '@/lib/auth'
 
 export async function createProfile(
   userId: string,
@@ -28,4 +30,23 @@ export async function createProfile(
   }
 
   redirect('/home')
+}
+
+export async function updateProfile(formData: FormData): Promise<void> {
+  const session = await requireSession()
+  const displayName = (formData.get('displayName') as string)?.trim()
+  const bio = (formData.get('bio') as string)?.trim() ?? ''
+
+  if (!displayName) return
+
+  const result = validateDisplayName(displayName)
+  if (!result.valid) return
+
+  const supabase = createServerClient()
+  await supabase
+    .from('profiles')
+    .update({ display_name: displayName, bio: bio || null })
+    .eq('id', session.userId)
+
+  revalidatePath('/settings')
 }

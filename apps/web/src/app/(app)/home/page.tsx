@@ -7,12 +7,26 @@ import { PostCard } from '@/components/posts/PostCard'
 
 export const metadata: Metadata = { title: 'Home' }
 
-export default async function HomePage() {
+const PAGE_SIZE = 20
+
+interface Props {
+  searchParams: Promise<{ cursor?: string }>
+}
+
+export default async function HomePage({ searchParams }: Props) {
   noStore()
   const session = await requireSession()
   const supabase = createServerClient()
+  const { cursor } = await searchParams
 
-  const { data: posts } = await supabase
+  const { data: follows } = await supabase
+    .from('follows')
+    .select('following_id')
+    .eq('follower_id', session.userId)
+
+  const followingIds = (follows ?? []).map((f) => f.following_id)
+
+  let query = supabase
     .from('posts')
     .select(`
       id,
@@ -22,9 +36,24 @@ export default async function HomePage() {
       likes ( id, user_id )
     `)
     .order('created_at', { ascending: false })
-    .limit(50)
+    .order('id', { ascending: false })
+    .limit(PAGE_SIZE + 1)
 
-  const feed = (posts ?? []).map((post) => {
+  if (followingIds.length > 0) {
+    query = query.in('user_id', followingIds)
+  }
+
+  if (cursor) {
+    const [cursorCreatedAt] = Buffer.from(cursor, 'base64url').toString().split('|')
+    query = query.lt('created_at', cursorCreatedAt)
+  }
+
+  const { data: posts } = await query
+
+  const hasMore = (posts ?? []).length > PAGE_SIZE
+  const pagePosts = (posts ?? []).slice(0, PAGE_SIZE)
+
+  const feed = pagePosts.map((post) => {
     const profile = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
     const likes = post.likes ?? []
     return {
@@ -40,16 +69,38 @@ export default async function HomePage() {
     }
   })
 
+  const lastPost = pagePosts[pagePosts.length - 1]
+  const nextCursor =
+    hasMore && lastPost
+      ? Buffer.from(`${lastPost.created_at}|${lastPost.id}`).toString('base64url')
+      : null
+
   return (
     <div className="max-w-xl mx-auto">
       <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
         <h1 className="text-sm font-bold text-[#ff6600]">home</h1>
       </div>
       <PostComposer />
+      {followingIds.length === 0 && (
+        <p className="text-[#888880] text-xs px-4 py-2 border-b border-[#333333]">
+          follow people to see their posts here · showing all posts for now
+        </p>
+      )}
       {feed.length === 0 ? (
-        <p className="text-[#888880] text-center py-12">No posts yet. Be the first!</p>
+        <p className="text-[#888880] text-center py-12 text-sm">
+          {followingIds.length > 0 ? 'no posts from people you follow yet.' : 'no posts yet. be the first!'}
+        </p>
       ) : (
-        feed.map((post) => <PostCard key={post.id} {...post} />)
+        <>
+          {feed.map((post) => <PostCard key={post.id} {...post} />)}
+          {nextCursor && (
+            <div className="border-t border-[#333333] px-4 py-3">
+              <a href={`/home?cursor=${nextCursor}`} className="text-sm text-[#888880] hover:text-[#ff6600] transition-colors">
+                load more →
+              </a>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
