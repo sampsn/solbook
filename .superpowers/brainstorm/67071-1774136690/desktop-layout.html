@@ -1,0 +1,130 @@
+<h2>Desktop Layout</h2>
+<p class="subtitle">The current web app has a narrow left sidebar. Which desktop layout feels right for solbook?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:220px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <div style="width:130px;background:#242424;border-right:1px solid #333;padding:12px;display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <div style="color:#ff6600;font-weight:bold;margin-bottom:8px">solbook</div>
+          <div style="color:#e8e6d9">home</div>
+          <div style="color:#888880">discover</div>
+          <div style="color:#888880">compose</div>
+          <div style="color:#888880">notifications</div>
+          <div style="color:#888880">settings</div>
+          <div style="flex:1"></div>
+          <div style="color:#888880;font-size:10px">@username</div>
+        </div>
+        <div style="flex:1;overflow:hidden">
+          <div style="border-bottom:1px solid #333;padding:8px 12px;color:#ff6600;font-size:11px;font-weight:bold">home</div>
+          <div style="border-bottom:1px solid #333;padding:8px 12px">
+            <div style="color:#888880;font-size:10px;margin-bottom:4px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> @gabriel · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design, feels clean</div>
+            <div style="color:#888880;font-size:10px;margin-top:4px">△ 3</div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 12px">
+            <div style="color:#888880;font-size:10px;margin-bottom:4px"><span style="color:#e8e6d9;font-weight:bold">Alex</span> @alex · 14m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">no AI here, refreshing</div>
+            <div style="color:#888880;font-size:10px;margin-top:4px">△ 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Current (slim sidebar)</h3>
+      <p>Narrow left nav, centered feed. Already mostly working. Polish and refine what's there.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:220px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <div style="width:160px;background:#242424;border-right:1px solid #333;padding:12px;display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+          <div style="color:#ff6600;font-weight:bold;font-size:14px;margin-bottom:10px">solbook</div>
+          <div style="display:flex;align-items:center;gap:6px;color:#e8e6d9;padding:4px 0">
+            <span>⌂</span> home
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:#888880;padding:4px 0">
+            <span>◈</span> discover
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:#888880;padding:4px 0">
+            <span>✎</span> compose
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:#888880;padding:4px 0">
+            <span>◻</span> alerts
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;color:#888880;padding:4px 0">
+            <span>⚙</span> settings
+          </div>
+          <div style="flex:1"></div>
+          <div style="background:#333;padding:6px;font-size:10px;color:#e8e6d9">
+            <div style="font-weight:bold">@username</div>
+            <div style="color:#888880">Your Name</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden">
+          <div style="border-bottom:1px solid #333;padding:8px 12px;color:#ff6600;font-size:11px;font-weight:bold">home</div>
+          <div style="border-bottom:1px solid #333;padding:8px 12px">
+            <div style="color:#888880;font-size:10px;margin-bottom:4px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> @gabriel · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design, feels clean</div>
+            <div style="color:#888880;font-size:10px;margin-top:4px">△ 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Wider sidebar + icons</h3>
+      <p>Slightly wider nav with simple ASCII-style icons, user card at bottom. More structured.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:220px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <div style="width:120px;background:#242424;border-right:1px solid #333;padding:12px;display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <div style="color:#ff6600;font-weight:bold;margin-bottom:8px">solbook</div>
+          <div style="color:#e8e6d9">home</div>
+          <div style="color:#888880">discover</div>
+          <div style="color:#888880">compose</div>
+          <div style="color:#888880">alerts</div>
+          <div style="color:#888880">settings</div>
+          <div style="flex:1"></div>
+          <div style="color:#888880;font-size:10px">@username</div>
+        </div>
+        <div style="flex:1;overflow:hidden">
+          <div style="border-bottom:1px solid #333;padding:8px 12px;color:#ff6600;font-size:11px;font-weight:bold">home</div>
+          <div style="border-bottom:1px solid #333;padding:8px 12px">
+            <div style="color:#888880;font-size:10px;margin-bottom:4px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> @gabriel · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design, feels clean</div>
+            <div style="color:#888880;font-size:10px;margin-top:4px">△ 3</div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 12px">
+            <div style="color:#888880;font-size:10px;margin-bottom:4px"><span style="color:#e8e6d9;font-weight:bold">Alex</span> @alex · 14m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">no AI here, refreshing</div>
+            <div style="color:#888880;font-size:10px;margin-top:4px">△ 7</div>
+          </div>
+        </div>
+        <div style="width:150px;border-left:1px solid #333;padding:10px;flex-shrink:0">
+          <div style="color:#888880;font-size:10px;font-weight:bold;margin-bottom:6px">WHO TO FOLLOW</div>
+          <div style="margin-bottom:8px">
+            <div style="color:#e8e6d9;font-size:10px;font-weight:bold">@sam</div>
+            <div style="color:#888880;font-size:10px">building things</div>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="color:#e8e6d9;font-size:10px;font-weight:bold">@maya</div>
+            <div style="color:#888880;font-size:10px">writer & thinker</div>
+          </div>
+          <div style="color:#888880;font-size:10px;font-weight:bold;margin-top:10px;margin-bottom:6px">HUMAN COUNT</div>
+          <div style="color:#ff6600;font-size:18px;font-family:monospace;font-weight:bold">1,247</div>
+          <div style="color:#888880;font-size:9px">verified humans</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Three column</h3>
+      <p>Left nav + main feed + right panel (who to follow, stats). Classic Twitter-style. More content density.</p>
+    </div>
+  </div>
+
+</div>

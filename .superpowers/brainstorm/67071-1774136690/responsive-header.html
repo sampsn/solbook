@@ -1,0 +1,114 @@
+<h2>Responsive Header — B on desktop, centered logo on mobile</h2>
+<p class="subtitle">Confirming the two states. One question: what handles navigation on mobile?</p>
+
+<div class="split">
+
+  <div class="mockup">
+    <div class="mockup-header">Desktop / Tablet (≥ 640px)</div>
+    <div class="mockup-body" style="padding:0;background:#1c1c1c;font-family:monospace;font-size:11px">
+      <div style="background:#242424;border-bottom:1px solid #333;padding:7px 20px;display:flex;align-items:center;gap:20px">
+        <span style="color:#ff6600;font-weight:bold;font-size:13px">solbook</span>
+        <span style="flex:1"></span>
+        <span style="color:#e8e6d9;font-size:11px">home</span>
+        <span style="color:#888880;font-size:11px">discover</span>
+        <span style="color:#888880;font-size:11px">alerts</span>
+        <span style="color:#888880;font-size:11px">settings</span>
+        <span style="color:#444;font-size:11px">·</span>
+        <span style="color:#888880;font-size:11px">@gabriel</span>
+      </div>
+      <div style="max-width:100%;padding:10px 16px">
+        <div style="border-bottom:1px solid #333;padding-bottom:10px;margin-bottom:8px">
+          <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:11px;padding:6px;resize:none;height:36px;outline:none" placeholder="what's on your mind?"></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:4px">
+            <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:10px;padding:3px 8px">post</button>
+          </div>
+        </div>
+        <div style="border-bottom:1px solid #333;padding:6px 0">
+          <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> (@gabriel) · 2m</div>
+          <div style="color:#e8e6d9;font-size:11px">just shipped the new design</div>
+          <div style="color:#888880;font-size:10px;margin-top:3px">△ 3</div>
+        </div>
+        <div style="border-bottom:1px solid #333;padding:6px 0">
+          <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Alex</span> (@alex) · 14m</div>
+          <div style="color:#e8e6d9;font-size:11px">no AI here, refreshing</div>
+          <div style="color:#888880;font-size:10px;margin-top:3px">△ 7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Mobile (&lt; 640px) — which mobile nav?</div>
+    <div class="mockup-body" style="padding:0;background:#1c1c1c;font-family:monospace;font-size:11px">
+
+      <!-- Option X: centered logo + bottom nav -->
+      <div style="margin-bottom:12px;border:1px solid #444">
+        <div style="background:#242424;border-bottom:1px solid #333;padding:7px;text-align:center">
+          <span style="color:#ff6600;font-weight:bold;font-size:13px">solbook</span>
+        </div>
+        <div style="padding:10px 12px">
+          <div style="border-bottom:1px solid #333;padding-bottom:8px;margin-bottom:6px">
+            <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:10px;padding:5px;resize:none;height:30px;outline:none" placeholder="what's on your mind?"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:3px">
+              <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:9px;padding:2px 6px">post</button>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:5px 0">
+            <div style="color:#888880;font-size:9px;margin-bottom:2px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> · 2m</div>
+            <div style="color:#e8e6d9;font-size:10px">just shipped the new design</div>
+            <div style="color:#888880;font-size:9px;margin-top:2px">△ 3</div>
+          </div>
+        </div>
+        <div style="background:#1c1c1c;border-top:1px solid #333;padding:6px 0;display:flex">
+          <span style="flex:1;text-align:center;color:#ff6600;font-size:10px">home</span>
+          <span style="flex:1;text-align:center;color:#888880;font-size:10px">discover</span>
+          <span style="flex:1;text-align:center;color:#888880;font-size:10px">alerts</span>
+          <span style="flex:1;text-align:center;color:#888880;font-size:10px">settings</span>
+        </div>
+        <div style="text-align:center;font-size:9px;color:#555;padding:2px">X — centered logo + bottom nav (current approach)</div>
+      </div>
+
+      <!-- Option Y: centered logo + hamburger -->
+      <div style="border:1px solid #444">
+        <div style="background:#242424;border-bottom:1px solid #333;padding:7px 10px;display:flex;align-items:center">
+          <span style="color:#888880;font-size:14px">≡</span>
+          <span style="flex:1;text-align:center;color:#ff6600;font-weight:bold;font-size:13px">solbook</span>
+          <span style="color:#888880;font-size:10px">@gabriel</span>
+        </div>
+        <div style="padding:10px 12px">
+          <div style="border-bottom:1px solid #333;padding-bottom:8px;margin-bottom:6px">
+            <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:10px;padding:5px;resize:none;height:30px;outline:none" placeholder="what's on your mind?"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:3px">
+              <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:9px;padding:2px 6px">post</button>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:5px 0">
+            <div style="color:#888880;font-size:9px;margin-bottom:2px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> · 2m</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design</div>
+            <div style="color:#888880;font-size:9px;margin-top:2px">△ 3</div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:9px;color:#555;padding:2px">Y — centered logo + hamburger menu</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="options" style="margin-top:20px">
+  <div class="option" data-choice="bottom-nav" onclick="toggleSelect(this)">
+    <div class="letter">X</div>
+    <div class="content">
+      <h3>Bottom nav on mobile</h3>
+      <p>Keep the current bottom tab bar — familiar, thumb-friendly. The app already has this.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="hamburger" onclick="toggleSelect(this)">
+    <div class="letter">Y</div>
+    <div class="content">
+      <h3>Hamburger menu on mobile</h3>
+      <p>Centered logo flanked by hamburger (left) and username (right). Cleaner header, nav slides in from side.</p>
+    </div>
+  </div>
+</div>

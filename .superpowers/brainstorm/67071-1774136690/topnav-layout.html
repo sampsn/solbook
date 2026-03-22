@@ -1,0 +1,125 @@
+<h2>Top Navigation Layouts</h2>
+<p class="subtitle">Retro/classic style — no sidebar. Compose lives in the home feed. Pick a direction.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height:230px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <!-- HN-style top bar -->
+        <div style="background:#ff6600;padding:5px 10px;display:flex;align-items:center;gap:12px">
+          <span style="color:#1c1c1c;font-weight:bold;font-size:12px">solbook</span>
+          <span style="color:#1c1c1c;font-size:11px">|</span>
+          <span style="color:#1c1c1c;font-size:11px">home</span>
+          <span style="color:#1c1c1c;font-size:11px">discover</span>
+          <span style="color:#1c1c1c;font-size:11px">notifications</span>
+          <span style="color:#1c1c1c;font-size:11px">settings</span>
+          <span style="flex:1"></span>
+          <span style="color:#1c1c1c;font-size:11px">@gabriel</span>
+        </div>
+        <!-- Feed -->
+        <div style="max-width:560px;margin:0 auto;padding:0 12px">
+          <!-- Composer -->
+          <div style="padding:10px 0;border-bottom:1px solid #333">
+            <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:11px;padding:6px;resize:none;height:40px;outline:none" placeholder="what's on your mind?"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:4px">
+              <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:10px;padding:3px 8px;cursor:pointer">post</button>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 0">
+            <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> (@gabriel) · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design</div>
+            <div style="color:#888880;font-size:10px;margin-top:3px">△ 3</div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 0">
+            <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Alex</span> (@alex) · 14m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">no AI here, refreshing</div>
+            <div style="color:#888880;font-size:10px;margin-top:3px">△ 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — HN-style orange bar</h3>
+      <p>Solid accent-colored top bar with inline links. Very retro. Logo + nav + username all in one strip.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height:230px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <!-- Minimal dark top bar -->
+        <div style="background:#242424;border-bottom:1px solid #333;padding:6px 16px;display:flex;align-items:center;gap:16px">
+          <span style="color:#ff6600;font-weight:bold;font-size:13px">solbook</span>
+          <span style="flex:1"></span>
+          <span style="color:#e8e6d9;font-size:11px">home</span>
+          <span style="color:#888880;font-size:11px">discover</span>
+          <span style="color:#888880;font-size:11px">alerts (2)</span>
+          <span style="color:#888880;font-size:11px">settings</span>
+          <span style="color:#888880;font-size:11px">· @gabriel</span>
+        </div>
+        <!-- Feed -->
+        <div style="max-width:560px;margin:0 auto;padding:0 12px">
+          <!-- Composer -->
+          <div style="padding:10px 0;border-bottom:1px solid #333">
+            <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:11px;padding:6px;resize:none;height:40px;outline:none" placeholder="what's on your mind?"></textarea>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+              <span style="color:#888880;font-size:10px">280</span>
+              <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:10px;padding:3px 8px;cursor:pointer">post</button>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 0">
+            <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> (@gabriel) · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design</div>
+            <div style="color:#888880;font-size:10px;margin-top:3px">△ 3</div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 0">
+            <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Alex</span> (@alex) · 14m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">no AI here, refreshing</div>
+            <div style="color:#888880;font-size:10px;margin-top:3px">△ 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Dark header, logo left, nav right</h3>
+      <p>Surface-colored bar, orange logo anchored left, nav links on the right. Subtle and clean.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="height:230px;background:#1c1c1c;border:1px solid #333;font-family:monospace;font-size:11px;overflow:hidden">
+        <!-- Centered logo, tab nav below -->
+        <div style="background:#242424;border-bottom:1px solid #333;padding:8px 16px;text-align:center">
+          <span style="color:#ff6600;font-weight:bold;font-size:14px">solbook</span>
+        </div>
+        <div style="background:#242424;border-bottom:1px solid #333;padding:0 16px;display:flex;gap:0;justify-content:center">
+          <span style="color:#ff6600;font-size:11px;padding:5px 12px;border-bottom:2px solid #ff6600">home</span>
+          <span style="color:#888880;font-size:11px;padding:5px 12px">discover</span>
+          <span style="color:#888880;font-size:11px;padding:5px 12px">alerts</span>
+          <span style="color:#888880;font-size:11px;padding:5px 12px">settings</span>
+        </div>
+        <!-- Feed -->
+        <div style="max-width:560px;margin:0 auto;padding:0 12px">
+          <div style="padding:10px 0;border-bottom:1px solid #333">
+            <textarea style="width:100%;background:#242424;border:1px solid #333;color:#e8e6d9;font-family:monospace;font-size:11px;padding:6px;resize:none;height:40px;outline:none" placeholder="what's on your mind?"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:4px">
+              <button style="background:#ff6600;color:#1c1c1c;border:none;font-family:monospace;font-size:10px;padding:3px 8px;cursor:pointer">post</button>
+            </div>
+          </div>
+          <div style="border-bottom:1px solid #333;padding:8px 0">
+            <div style="color:#888880;font-size:10px;margin-bottom:3px"><span style="color:#e8e6d9;font-weight:bold">Gabriel</span> (@gabriel) · 2m ago</div>
+            <div style="color:#e8e6d9;font-size:11px">just shipped the new design</div>
+            <div style="color:#888880;font-size:10px;margin-top:3px">△ 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Centered logo + tab bar</h3>
+      <p>Logo centered in its own row, tabbed nav below with active underline indicator. More magazine-like.</p>
+    </div>
+  </div>
+
+</div>
