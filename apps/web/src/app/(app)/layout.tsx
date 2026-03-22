@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@solbook/shared/supabase'
 import { getSession } from '@/lib/auth'
-import { Sidebar } from '@/components/nav/Sidebar'
+import { TopNav } from '@/components/nav/TopNav'
 import { BottomNav } from '@/components/nav/BottomNav'
 
 async function getSessionProfile(): Promise<{ username: string } | null> {
@@ -23,10 +23,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!profile) redirect('/login')
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar username={profile.username} />
+    <div className="flex flex-col min-h-screen">
+      <TopNav username={profile.username} />
       <main className="flex-1 min-w-0 pb-16 md:pb-0">{children}</main>
-      <BottomNav />
+      <BottomNav username={profile.username} />
     </div>
   )
 }
