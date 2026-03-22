@@ -41,22 +41,22 @@ export function TopNav({ username }: TopNavProps) {
   const alertsActive = pathname.startsWith('/notifications')
 
   return (
-    <header className="hidden md:flex items-center bg-[#242424] border-b border-[#333333] px-4 py-2 sticky top-0 z-10">
+    <header className="hidden md:flex items-center bg-surface border-b border-border px-4 py-2 sticky top-0 z-10">
       <Link
         href="/home"
-        className="font-bold text-[#ff6600] hover:text-[#ff7722] transition-colors mr-auto"
+        className="font-bold text-accent hover:text-accent-hover transition-colors mr-auto"
       >
         solbook
       </Link>
       <nav className="flex items-center gap-5">
         {NAV_ITEMS(username).map(({ href, label }) => {
-          const active = pathname.startsWith(href)
+          const active = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link
               key={href}
               href={href}
               className={`text-sm transition-colors ${
-                active ? 'text-[#ff6600]' : 'text-[#888880] hover:text-[#ff6600]'
+                active ? 'text-accent' : 'text-muted hover:text-accent'
               }`}
             >
               {bracketLabel(label, active)}
@@ -65,7 +65,7 @@ export function TopNav({ username }: TopNavProps) {
         })}
         <Link
           href="/notifications"
-          className={`transition-colors ${alertsActive ? 'text-[#ff6600]' : 'text-[#888880] hover:text-[#ff6600]'}`}
+          className={`transition-colors ${alertsActive ? 'text-accent' : 'text-muted hover:text-accent'}`}
           aria-label="alerts"
         >
           <BellIcon />

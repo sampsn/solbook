@@ -3,6 +3,7 @@ import { createServerClient } from '@solbook/shared/supabase'
 import { requireSession } from '@/lib/auth'
 import { logout } from '@/actions/auth'
 import { updateProfile } from '@/actions/profiles'
+import { PageHeader } from '@/components/nav/PageHeader'
 
 export const metadata: Metadata = { title: 'Settings' }
 
@@ -18,9 +19,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
-        <h1 className="text-sm font-bold text-[#ff6600]">settings</h1>
-      </div>
+      <PageHeader title="settings" showBack />
 
       <div className="border-b border-[#333333] px-4 py-4">
         <h2 className="text-xs text-[#888880] uppercase tracking-wide mb-3">profile</h2>

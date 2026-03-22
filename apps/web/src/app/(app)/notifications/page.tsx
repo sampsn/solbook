@@ -43,7 +43,7 @@ export default async function NotificationsPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <PageHeader title="alerts" />
+      <PageHeader title="alerts" showBack />
 
       {!hasNotifications ? (
         <p className="text-[#888880] text-center py-12 text-sm">no alerts yet. when someone likes your posts or follows you, you'll see it here.</p>

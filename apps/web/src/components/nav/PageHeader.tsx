@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 interface PageHeaderProps {
   title: string
+  showBack?: boolean
 }
 
-function BellIcon({ active }: { active: boolean }) {
+function BellIcon() {
   return (
     <svg
       width="16"
@@ -26,20 +27,39 @@ function BellIcon({ active }: { active: boolean }) {
   )
 }
 
-export function PageHeader({ title }: PageHeaderProps) {
+export function PageHeader({ title, showBack }: PageHeaderProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const alertsActive = pathname.startsWith('/notifications')
 
   return (
-    <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3 flex items-center justify-between">
-      <h1 className="text-sm font-bold text-[#ff6600]">{title}</h1>
-      <Link
-        href="/notifications"
-        className={`md:hidden transition-colors ${alertsActive ? 'text-[#ff6600]' : 'text-[#888880] hover:text-[#ff6600]'}`}
-        aria-label="alerts"
-      >
-        <BellIcon active={alertsActive} />
-      </Link>
+    <div className="sticky top-0 bg-bg border-b border-border px-4 py-3 flex items-center justify-between">
+      {showBack ? (
+        <button
+          onClick={() => router.back()}
+          className="text-xs text-muted hover:text-accent transition-colors"
+        >
+          ← back
+        </button>
+      ) : (
+        <h1 className="text-sm font-bold text-accent">{title}</h1>
+      )}
+
+      {showBack ? (
+        <h1 className="text-sm font-bold text-accent">{title}</h1>
+      ) : (
+        !alertsActive && (
+          <Link
+            href="/notifications"
+            className="md:hidden text-muted hover:text-accent transition-colors"
+            aria-label="alerts"
+          >
+            <BellIcon />
+          </Link>
+        )
+      )}
+
+      {showBack && <div className="w-8" />}
     </div>
   )
 }
