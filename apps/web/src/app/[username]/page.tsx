@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
@@ -90,7 +91,11 @@ export default async function ProfilePage({ params }: Props) {
               <span><span className="text-[#e8e6d9] font-bold">{followingCount ?? 0}</span> following</span>
             </div>
           </div>
-          {!isOwnProfile && session && (
+          {isOwnProfile ? (
+            <Link href="/settings" className="text-xs text-[#888880] hover:text-[#ff6600] transition-colors">
+              settings →
+            </Link>
+          ) : session && (
             <form action={followAction}>
               <button
                 type="submit"
