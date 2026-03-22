@@ -31,7 +31,7 @@ export function BottomNav({ username }: BottomNavProps) {
             key={href}
             href={href}
             className="flex items-center justify-center flex-1 py-3 text-xs transition-colors"
-            style={{ color: active ? '#ff6600' : '#888880' }}
+            style={{ color: active ? '#ff6600' : '#e8e6d9', fontWeight: active ? 'bold' : 'normal' }}
           >
             {bracketLabel(label, active)}
           </Link>

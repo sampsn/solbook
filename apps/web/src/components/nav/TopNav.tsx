@@ -57,7 +57,7 @@ export function TopNav({ username }: TopNavProps) {
               key={href}
               href={href}
               className="text-sm transition-colors"
-              style={{ color: active ? '#ff6600' : '#888880' }}
+              style={{ color: active ? '#ff6600' : '#e8e6d9', fontWeight: active ? 'bold' : 'normal' }}
             >
               {bracketLabel(label, active)}
             </Link>
