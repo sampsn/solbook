@@ -15,23 +15,23 @@ describe('BottomNav', () => {
     expect(screen.getByText('@gabriel')).toBeInTheDocument()
   })
 
-  it('does not render compose or settings links', () => {
+  it('does not render alerts link', () => {
     vi.mocked(usePathname).mockReturnValue('/home')
     render(<BottomNav username="gabriel" />)
-    expect(screen.queryByText('new')).not.toBeInTheDocument()
-    expect(screen.queryByText('settings')).not.toBeInTheDocument()
+    expect(screen.queryByText('alerts')).not.toBeInTheDocument()
+  })
+
+  it('renders exactly 3 nav items', () => {
+    vi.mocked(usePathname).mockReturnValue('/home')
+    render(<BottomNav username="gabriel" />)
+    const links = screen.getAllByRole('link')
+    expect(links).toHaveLength(3)
   })
 
   it('brackets the active home link', () => {
     vi.mocked(usePathname).mockReturnValue('/home')
     render(<BottomNav username="gabriel" />)
     expect(screen.getByText('[home]')).toBeInTheDocument()
-  })
-
-  it('brackets alerts when on /notifications', () => {
-    vi.mocked(usePathname).mockReturnValue('/notifications')
-    render(<BottomNav username="gabriel" />)
-    expect(screen.getByText('[alerts]')).toBeInTheDocument()
   })
 
   it('brackets @username when on own profile', () => {

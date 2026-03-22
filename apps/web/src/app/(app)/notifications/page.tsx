@@ -3,8 +3,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
 import { requireSession } from '@/lib/auth'
+import { PageHeader } from '@/components/nav/PageHeader'
 
-export const metadata: Metadata = { title: 'Notifications' }
+export const metadata: Metadata = { title: 'Alerts' }
 
 export default async function NotificationsPage() {
   noStore()
@@ -42,12 +43,10 @@ export default async function NotificationsPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
-        <h1 className="text-sm font-bold text-[#ff6600]">notifications</h1>
-      </div>
+      <PageHeader title="alerts" />
 
       {!hasNotifications ? (
-        <p className="text-[#888880] text-center py-12 text-sm">no notifications yet.</p>
+        <p className="text-[#888880] text-center py-12 text-sm">no alerts yet. when someone likes your posts or follows you, you'll see it here.</p>
       ) : (
         <div>
           {(newFollowers ?? []).map((f: any) => {

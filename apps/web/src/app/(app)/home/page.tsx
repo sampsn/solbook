@@ -4,6 +4,7 @@ import { createServerClient } from '@solbook/shared/supabase'
 import { requireSession } from '@/lib/auth'
 import { PostComposer } from '@/components/posts/PostComposer'
 import { PostCard } from '@/components/posts/PostCard'
+import { PageHeader } from '@/components/nav/PageHeader'
 
 export const metadata: Metadata = { title: 'Home' }
 
@@ -77,9 +78,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
-        <h1 className="text-sm font-bold text-[#ff6600]">home</h1>
-      </div>
+      <PageHeader title="home" />
       <PostComposer />
       {followingIds.length === 0 && (
         <p className="text-[#888880] text-xs px-4 py-2 border-b border-[#333333]">

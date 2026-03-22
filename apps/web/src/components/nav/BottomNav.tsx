@@ -11,7 +11,6 @@ function navItems(username: string) {
   return [
     { href: '/home', label: 'home' },
     { href: '/discover', label: 'discover' },
-    { href: '/notifications', label: 'alerts' },
     { href: `/${username}`, label: `@${username}` },
   ]
 }

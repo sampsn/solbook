@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { TopNav } from './TopNav'
 
-// Mock usePathname
 vi.mock('next/navigation', () => ({
   usePathname: vi.fn(),
 }))
@@ -22,12 +21,6 @@ describe('TopNav', () => {
     expect(screen.getByText('[home]')).toBeInTheDocument()
   })
 
-  it('wraps alerts in brackets when on /notifications', () => {
-    vi.mocked(usePathname).mockReturnValue('/notifications')
-    render(<TopNav username="gabriel" />)
-    expect(screen.getByText('[alerts]')).toBeInTheDocument()
-  })
-
   it('wraps @username in brackets when on own profile', () => {
     vi.mocked(usePathname).mockReturnValue('/gabriel')
     render(<TopNav username="gabriel" />)
@@ -38,13 +31,20 @@ describe('TopNav', () => {
     vi.mocked(usePathname).mockReturnValue('/home')
     render(<TopNav username="gabriel" />)
     expect(screen.getByText('discover')).toBeInTheDocument()
-    expect(screen.getByText('alerts')).toBeInTheDocument()
+    expect(screen.getByText('@gabriel')).toBeInTheDocument()
   })
 
-  it('links @username to the profile route', () => {
+  it('renders the bell icon link to /notifications', () => {
     vi.mocked(usePathname).mockReturnValue('/home')
     render(<TopNav username="gabriel" />)
-    const link = screen.getByText('@gabriel').closest('a')
-    expect(link).toHaveAttribute('href', '/gabriel')
+    const bell = screen.getByRole('link', { name: 'alerts' })
+    expect(bell).toHaveAttribute('href', '/notifications')
+  })
+
+  it('does not render alerts as a text nav item', () => {
+    vi.mocked(usePathname).mockReturnValue('/home')
+    render(<TopNav username="gabriel" />)
+    expect(screen.queryByText('alerts')).not.toBeInTheDocument()
+    expect(screen.queryByText('[alerts]')).not.toBeInTheDocument()
   })
 })

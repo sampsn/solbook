@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
 import { requireSession } from '@/lib/auth'
 import { PostCard } from '@/components/posts/PostCard'
+import { PageHeader } from '@/components/nav/PageHeader'
 
 export const metadata: Metadata = { title: 'Discover' }
 
@@ -41,9 +42,7 @@ export default async function DiscoverPage() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3">
-        <h1 className="text-sm font-bold text-[#ff6600]">discover</h1>
-      </div>
+      <PageHeader title="discover" />
       {feed.length === 0 ? (
         <p className="text-[#888880] text-center py-12 text-sm">no trending posts yet.</p>
       ) : (

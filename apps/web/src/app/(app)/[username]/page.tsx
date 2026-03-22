@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
 import { getSession } from '@/lib/auth'
 import { PostCard } from '@/components/posts/PostCard'
+import { PageHeader } from '@/components/nav/PageHeader'
 import { toggleFollow } from '@/actions/follows'
 
 interface Props {
@@ -30,7 +31,6 @@ export default async function ProfilePage({ params }: Props) {
 
   const isOwnProfile = session?.userId === profile.id
 
-  // Follower/following counts and whether current user follows this profile
   const [{ count: followerCount }, { count: followingCount }, followRow] = await Promise.all([
     supabase.from('follows').select('*', { count: 'exact', head: true }).eq('following_id', profile.id),
     supabase.from('follows').select('*', { count: 'exact', head: true }).eq('follower_id', profile.id),
@@ -46,7 +46,6 @@ export default async function ProfilePage({ params }: Props) {
 
   const isFollowing = !!followRow.data
 
-  // Posts by this user
   const { data: posts } = await supabase
     .from('posts')
     .select(`
@@ -80,6 +79,7 @@ export default async function ProfilePage({ params }: Props) {
 
   return (
     <div className="max-w-xl mx-auto">
+      <PageHeader title={`@${username}`} />
       <div className="border-b border-[#333333] px-4 py-4">
         <div className="flex items-start justify-between">
           <div>
