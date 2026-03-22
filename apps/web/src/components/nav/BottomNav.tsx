@@ -23,16 +23,15 @@ export function BottomNav({ username }: BottomNavProps) {
   const pathname = usePathname()
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-border bg-bg flex">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[#333333] bg-[#1c1c1c] flex">
       {navItems(username).map(({ href, label }) => {
         const active = pathname === href || pathname.startsWith(href + '/')
         return (
           <Link
             key={href}
             href={href}
-            className={`flex items-center justify-center flex-1 py-3 text-xs transition-colors ${
-              active ? 'text-accent' : 'text-muted hover:text-accent'
-            }`}
+            className="flex items-center justify-center flex-1 py-3 text-xs transition-colors"
+            style={{ color: active ? '#ff6600' : '#888880' }}
           >
             {bracketLabel(label, active)}
           </Link>

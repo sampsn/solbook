@@ -41,10 +41,11 @@ export function TopNav({ username }: TopNavProps) {
   const alertsActive = pathname.startsWith('/notifications')
 
   return (
-    <header className="hidden md:flex items-center bg-surface border-b border-border px-4 py-2 sticky top-0 z-10">
+    <header className="hidden md:flex items-center bg-[#242424] border-b border-[#333333] px-4 py-2 sticky top-0 z-10">
       <Link
         href="/home"
-        className="font-bold text-accent hover:text-accent-hover transition-colors mr-auto"
+        className="font-bold transition-colors mr-auto"
+        style={{ color: '#ff6600' }}
       >
         solbook
       </Link>
@@ -55,9 +56,8 @@ export function TopNav({ username }: TopNavProps) {
             <Link
               key={href}
               href={href}
-              className={`text-sm transition-colors ${
-                active ? 'text-accent' : 'text-muted hover:text-accent'
-              }`}
+              className="text-sm transition-colors"
+              style={{ color: active ? '#ff6600' : '#888880' }}
             >
               {bracketLabel(label, active)}
             </Link>
@@ -65,7 +65,8 @@ export function TopNav({ username }: TopNavProps) {
         })}
         <Link
           href="/notifications"
-          className={`transition-colors ${alertsActive ? 'text-accent' : 'text-muted hover:text-accent'}`}
+          className="transition-colors"
+          style={{ color: alertsActive ? '#ff6600' : '#888880' }}
           aria-label="alerts"
         >
           <BellIcon />

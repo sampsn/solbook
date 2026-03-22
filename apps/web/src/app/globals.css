@@ -27,11 +27,9 @@ body {
   font-family: 'Courier Prime', 'Courier New', monospace;
 }
 
-/* Links — inside base layer so Tailwind utilities can override */
-@layer base {
-  a {
-    color: inherit;
-  }
+/* Links */
+a {
+  color: inherit;
 }
 
 /* Scrollbar */

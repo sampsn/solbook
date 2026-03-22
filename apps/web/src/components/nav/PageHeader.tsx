@@ -33,25 +33,27 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
   const alertsActive = pathname.startsWith('/notifications')
 
   return (
-    <div className="sticky top-0 bg-bg border-b border-border px-4 py-3 flex items-center justify-between">
+    <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3 flex items-center justify-between">
       {showBack ? (
         <button
           onClick={() => router.back()}
-          className="text-xs text-muted hover:text-accent transition-colors"
+          className="text-xs transition-colors"
+          style={{ color: '#888880' }}
         >
           ← back
         </button>
       ) : (
-        <h1 className="text-sm font-bold text-accent">{title}</h1>
+        <h1 className="text-sm font-bold" style={{ color: '#ff6600' }}>{title}</h1>
       )}
 
       {showBack ? (
-        <h1 className="text-sm font-bold text-accent">{title}</h1>
+        <h1 className="text-sm font-bold" style={{ color: '#ff6600' }}>{title}</h1>
       ) : (
         !alertsActive && (
           <Link
             href="/notifications"
-            className="md:hidden text-muted hover:text-accent transition-colors"
+            className="md:hidden transition-colors"
+            style={{ color: '#888880' }}
             aria-label="alerts"
           >
             <BellIcon />
