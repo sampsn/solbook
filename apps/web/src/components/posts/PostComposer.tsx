@@ -35,7 +35,8 @@ export function PostComposer() {
         onPaste={(e) => e.preventDefault()}
         placeholder="what's on your mind?"
         rows={3}
-        className="w-full bg-transparent text-[#e8e6d9] placeholder:text-[#555550] resize-none focus:outline-none text-sm leading-relaxed"
+        className="w-full bg-transparent text-[#e8e6d9] placeholder:text-[#555550] resize-none focus:outline-none leading-relaxed"
+        style={{ fontSize: '16px' }}
       />
       {error && <p className="text-red-400 text-xs mb-1">{error}</p>}
       <div className="flex items-center justify-between">
