@@ -35,13 +35,18 @@ export default function OwnProfileScreen() {
 
     if (!profileData?.username) {
       setLoading(false)
+      setRefreshing(false)
       return
     }
 
     setUsername(profileData.username)
 
     const result = await getProfile(profileData.username)
-    if (!result.profile) return
+    if (!result.profile) {
+      setLoading(false)
+      setRefreshing(false)
+      return
+    }
 
     setProfile(result.profile)
     setPosts(result.posts)
