@@ -11,6 +11,7 @@ import {
 } from '@expo-google-fonts/courier-prime'
 import * as SplashScreen from 'expo-splash-screen'
 import { colors } from '@/lib/theme'
+import { AlertsContextProvider } from '@/components/AlertsContext'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -35,7 +36,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <AlertsContextProvider>
       <StatusBar style="light" backgroundColor={colors.bg} />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
         <Stack.Screen name="index" />
@@ -43,7 +44,9 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="profile/[username]" options={{ presentation: 'card' }} />
         <Stack.Screen name="post/[id]" options={{ presentation: 'card' }} />
+        <Stack.Screen name="notifications" options={{ presentation: 'card' }} />
+        <Stack.Screen name="settings" options={{ presentation: 'card' }} />
       </Stack>
-    </>
+    </AlertsContextProvider>
   )
 }
