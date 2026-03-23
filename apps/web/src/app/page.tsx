@@ -29,7 +29,7 @@ export default function LandingPage() {
         </div>
 
         <p className="text-[var(--color-muted)] text-xs">
-          Human verification required at signup.
+          Human verification required at login and signup.
         </p>
       </div>
     </main>
