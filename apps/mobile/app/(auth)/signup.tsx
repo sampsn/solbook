@@ -1,19 +1,44 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   View, Text, TextInput, TouchableOpacity,
   StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView,
 } from 'react-native'
 import { Link, router } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { validateUsername, validateDisplayName } from '@solbook/shared/validation'
 
 export default function SignupScreen() {
+  const { colors } = useTheme()
   const [displayName, setDisplayName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const styles = useMemo(() => StyleSheet.create({
+    flex: { flex: 1, backgroundColor: colors.bg },
+    container: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 48 },
+    brand: { fontFamily: font.bold, fontSize: 36, color: colors.accent, marginBottom: 8 },
+    subtitle: { fontFamily: font.regular, fontSize: 14, color: colors.muted, marginBottom: 32 },
+    form: { gap: 12, marginBottom: 24 },
+    label: { fontFamily: font.regular, fontSize: 12, color: colors.muted, marginBottom: 4 },
+    input: {
+      fontFamily: font.regular, fontSize: 14, color: colors.text,
+      backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
+      paddingHorizontal: 12, paddingVertical: 10,
+    },
+    usernameRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
+    at: { fontFamily: font.regular, fontSize: 14, color: colors.muted, paddingHorizontal: 12 },
+    usernameInput: { flex: 1, borderWidth: 0, backgroundColor: 'transparent' },
+    button: { backgroundColor: colors.accent, paddingVertical: 12, alignItems: 'center', marginTop: 4 },
+    buttonDisabled: { opacity: 0.4 },
+    buttonText: { fontFamily: font.bold, fontSize: 14, color: colors.bg },
+    link: { alignSelf: 'center' },
+    linkText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
+    linkAccent: { color: colors.accent },
+  }), [colors])
 
   async function handleSignup() {
     const dnResult = validateDisplayName(displayName.trim())
@@ -133,26 +158,3 @@ export default function SignupScreen() {
     </KeyboardAvoidingView>
   )
 }
-
-const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: colors.bg },
-  container: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 48 },
-  brand: { fontFamily: font.bold, fontSize: 36, color: colors.accent, marginBottom: 8 },
-  subtitle: { fontFamily: font.regular, fontSize: 14, color: colors.muted, marginBottom: 32 },
-  form: { gap: 12, marginBottom: 24 },
-  label: { fontFamily: font.regular, fontSize: 12, color: colors.muted, marginBottom: 4 },
-  input: {
-    fontFamily: font.regular, fontSize: 14, color: colors.text,
-    backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
-    paddingHorizontal: 12, paddingVertical: 10,
-  },
-  usernameRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border },
-  at: { fontFamily: font.regular, fontSize: 14, color: colors.muted, paddingHorizontal: 12 },
-  usernameInput: { flex: 1, borderWidth: 0, backgroundColor: 'transparent' },
-  button: { backgroundColor: colors.accent, paddingVertical: 12, alignItems: 'center', marginTop: 4 },
-  buttonDisabled: { opacity: 0.4 },
-  buttonText: { fontFamily: font.bold, fontSize: 14, color: colors.bg },
-  link: { alignSelf: 'center' },
-  linkText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
-  linkAccent: { color: colors.accent },
-})

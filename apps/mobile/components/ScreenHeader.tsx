@@ -1,10 +1,11 @@
 // apps/mobile/components/ScreenHeader.tsx
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { useHasUnseenAlerts } from '@/components/AlertsContext'
 
 interface ScreenHeaderProps {
@@ -32,9 +33,28 @@ function BellIcon({ filled, color }: { filled: boolean; color: string }) {
 }
 
 export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
+  const { colors } = useTheme()
   const insets = useSafeAreaInsets()
   const hasUnseenAlerts = useHasUnseenAlerts()
   const bellColor = hasUnseenAlerts ? colors.accent : colors.muted
+
+  const styles = useMemo(() => StyleSheet.create({
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      paddingHorizontal: 16,
+      paddingBottom: 12,
+      backgroundColor: colors.bg,
+    },
+    backBtn: { minWidth: 48 },
+    back: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
+    title: { fontFamily: font.bold, fontSize: 20, color: colors.accent },
+    bellBtn: { padding: 4 },
+    placeholder: { minWidth: 48 },
+  }), [colors])
 
   if (showBack) {
     return (
@@ -59,21 +79,3 @@ export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    backgroundColor: colors.bg,
-  },
-  backBtn: { minWidth: 48 },
-  back: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
-  title: { fontFamily: font.bold, fontSize: 20, color: colors.accent },
-  bellBtn: { padding: 4 },
-  placeholder: { minWidth: 48 },
-})

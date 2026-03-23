@@ -1,17 +1,19 @@
 // apps/mobile/app/profile/[username].tsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, ActivityIndicator, RefreshControl,
 } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { getProfile, toggleFollow, FeedPost, Profile } from '@/lib/api'
 
 export default function ProfileScreen() {
+  const { colors } = useTheme()
   const { username } = useLocalSearchParams<{ username: string }>()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [posts, setPosts] = useState<FeedPost[]>([])
@@ -21,6 +23,26 @@ export default function ProfileScreen() {
   const [isOwnProfile, setIsOwnProfile] = useState(false)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.bg },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    profileHeader: { borderBottomWidth: 1, borderBottomColor: colors.border, padding: 16 },
+    profileTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+    profileInfo: { flex: 1 },
+    displayName: { fontFamily: font.bold, fontSize: 18, color: colors.text },
+    username: { fontFamily: font.regular, fontSize: 15, color: colors.muted, marginTop: 2 },
+    bio: { fontFamily: font.regular, fontSize: 15, color: colors.text, marginTop: 8 },
+    counts: { flexDirection: 'row', gap: 16, marginTop: 12 },
+    count: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
+    countNum: { fontFamily: font.bold, color: colors.text },
+    settingsLink: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
+    followBtn: { borderWidth: 1, borderColor: colors.accent, paddingHorizontal: 12, paddingVertical: 6 },
+    followingBtn: { borderColor: colors.border },
+    followBtnText: { fontFamily: font.regular, fontSize: 14, color: colors.accent },
+    followingBtnText: { color: colors.muted },
+    empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
+  }), [colors])
 
   async function load() {
     if (!username) return
@@ -93,23 +115,3 @@ export default function ProfileScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  profileHeader: { borderBottomWidth: 1, borderBottomColor: colors.border, padding: 16 },
-  profileTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  profileInfo: { flex: 1 },
-  displayName: { fontFamily: font.bold, fontSize: 18, color: colors.text },
-  username: { fontFamily: font.regular, fontSize: 15, color: colors.muted, marginTop: 2 },
-  bio: { fontFamily: font.regular, fontSize: 15, color: colors.text, marginTop: 8 },
-  counts: { flexDirection: 'row', gap: 16, marginTop: 12 },
-  count: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
-  countNum: { fontFamily: font.bold, color: colors.text },
-  settingsLink: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
-  followBtn: { borderWidth: 1, borderColor: colors.accent, paddingHorizontal: 12, paddingVertical: 6 },
-  followingBtn: { borderColor: colors.border },
-  followBtnText: { fontFamily: font.regular, fontSize: 14, color: colors.accent },
-  followingBtnText: { color: colors.muted },
-  empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
-})

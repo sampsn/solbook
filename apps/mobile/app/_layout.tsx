@@ -10,7 +10,8 @@ import {
   CourierPrime_700Bold_Italic,
 } from '@expo-google-fonts/courier-prime'
 import * as SplashScreen from 'expo-splash-screen'
-import { colors } from '@/lib/theme'
+import { lightColors } from '@/lib/theme'
+import { ThemeContextProvider } from '@/lib/ThemeContext'
 import { AlertsContextProvider } from '@/components/AlertsContext'
 
 SplashScreen.preventAutoHideAsync()
@@ -29,16 +30,17 @@ export default function RootLayout() {
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color={colors.accent} />
+      <View style={{ flex: 1, backgroundColor: lightColors.bg, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color={lightColors.accent} />
       </View>
     )
   }
 
   return (
-    <AlertsContextProvider>
-      <StatusBar style="light" backgroundColor={colors.bg} />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+    <ThemeContextProvider>
+      <AlertsContextProvider>
+        <StatusBar style="auto" />
+        <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
@@ -46,7 +48,8 @@ export default function RootLayout() {
         <Stack.Screen name="post/[id]" options={{ presentation: 'card' }} />
         <Stack.Screen name="notifications" options={{ presentation: 'card' }} />
         <Stack.Screen name="settings" options={{ presentation: 'card' }} />
-      </Stack>
-    </AlertsContextProvider>
+        </Stack>
+      </AlertsContextProvider>
+    </ThemeContextProvider>
   )
 }
