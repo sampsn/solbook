@@ -27,7 +27,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   const followingIds = [session.userId, ...(follows ?? []).map((f) => f.following_id)]
 
-  const query = supabase
+  let query = supabase
     .from('posts')
     .select(`
       id,
