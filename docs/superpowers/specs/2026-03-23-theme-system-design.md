@@ -118,7 +118,7 @@ The existing `(app)/layout.tsx` is a server component that already performs an a
 - Accepts `initialTheme: 'system' | 'dark' | 'light'` prop
 - Applies resolved `data-theme` to `<html>` on mount using `initialTheme` + OS signal
 - Watches `window.matchMedia('(prefers-color-scheme: dark)')` for OS changes
-- Listens for a custom `solbook:theme-change` event dispatched by `ThemeToggle` for instant in-page updates
+- Listens for a custom `solbook:theme-change` event dispatched by `ThemeToggle`; reads new preference from `event.detail.theme` and re-resolves the effective theme for instant in-page updates
 - On theme change, writes the **resolved value** (`'dark'` or `'light'`, never `'system'`) to `localStorage` key `solbook-theme-hint`
 
 **Flash prevention inline script** — rendered by `ThemeProvider` before React hydrates:
@@ -134,9 +134,11 @@ if (hint === 'dark' || hint === 'light') {
 Since only the resolved theme is stored (not `'system'`), the inline script requires no OS-detection logic. The authoritative value comes from the server via `initialTheme`; `localStorage` is only a hydration hint to prevent flicker.
 
 **`ThemeToggle`** — new client component at `components/settings/ThemeToggle.tsx`:
-- Accepts `initialTheme: 'system' | 'dark' | 'light'` prop (passed from server) to set its initial selected state without a client fetch
+- `settings/page.tsx` (server component) reads `profile.theme` from Supabase alongside the existing profile fields and passes it as a prop to `ThemeToggle`. No additional fetch is required.
+- Accepts `initialTheme: 'system' | 'dark' | 'light'` prop to set its initial selected state
 - Segmented control with three buttons: `auto`, `dark`, `light`
-- On change: updates local state optimistically, writes to Supabase in background, dispatches `solbook:theme-change` event, writes resolved hint to `localStorage`
+- On change: updates local state optimistically, writes to Supabase in background (single immediate retry on failure; if retry fails, local state diverges silently — same policy as mobile), dispatches `solbook:theme-change` custom event with payload `{ detail: { theme: 'system' | 'dark' | 'light' } }`, writes resolved hint to `localStorage`
+- `ThemeProvider` reads the new preference from `event.detail.theme` and re-resolves the effective theme
 - Rendered inside the existing settings page
 
 ### Mobile (Expo / React Native)
@@ -173,7 +175,8 @@ export const lightColors = {
 
 **`ThemeContext`** (`lib/ThemeContext.tsx`) — new React context:
 - Provides `{ colors, theme, setTheme }` to the entire app
-- On mount: fetches `profile.theme` from Supabase
+- Initial state (before the Supabase fetch resolves): uses `useColorScheme()` immediately to resolve a provisional theme from the OS signal, falling back to `light` if unavailable. This means the app renders with the correct OS-matched theme instantly, and silently updates if the fetched preference differs.
+- On mount: fetches `profile.theme` from Supabase; on resolution, re-runs the resolution logic and updates `colors` if the result differs from the provisional value
 - Uses `useColorScheme()` from React Native to read OS preference
 - Resolves effective theme using the resolution logic above
 - `setTheme(value)`: optimistic local update + async Supabase write with a single immediate retry on failure; if retry also fails, the local state remains (diverges from DB until next app launch — acceptable, no alert shown)
