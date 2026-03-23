@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
+// apps/mobile/app/(tabs)/home/index.tsx
+import React, { useCallback, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useFocusEffect } from 'expo-router'
 import { colors, font } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
 import { PostComposer } from '@/components/PostComposer'
+import { ScreenHeader } from '@/components/ScreenHeader'
 import { getHomeFeed, FeedPost } from '@/lib/api'
 
 export default function HomeScreen() {
-  const insets = useSafeAreaInsets()
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [isFollowFeed, setIsFollowFeed] = useState(false)
@@ -53,9 +53,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
-        <Text style={styles.headerText}>home</Text>
-      </View>
+      <ScreenHeader title="home" showBell />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
@@ -91,11 +89,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  header: {
-    borderBottomWidth: 1, borderBottomColor: colors.border,
-    paddingHorizontal: 16, paddingVertical: 12, paddingTop: 52,
-  },
-  headerText: { fontFamily: font.bold, fontSize: 14, color: colors.accent },
   hint: { paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border },
   hintText: { fontFamily: font.regular, fontSize: 11, color: colors.muted },
   empty: { fontFamily: font.regular, fontSize: 14, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
