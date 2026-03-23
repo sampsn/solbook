@@ -1,20 +1,45 @@
 // apps/mobile/app/settings.tsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   View, Text, TextInput, TouchableOpacity,
   StyleSheet, Alert, ScrollView, ActivityIndicator,
 } from 'react-native'
 import { router } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { validateDisplayName } from '@solbook/shared/validation'
 import { ScreenHeader } from '@/components/ScreenHeader'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function SettingsScreen() {
+  const { colors } = useTheme()
   const [profile, setProfile] = useState<{ username: string; display_name: string; bio: string | null } | null>(null)
   const [displayName, setDisplayName] = useState('')
   const [bio, setBio] = useState('')
   const [saving, setSaving] = useState(false)
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.bg },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    content: { paddingBottom: 32 },
+    section: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 16, gap: 8 },
+    sectionTitle: { fontFamily: font.regular, fontSize: 13, color: colors.muted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 },
+    label: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
+    input: {
+      fontFamily: font.regular, fontSize: 16, color: colors.text,
+      backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
+      paddingHorizontal: 12, paddingVertical: 10,
+    },
+    textArea: { minHeight: 64 },
+    saveButton: { backgroundColor: colors.accent, paddingVertical: 10, paddingHorizontal: 16, alignSelf: 'flex-start', marginTop: 4 },
+    disabled: { opacity: 0.4 },
+    saveButtonText: { fontFamily: font.bold, fontSize: 14, color: colors.bg },
+    username: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
+    signOutButton: { borderWidth: 1, borderColor: colors.border, paddingVertical: 8, paddingHorizontal: 16, alignSelf: 'flex-start' },
+    signOutText: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
+    hintText: { fontFamily: font.regular, fontSize: 13, color: colors.muted, marginTop: 4 },
+  }), [colors])
 
   useEffect(() => {
     async function load() {
@@ -67,6 +92,12 @@ export default function SettingsScreen() {
       ) : (
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.section}>
+            <Text style={styles.sectionTitle}>appearance</Text>
+            <ThemeToggle />
+            <Text style={styles.hintText}>auto follows your device setting</Text>
+          </View>
+
+          <View style={styles.section}>
             <Text style={styles.sectionTitle}>profile</Text>
             <Text style={styles.label}>display name</Text>
             <TextInput
@@ -109,24 +140,3 @@ export default function SettingsScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  content: { paddingBottom: 32 },
-  section: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 16, gap: 8 },
-  sectionTitle: { fontFamily: font.regular, fontSize: 13, color: colors.muted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 },
-  label: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
-  input: {
-    fontFamily: font.regular, fontSize: 16, color: colors.text,
-    backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border,
-    paddingHorizontal: 12, paddingVertical: 10,
-  },
-  textArea: { minHeight: 64 },
-  saveButton: { backgroundColor: colors.accent, paddingVertical: 10, paddingHorizontal: 16, alignSelf: 'flex-start', marginTop: 4 },
-  disabled: { opacity: 0.4 },
-  saveButtonText: { fontFamily: font.bold, fontSize: 14, color: colors.bg },
-  username: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
-  signOutButton: { borderWidth: 1, borderColor: colors.border, paddingVertical: 8, paddingHorizontal: 16, alignSelf: 'flex-start' },
-  signOutText: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
-})
