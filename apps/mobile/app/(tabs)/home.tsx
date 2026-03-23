@@ -1,20 +1,32 @@
 // apps/mobile/app/(tabs)/home.tsx
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { useFocusEffect } from 'expo-router'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
 import { PostComposer } from '@/components/PostComposer'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { getHomeFeed, FeedPost } from '@/lib/api'
 
 export default function HomeScreen() {
+  const { colors } = useTheme()
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [isFollowFeed, setIsFollowFeed] = useState(false)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.bg },
+    centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
+    hint: { paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border },
+    hintText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
+    empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
+    loadMore: { paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border },
+    loadMoreText: { fontFamily: font.regular, fontSize: 16, color: colors.muted },
+  }), [colors])
 
   async function load(replace = true) {
     const result = await getHomeFeed() as any
@@ -86,13 +98,3 @@ export default function HomeScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  hint: { paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border },
-  hintText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
-  empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
-  loadMore: { paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border },
-  loadMoreText: { fontFamily: font.regular, fontSize: 16, color: colors.muted },
-})

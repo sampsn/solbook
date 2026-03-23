@@ -5,10 +5,12 @@ import { View, Text, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 
 function CustomTabBar({ state, navigation, username }: BottomTabBarProps & { username: string }) {
   const insets = useSafeAreaInsets()
+  const { colors } = useTheme()
 
   function getLabel(routeName: string) {
     if (routeName === 'profile') return username
