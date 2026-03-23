@@ -1,6 +1,6 @@
 # solbook
 
-An open source, human-only, text-based social network. No AI-generated content.
+An open source, human-only, text-based social network. No AI-generated content. No AI scrapers. No AI training.
 
 The dream is to have a community built, human only social site. The potential to have one last place we can trust is human only. I am not 100% certain this is possible, so this might just be an attempt at a proof of concept.
 
