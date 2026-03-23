@@ -125,13 +125,16 @@ The existing `(app)/layout.tsx` is a server component that already performs an a
 
 ```js
 // reads resolved value only ('dark' or 'light') — never 'system'
-const hint = localStorage.getItem('solbook-theme-hint');
-if (hint === 'dark' || hint === 'light') {
-  document.documentElement.setAttribute('data-theme', hint);
-}
+// wrapped in try/catch: localStorage throws SecurityError in Safari private browsing
+try {
+  const hint = localStorage.getItem('solbook-theme-hint');
+  if (hint === 'dark' || hint === 'light') {
+    document.documentElement.setAttribute('data-theme', hint);
+  }
+} catch (_) {}
 ```
 
-Since only the resolved theme is stored (not `'system'`), the inline script requires no OS-detection logic. The authoritative value comes from the server via `initialTheme`; `localStorage` is only a hydration hint to prevent flicker.
+Since only the resolved theme is stored (not `'system'`), the inline script requires no OS-detection logic. The authoritative value comes from the server via `initialTheme`; `localStorage` is only a hydration hint to prevent flicker. Both this read and `ThemeProvider`'s write to `solbook-theme-hint` must be wrapped in `try/catch` — `localStorage` throws `SecurityError` in Safari private browsing and `QuotaExceededError` when storage is full. Both cases are silently ignored; the app falls back gracefully to the server-provided `initialTheme`.
 
 **`ThemeToggle`** — new client component at `components/settings/ThemeToggle.tsx`:
 - `settings/page.tsx` (server component) reads `profile.theme` from Supabase alongside the existing profile fields and passes it as a prop to `ThemeToggle`. No additional fetch is required.
@@ -232,6 +235,7 @@ auto follows your device setting
 | New user / no profile row | DB default `'system'` ensures a valid value always exists. |
 | OS preference unavailable (SSR, older Android) | Resolves to `light`. |
 | Web hydration flicker | Inline script applies resolved `localStorage` hint (`'dark'`\|`'light'`) to `data-theme` before hydration. |
+| `localStorage` unavailable (Safari private, quota exceeded) | Both the inline script read and `ThemeProvider` write are wrapped in `try/catch`. Errors are silently swallowed; app falls back to server-provided `initialTheme`. |
 
 ---
 
