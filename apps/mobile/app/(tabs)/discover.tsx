@@ -1,13 +1,13 @@
+// apps/mobile/app/(tabs)/discover.tsx
 import React, { useCallback, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useFocusEffect } from 'expo-router'
 import { colors, font } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
+import { ScreenHeader } from '@/components/ScreenHeader'
 import { getDiscoverFeed, FeedPost } from '@/lib/api'
 
 export default function DiscoverScreen() {
-  const insets = useSafeAreaInsets()
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -29,9 +29,7 @@ export default function DiscoverScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
-        <Text style={styles.headerText}>discover</Text>
-      </View>
+      <ScreenHeader title="discover" showBell />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
@@ -46,7 +44,5 @@ export default function DiscoverScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  header: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
-  headerText: { fontFamily: font.bold, fontSize: 14, color: colors.accent },
   empty: { fontFamily: font.regular, fontSize: 14, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
 })
