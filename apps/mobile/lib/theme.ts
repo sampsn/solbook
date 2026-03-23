@@ -1,13 +1,31 @@
-export const colors = {
-  bg: '#1c1c1c',
-  surface: '#242424',
-  border: '#333333',
-  text: '#e8e6d9',
-  muted: '#888880',
-  accent: '#ff6600',
-  accentHover: '#ff7722',
-  danger: '#f87171',
+const sharedColors = {
+  accent: '#cb4b16',
+  accentHover: '#d45d1e',
+  accentAlt: '#b58900',
+  brand: '#ff7700',
+  danger: '#dc322f',
 }
+
+export const darkColors = {
+  ...sharedColors,
+  bg: '#052327',
+  surface: '#0b2b2e',
+  border: '#586e75',
+  text: '#839496',
+  muted: '#657b83',
+}
+
+export const lightColors = {
+  ...sharedColors,
+  bg: '#fdf3d8',
+  surface: '#ede8d0',
+  border: '#93a1a1',
+  text: '#657b83',
+  muted: '#839496',
+}
+
+// Convenience type for resolved colors object
+export type AppColors = typeof darkColors
 
 export const font = {
   regular: 'CourierPrime_400Regular',
