@@ -23,13 +23,16 @@ All tokens apply to both platforms. Accent and brand colors are theme-invariant.
 | `text` | `#839496` | `#657b83` | Body text |
 | `muted` | `#657b83` | `#839496` | Labels, metadata, placeholders |
 | `accent` | `#cb4b16` | `#cb4b16` | Likes, active states, secondary buttons (Solarized orange) |
+| `accentHover` | `#d45d1e` | `#d45d1e` | Hover state for accent elements |
 | `accent-alt` | `#b58900` | `#b58900` | Tags, badges, highlights (Solarized yellow) |
 | `brand` | `#ff7700` | `#ff7700` | Logo, wordmark, primary CTAs |
+| `danger` | `#dc322f` | `#dc322f` | Destructive actions, errors (Solarized red) |
 
 **Notes:**
 - Dark bg/surface are a warmed variant of Solarized Dark (original `#002b36` / `#073642`), shifted toward teal-neutral to reduce the blue-green cast.
 - Light bg/surface are a warmed variant of Solarized Light (original `#fdf6e3` / `#eee8d5`), shifted toward warm amber.
 - `brand` (`#ff7700`) is used exclusively for logo and branding elements. `accent` (`#cb4b16`) is used for all other interactive/highlight elements.
+- `accentHover` and `danger` are theme-invariant (same value in both themes).
 
 ---
 
@@ -64,7 +67,11 @@ ALTER TABLE profiles
 
 ### Web (Next.js + Tailwind v4)
 
-**CSS tokens** — `globals.css` gains two scoped blocks replacing the current hardcoded values:
+**CSS tokens** — `globals.css` is updated as follows:
+
+1. The `@theme { }` block has its color tokens removed entirely. Only `--font-mono` remains in `@theme`. Color tokens are defined exclusively in the `[data-theme]` blocks below.
+2. Hardcoded `background-color`, `color`, and scrollbar `background` values on `body` and `::-webkit-scrollbar-*` are replaced with `var(--color-bg)` and `var(--color-text)`.
+3. Two scoped blocks define all color tokens:
 
 ```css
 [data-theme="light"] {
@@ -74,8 +81,10 @@ ALTER TABLE profiles
   --color-text: #657b83;
   --color-muted: #839496;
   --color-accent: #cb4b16;
+  --color-accent-hover: #d45d1e;
   --color-accent-alt: #b58900;
   --color-brand: #ff7700;
+  --color-danger: #dc322f;
 }
 
 [data-theme="dark"] {
@@ -85,32 +94,81 @@ ALTER TABLE profiles
   --color-text: #839496;
   --color-muted: #657b83;
   --color-accent: #cb4b16;
+  --color-accent-hover: #d45d1e;
   --color-accent-alt: #b58900;
   --color-brand: #ff7700;
+  --color-danger: #dc322f;
 }
 ```
 
-All existing Tailwind utility classes that reference these vars (`bg-[var(--color-bg)]` etc.) continue to work unchanged.
+All existing Tailwind utility classes that reference these vars continue to work unchanged.
 
 **`ThemeProvider`** — new client component added to `app/(app)/layout.tsx`:
-- Fetches `profile.theme` from Supabase on mount
+
+The existing `(app)/layout.tsx` is a server component that already performs an authenticated Supabase query. It reads `profile.theme` server-side and passes it as a prop to `ThemeProvider`. This avoids a second client-side fetch and eliminates any race condition with the flash-prevention script.
+
+```tsx
+// server layout passes resolved pref down
+<ThemeProvider initialTheme={profile.theme}>
+  {children}
+</ThemeProvider>
+```
+
+`ThemeProvider` responsibilities:
+- Accepts `initialTheme: 'system' | 'dark' | 'light'` prop
+- Applies resolved `data-theme` to `<html>` on mount using `initialTheme` + OS signal
 - Watches `window.matchMedia('(prefers-color-scheme: dark)')` for OS changes
-- Resolves effective theme and writes `data-theme` attribute to `<html>`
-- Listens for a custom `solbook:theme-change` event dispatched by `ThemeToggle` for instant in-page updates without a re-fetch
-- Renders an inline `<script>` that reads `localStorage.getItem('solbook-theme-hint')` and applies it to `<html>` before React hydrates, preventing flash of wrong theme
+- Listens for a custom `solbook:theme-change` event dispatched by `ThemeToggle` for instant in-page updates
+- On theme change, writes the **resolved value** (`'dark'` or `'light'`, never `'system'`) to `localStorage` key `solbook-theme-hint`
+
+**Flash prevention inline script** — rendered by `ThemeProvider` before React hydrates:
+
+```js
+// reads resolved value only ('dark' or 'light') — never 'system'
+const hint = localStorage.getItem('solbook-theme-hint');
+if (hint === 'dark' || hint === 'light') {
+  document.documentElement.setAttribute('data-theme', hint);
+}
+```
+
+Since only the resolved theme is stored (not `'system'`), the inline script requires no OS-detection logic. The authoritative value comes from the server via `initialTheme`; `localStorage` is only a hydration hint to prevent flicker.
 
 **`ThemeToggle`** — new client component at `components/settings/ThemeToggle.tsx`:
+- Accepts `initialTheme: 'system' | 'dark' | 'light'` prop (passed from server) to set its initial selected state without a client fetch
 - Segmented control with three buttons: `auto`, `dark`, `light`
-- On change: updates local state optimistically, writes to Supabase in background, dispatches `solbook:theme-change` event, writes hint to `localStorage`
+- On change: updates local state optimistically, writes to Supabase in background, dispatches `solbook:theme-change` event, writes resolved hint to `localStorage`
 - Rendered inside the existing settings page
 
 ### Mobile (Expo / React Native)
 
-**`lib/theme.ts`** — refactored from a single `colors` export to two named exports:
+**`lib/theme.ts`** — refactored from a single `colors` export to two named exports plus shared tokens:
 
 ```ts
-export const darkColors = { bg: '#052327', surface: '#0b2b2e', ... }
-export const lightColors = { bg: '#fdf3d8', surface: '#ede8d0', ... }
+const sharedColors = {
+  accent: '#cb4b16',
+  accentHover: '#d45d1e',
+  accentAlt: '#b58900',
+  brand: '#ff7700',
+  danger: '#dc322f',
+}
+
+export const darkColors = {
+  ...sharedColors,
+  bg: '#052327',
+  surface: '#0b2b2e',
+  border: '#586e75',
+  text: '#839496',
+  muted: '#657b83',
+}
+
+export const lightColors = {
+  ...sharedColors,
+  bg: '#fdf3d8',
+  surface: '#ede8d0',
+  border: '#93a1a1',
+  text: '#657b83',
+  muted: '#839496',
+}
 ```
 
 **`ThemeContext`** (`lib/ThemeContext.tsx`) — new React context:
@@ -118,16 +176,35 @@ export const lightColors = { bg: '#fdf3d8', surface: '#ede8d0', ... }
 - On mount: fetches `profile.theme` from Supabase
 - Uses `useColorScheme()` from React Native to read OS preference
 - Resolves effective theme using the resolution logic above
-- `setTheme(value)`: optimistic local update + async Supabase write
+- `setTheme(value)`: optimistic local update + async Supabase write with a single immediate retry on failure; if retry also fails, the local state remains (diverges from DB until next app launch — acceptable, no alert shown)
 
-**Root layout** (`app/_layout.tsx`) — wraps existing `AlertsContextProvider` with `ThemeContextProvider`. All components that currently import `colors` from `lib/theme` switch to `const { colors } = useTheme()`.
+**StyleSheet migration** — all components currently calling `StyleSheet.create({...})` at module scope with static `colors` must be updated. `StyleSheet.create` freezes styles at call time, so it does not respond to theme changes. The migration pattern is:
+
+```ts
+// Before (module scope — does not update on theme change)
+const styles = StyleSheet.create({ container: { backgroundColor: colors.bg } })
+
+// After (inside component — re-evaluated on theme change)
+export default function MyComponent() {
+  const { colors } = useTheme()
+  const styles = useMemo(() => StyleSheet.create({
+    container: { backgroundColor: colors.bg },
+  }), [colors])
+  ...
+}
+```
+
+All components that use `StyleSheet.create` with theme-sensitive values must follow this pattern.
+
+**Root layout** (`app/_layout.tsx`):
+- `ThemeContextProvider` wraps `AlertsContextProvider`
+- The pre-font loading spinner (rendered before the provider tree mounts) uses the light palette hardcoded: `backgroundColor: lightColors.bg`, `color: lightColors.accent`. This is acceptable — the spinner is shown only during initial font load and is not theme-sensitive.
 
 **`ThemeToggle`** (`components/ThemeToggle.tsx`) — new component:
 - Segmented control: `auto / dark / light`
 - Calls `setTheme` from context on press
 - Styled using resolved `colors` from context
-
-Rendered inside the existing `settings.tsx` screen in a new "appearance" section above "profile".
+- Rendered inside the existing `settings.tsx` screen in a new "appearance" section above "profile"
 
 ---
 
@@ -148,10 +225,10 @@ auto follows your device setting
 | Scenario | Behaviour |
 |---|---|
 | Supabase fetch fails on load | Fall back to `'system'`, resolve normally. No error shown. |
-| Supabase write fails on toggle | Keep optimistic local update. Silent single retry. No alert. |
+| Supabase write fails on toggle | Keep optimistic local update. Single immediate retry. If retry fails, local state diverges from DB until next launch. No alert shown. |
 | New user / no profile row | DB default `'system'` ensures a valid value always exists. |
 | OS preference unavailable (SSR, older Android) | Resolves to `light`. |
-| Web hydration flicker | Inline `<script>` applies `localStorage` hint before hydration. |
+| Web hydration flicker | Inline script applies resolved `localStorage` hint (`'dark'`\|`'light'`) to `data-theme` before hydration. |
 
 ---
 
@@ -162,8 +239,8 @@ auto follows your device setting
 | Resolution function: all 5 input combos → correct output | Unit | Both |
 | `ThemeContext` provides correct `colors` for each of the 3 preference values | Component | Mobile |
 | `ThemeProvider` sets correct `data-theme` for each preference × OS combination | Component | Web |
-
-Visual correctness is covered by the approved mockups; no E2E tests required for theme.
+| `ThemeProvider` passes resolved value (not `'system'`) to `localStorage` | Unit | Web |
+| Flash-prevention script: `localStorage` hint is applied to `<html>` before hydration | Integration | Web |
 
 ---
 
