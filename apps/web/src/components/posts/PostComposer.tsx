@@ -36,8 +36,7 @@ export function PostComposer() {
         placeholder="what's on your mind?"
         rows={3}
         className="w-full bg-transparent placeholder:text-[var(--color-muted)] resize-none focus:outline-none leading-relaxed"
-        style={{ color: 'var(--color-text-strong)' }}
-        style={{ fontSize: '16px' }}
+        style={{ color: 'var(--color-text-strong)', fontSize: '16px' }}
       />
       {error && <p className="text-[var(--color-danger)] text-xs mb-1">{error}</p>}
       <div className="flex items-center justify-between">
