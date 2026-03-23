@@ -42,14 +42,14 @@ export function TopNav({ username }: TopNavProps) {
   const alertsActive = pathname.startsWith('/notifications')
   const hasUnseenAlerts = useHasUnseenAlerts()
 
-  const bellColor = alertsActive ? '#ff6600' : hasUnseenAlerts ? '#e8e6d9' : '#888880'
+  const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
 
   return (
-    <header className="hidden md:flex items-center bg-[#242424] border-b border-[#333333] px-4 py-2 sticky top-0 z-10">
+    <header className="hidden md:flex items-center bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-2 sticky top-0 z-10">
       <Link
         href="/home"
         className="font-bold transition-colors mr-auto"
-        style={{ color: '#ff6600' }}
+        style={{ color: 'var(--color-brand)' }}
       >
         solbook
       </Link>
@@ -61,7 +61,7 @@ export function TopNav({ username }: TopNavProps) {
               key={href}
               href={href}
               className="text-sm transition-colors"
-              style={{ color: active ? '#ff6600' : '#e8e6d9', fontWeight: active ? 'bold' : 'normal' }}
+              style={{ color: active ? 'var(--color-accent)' : 'var(--color-text)', fontWeight: active ? 'bold' : 'normal' }}
             >
               {bracketLabel(label, active)}
             </Link>

@@ -34,29 +34,29 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
   const alertsActive = pathname.startsWith('/notifications')
   const hasUnseenAlerts = useHasUnseenAlerts()
 
-  const bellColor = alertsActive ? '#ff6600' : hasUnseenAlerts ? '#e8e6d9' : '#888880'
+  const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
 
   return (
-    <div className="sticky top-0 bg-[#1c1c1c] border-b border-[#333333] px-4 py-3 flex items-center justify-between">
+    <div className="md:hidden sticky top-0 bg-[var(--color-bg)] border-b border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
       {showBack ? (
         <button
           onClick={() => router.back()}
           className="text-xs transition-colors"
-          style={{ color: '#888880' }}
+          style={{ color: 'var(--color-muted)' }}
         >
           ← back
         </button>
       ) : (
-        <h1 className="text-sm font-bold" style={{ color: '#ff6600' }}>{title}</h1>
+        <h1 className="text-sm font-bold" style={{ color: 'var(--color-accent)' }}>{title}</h1>
       )}
 
       {showBack ? (
-        <h1 className="text-sm font-bold" style={{ color: '#ff6600' }}>{title}</h1>
+        <h1 className="text-sm font-bold" style={{ color: 'var(--color-accent)' }}>{title}</h1>
       ) : (
         !alertsActive && (
           <Link
             href="/notifications"
-            className="md:hidden transition-colors"
+            className="transition-colors"
             style={{ color: bellColor }}
             aria-label="alerts"
           >

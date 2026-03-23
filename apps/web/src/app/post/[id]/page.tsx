@@ -35,8 +35,8 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="border-b border-[#333333] px-4 py-3">
-        <Link href="/home" className="text-xs text-[#888880] hover:text-[#ff6600] transition-colors">
+      <div className="border-b border-[var(--color-border)] px-4 py-3">
+        <Link href="/home" className="text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
           ← back
         </Link>
       </div>

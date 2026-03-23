@@ -44,7 +44,7 @@ export default async function DiscoverPage() {
     <div className="max-w-xl mx-auto">
       <PageHeader title="discover" />
       {feed.length === 0 ? (
-        <p className="text-[#888880] text-center py-12 text-sm">no trending posts yet.</p>
+        <p className="text-[var(--color-muted)] text-center py-12 text-sm">no trending posts yet.</p>
       ) : (
         feed.map((post: any) => <PostCard key={post.id} {...post} />)
       )}

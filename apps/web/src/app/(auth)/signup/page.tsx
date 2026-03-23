@@ -42,7 +42,7 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#e8e6d9]">Display name</label>
+            <label className="text-sm font-medium text-[var(--color-text)]">Display name</label>
             <input
               type="text"
               value={displayName}
@@ -50,14 +50,14 @@ export default function SignupPage() {
               maxLength={50}
               required
               placeholder="Your name"
-              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+              className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
           style={{ fontSize: '16px' }}
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#e8e6d9]">Username</label>
-            <div className="flex items-center bg-[#242424] border border-[#333333] overflow-hidden focus-within:border-[#ff6600]">
-              <span className="px-3 py-2 text-sm text-[#888880]">@</span>
+            <label className="text-sm font-medium text-[var(--color-text)]">Username</label>
+            <div className="flex items-center bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden focus-within:border-[var(--color-accent)]">
+              <span className="px-3 py-2 text-sm text-[var(--color-muted)]">@</span>
               <input
                 type="text"
                 value={username}
@@ -66,25 +66,25 @@ export default function SignupPage() {
                 pattern="[a-zA-Z0-9_]{3,20}"
                 required
                 placeholder="username"
-                className="flex-1 bg-transparent px-0 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none"
+                className="flex-1 bg-transparent px-0 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none"
                 style={{ fontSize: '16px' }}
               />
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#e8e6d9]">Email</label>
+            <label className="text-sm font-medium text-[var(--color-text)]">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="you@example.com"
-              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+              className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
           style={{ fontSize: '16px' }}
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium text-[#e8e6d9]">Password</label>
+            <label className="text-sm font-medium text-[var(--color-text)]">Password</label>
             <input
               type="password"
               value={password}
@@ -92,25 +92,25 @@ export default function SignupPage() {
               minLength={6}
               required
               placeholder="Min. 6 characters"
-              className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+              className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
           style={{ fontSize: '16px' }}
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-[var(--color-danger)] text-sm">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#ff6600] text-[#1c1c1c] py-2 text-sm font-bold disabled:opacity-40 hover:bg-[#ff7722] transition-colors"
+            className="w-full bg-[var(--color-brand)] text-[var(--color-bg)] py-2 text-sm font-bold disabled:opacity-40 hover:opacity-90 transition-opacity"
           >
             {loading ? 'Creating account…' : 'Create account'}
           </button>
         </form>
 
-        <p className="text-center text-sm text-[#888880]">
+        <p className="text-center text-sm text-[var(--color-muted)]">
           Already have an account?{' '}
-          <Link href="/login" className="text-[#ff6600] hover:underline">
+          <Link href="/login" className="text-[var(--color-accent)] hover:underline">
             Sign in
           </Link>
         </p>

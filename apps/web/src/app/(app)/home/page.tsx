@@ -78,15 +78,15 @@ export default async function HomePage({ searchParams }: Props) {
       <PageHeader title="home" />
       <PostComposer />
       {feed.length === 0 ? (
-        <p className="text-[#888880] text-center py-12 text-sm">
+        <p className="text-[var(--color-muted)] text-center py-12 text-sm">
           no posts yet. follow people to see their posts here.
         </p>
       ) : (
         <>
           {feed.map((post) => <PostCard key={post.id} {...post} />)}
           {nextCursor && (
-            <div className="border-t border-[#333333] px-4 py-3">
-              <a href={`/home?cursor=${nextCursor}`} className="text-sm text-[#888880] hover:text-[#ff6600] transition-colors">
+            <div className="border-t border-[var(--color-border)] px-4 py-3">
+              <a href={`/home?cursor=${nextCursor}`} className="text-sm text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
                 load more →
               </a>
             </div>

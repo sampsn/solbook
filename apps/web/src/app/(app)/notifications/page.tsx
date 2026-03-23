@@ -69,20 +69,20 @@ export default async function NotificationsPage() {
       <PageHeader title="alerts" showBack />
 
       {alerts.length === 0 ? (
-        <p className="text-[#888880] text-center py-12 text-sm">no alerts yet. when someone likes your posts or follows you, you'll see it here.</p>
+        <p className="text-[var(--color-muted)] text-center py-12 text-sm">no alerts yet. when someone likes your posts or follows you, you'll see it here.</p>
       ) : (
         <div>
           {alerts.map((alert) => (
-            <div key={alert.key} className="border-b border-[#333333] px-4 py-3 text-sm">
-              <Link href={`/${alert.username}`} className="text-[#ff6600] hover:underline">
+            <div key={alert.key} className="border-b border-[var(--color-border)] px-4 py-3 text-sm">
+              <Link href={`/${alert.username}`} className="text-[var(--color-accent)] hover:underline">
                 @{alert.username}
               </Link>
               {alert.kind === 'follow' ? (
-                <span className="text-[#888880]"> followed you</span>
+                <span className="text-[var(--color-muted)]"> followed you</span>
               ) : (
                 <>
-                  <span className="text-[#888880]"> liked · </span>
-                  <Link href={`/post/${alert.postId}`} className="text-[#888880] hover:text-[#ff6600] transition-colors">
+                  <span className="text-[var(--color-muted)]"> liked · </span>
+                  <Link href={`/post/${alert.postId}`} className="text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
                     {alert.postContent.slice(0, 60)}{alert.postContent.length > 60 ? '…' : ''}
                   </Link>
                 </>

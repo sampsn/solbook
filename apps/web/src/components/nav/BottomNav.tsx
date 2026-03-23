@@ -23,7 +23,7 @@ export function BottomNav({ username }: BottomNavProps) {
   const pathname = usePathname()
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[#333333] bg-[#1c1c1c] flex">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[var(--color-border)] bg-[var(--color-bg)] flex">
       {navItems(username).map(({ href, label }) => {
         const active = pathname === href || pathname.startsWith(href + '/')
         return (
@@ -31,7 +31,7 @@ export function BottomNav({ username }: BottomNavProps) {
             key={href}
             href={href}
             className="flex items-center justify-center flex-1 py-3 text-xs transition-colors"
-            style={{ color: active ? '#ff6600' : '#e8e6d9', fontWeight: active ? 'bold' : 'normal' }}
+            style={{ color: active ? 'var(--color-accent)' : 'var(--color-text)', fontWeight: active ? 'bold' : 'normal' }}
           >
             {bracketLabel(label, active)}
           </Link>

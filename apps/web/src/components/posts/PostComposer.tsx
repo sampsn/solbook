@@ -27,7 +27,7 @@ export function PostComposer() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border-b border-[#333333] px-4 py-3">
+    <form onSubmit={handleSubmit} className="border-b border-[var(--color-border)] px-4 py-3">
       <textarea
         ref={textareaRef}
         value={content}
@@ -35,18 +35,18 @@ export function PostComposer() {
         onPaste={(e) => e.preventDefault()}
         placeholder="what's on your mind?"
         rows={3}
-        className="w-full bg-transparent text-[#e8e6d9] placeholder:text-[#555550] resize-none focus:outline-none leading-relaxed"
+        className="w-full bg-transparent text-[var(--color-text)] placeholder:text-[var(--color-muted)] resize-none focus:outline-none leading-relaxed"
         style={{ fontSize: '16px' }}
       />
-      {error && <p className="text-red-400 text-xs mb-1">{error}</p>}
+      {error && <p className="text-[var(--color-danger)] text-xs mb-1">{error}</p>}
       <div className="flex items-center justify-between">
-        <span className={`text-xs ${overLimit ? 'text-red-400' : 'text-[#888880]'}`}>
+        <span className={`text-xs ${overLimit ? 'text-[var(--color-danger)]' : 'text-[var(--color-muted)]'}`}>
           {remaining}
         </span>
         <button
           type="submit"
           disabled={loading || !content.trim() || overLimit}
-          className="bg-[#ff6600] text-[#1c1c1c] text-xs font-bold px-4 py-1 disabled:opacity-40 hover:bg-[#ff7722] transition-colors"
+          className="bg-[var(--color-accent)] text-[var(--color-bg)] text-xs font-bold px-4 py-1 disabled:opacity-40 hover:bg-[var(--color-accent-hover)] transition-colors"
         >
           {loading ? 'posting…' : 'post'}
         </button>

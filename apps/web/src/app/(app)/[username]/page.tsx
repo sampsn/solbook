@@ -80,19 +80,19 @@ export default async function ProfilePage({ params }: Props) {
   return (
     <div className="max-w-xl mx-auto">
       <PageHeader title={`@${username}`} />
-      <div className="border-b border-[#333333] px-4 py-4">
+      <div className="border-b border-[var(--color-border)] px-4 py-4">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="font-bold text-[#e8e6d9]">{profile.display_name}</h1>
-            <p className="text-[#888880] text-sm">@{profile.username}</p>
-            {profile.bio && <p className="text-sm mt-2">{profile.bio}</p>}
-            <div className="flex gap-4 mt-3 text-xs text-[#888880]">
-              <span><span className="text-[#e8e6d9] font-bold">{followerCount ?? 0}</span> followers</span>
-              <span><span className="text-[#e8e6d9] font-bold">{followingCount ?? 0}</span> following</span>
+            <h1 className="font-bold text-[var(--color-text)]">{profile.display_name}</h1>
+            <p className="text-[var(--color-muted)] text-sm">@{profile.username}</p>
+            {profile.bio && <p className="text-sm mt-2 text-[var(--color-text)]">{profile.bio}</p>}
+            <div className="flex gap-4 mt-3 text-xs text-[var(--color-muted)]">
+              <span><span className="text-[var(--color-text)] font-bold">{followerCount ?? 0}</span> followers</span>
+              <span><span className="text-[var(--color-text)] font-bold">{followingCount ?? 0}</span> following</span>
             </div>
           </div>
           {isOwnProfile ? (
-            <Link href="/settings" className="text-xs text-[#888880] hover:text-[#ff6600] transition-colors">
+            <Link href="/settings" className="text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
               settings →
             </Link>
           ) : session && (
@@ -101,8 +101,8 @@ export default async function ProfilePage({ params }: Props) {
                 type="submit"
                 className={`text-xs px-3 py-1 border transition-colors ${
                   isFollowing
-                    ? 'border-[#333333] text-[#888880] hover:border-red-400 hover:text-red-400'
-                    : 'border-[#ff6600] text-[#ff6600] hover:bg-[#ff6600] hover:text-[#1c1c1c]'
+                    ? 'border-[var(--color-border)] text-[var(--color-muted)] hover:border-[var(--color-danger)] hover:text-[var(--color-danger)]'
+                    : 'border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)]'
                 }`}
               >
                 {isFollowing ? 'unfollow' : 'follow'}
@@ -113,7 +113,7 @@ export default async function ProfilePage({ params }: Props) {
       </div>
 
       {feed.length === 0 ? (
-        <p className="text-[#888880] text-center py-12 text-sm">no posts yet.</p>
+        <p className="text-[var(--color-muted)] text-center py-12 text-sm">no posts yet.</p>
       ) : (
         feed.map((post) => <PostCard key={post.id} {...post} />)
       )}

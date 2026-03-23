@@ -18,13 +18,13 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe 
   const timeAgo = formatTimeAgo(createdAt)
 
   return (
-    <article className="border-b border-[#333333] px-4 py-3 hover:bg-[#222222] transition-colors">
-      <div className="text-xs text-[#888880] mb-1">
-        <Link href={`/${author.username}`} className="font-bold text-[#e8e6d9] hover:text-[#ff6600] transition-colors">
+    <article className="border-b border-[var(--color-border)] px-4 py-3 hover:bg-[var(--color-surface)] transition-colors">
+      <div className="text-xs text-[var(--color-muted)] mb-1">
+        <Link href={`/${author.username}`} className="font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
           {author.displayName}
         </Link>
         {' '}
-        <Link href={`/${author.username}`} className="hover:text-[#ff6600] transition-colors">
+        <Link href={`/${author.username}`} className="hover:text-[var(--color-accent)] transition-colors">
           (@{author.username})
         </Link>
         {' · '}
@@ -32,7 +32,7 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe 
       </div>
 
       <Link href={`/post/${id}`}>
-        <p className="text-sm text-[#e8e6d9] leading-relaxed whitespace-pre-wrap break-words">
+        <p className="text-sm text-[var(--color-text)] leading-relaxed whitespace-pre-wrap break-words">
           {content}
         </p>
       </Link>
@@ -41,7 +41,7 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe 
         <button
           type="submit"
           className={`text-xs transition-colors ${
-            likedByMe ? 'text-[#ff6600]' : 'text-[#888880] hover:text-[#ff6600]'
+            likedByMe ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)] hover:text-[var(--color-accent)]'
           }`}
         >
           {likedByMe ? '▲' : '△'} {likeCount > 0 ? likeCount : 'like'}
