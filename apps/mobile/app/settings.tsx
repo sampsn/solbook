@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Alert, ScrollView, ActivityIndicator,
+  StyleSheet, Alert, ScrollView, ActivityIndicator, Linking,
 } from 'react-native'
 import { router } from 'expo-router'
 import { supabase } from '@/lib/supabase'
@@ -39,6 +39,8 @@ export default function SettingsScreen() {
     signOutButton: { borderWidth: 1, borderColor: colors.border, paddingVertical: 8, paddingHorizontal: 16, alignSelf: 'flex-start' },
     signOutText: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
     hintText: { fontFamily: font.regular, fontSize: 13, color: colors.muted, marginTop: 4 },
+    contributeSection: { paddingHorizontal: 16, paddingVertical: 16 },
+    contributeLink: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
   }), [colors])
 
   useEffect(() => {
@@ -134,6 +136,12 @@ export default function SettingsScreen() {
             <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
               <Text style={styles.signOutText}>sign out</Text>
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.contributeSection}>
+            <Text style={styles.contributeLink} onPress={() => Linking.openURL('https://github.com/sampsn/solbook')}>
+              contribute to the project →
+            </Text>
           </View>
         </ScrollView>
       )}

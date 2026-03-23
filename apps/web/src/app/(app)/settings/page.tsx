@@ -60,7 +60,7 @@ export default async function SettingsPage() {
         <ThemeToggle initialTheme={(profile?.theme ?? 'system') as 'system' | 'dark' | 'light'} />
       </div>
 
-      <div className="px-4 py-4">
+      <div className="border-b border-[var(--color-border)] px-4 py-4">
         <h2 className="text-xs text-[var(--color-accent-alt)] uppercase tracking-wide mb-3">account</h2>
         <p className="text-xs text-[var(--color-accent-alt)] mb-3">@{profile?.username}</p>
         <form action={logout}>
@@ -71,6 +71,17 @@ export default async function SettingsPage() {
             sign out
           </button>
         </form>
+      </div>
+
+      <div className="px-4 py-4">
+        <a
+          href="https://github.com/sampsn/solbook"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors"
+        >
+          contribute to the project →
+        </a>
       </div>
     </div>
   )
