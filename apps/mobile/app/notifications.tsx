@@ -21,7 +21,7 @@ export default function NotificationsScreen() {
     centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
     itemText: { fontFamily: font.regular, fontSize: 16, lineHeight: 24 },
-    accent: { color: colors.accent },
+    accent: { color: colors.accentAlt },
     muted: { color: colors.muted },
     empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
   }), [colors])

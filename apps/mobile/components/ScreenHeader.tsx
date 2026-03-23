@@ -50,7 +50,7 @@ export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
       backgroundColor: colors.bg,
     },
     backBtn: { minWidth: 48 },
-    back: { fontFamily: font.regular, fontSize: 15, color: colors.muted },
+    back: { fontFamily: font.regular, fontSize: 15, color: colors.textStrong },
     title: { fontFamily: font.bold, fontSize: 20, color: colors.accent },
     bellBtn: { padding: 4 },
     placeholder: { minWidth: 48 },

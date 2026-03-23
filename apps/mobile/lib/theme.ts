@@ -2,6 +2,7 @@ const sharedColors = {
   accent: '#cb4b16',
   accentHover: '#d45d1e',
   accentAlt: '#b58900',
+  heading: '#2aa198',
   brand: '#ff7700',
   danger: '#dc322f',
 }
@@ -11,8 +12,9 @@ export const darkColors = {
   bg: '#052327',
   surface: '#0b2b2e',
   border: '#586e75',
-  text: '#839496',
-  muted: '#657b83',
+  text: '#93a1a1',
+  textStrong: '#eee8d5',
+  muted: '#839496',
 }
 
 export const lightColors = {
@@ -20,8 +22,9 @@ export const lightColors = {
   bg: '#fdf3d8',
   surface: '#ede8d0',
   border: '#93a1a1',
-  text: '#657b83',
-  muted: '#839496',
+  text: '#586e75',
+  textStrong: '#073642',
+  muted: '#657b83',
 }
 
 // Convenience type for resolved colors object

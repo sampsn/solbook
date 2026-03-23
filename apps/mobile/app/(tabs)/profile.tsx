@@ -28,13 +28,13 @@ export default function OwnProfileScreen() {
     profileHeader: { borderBottomWidth: 1, borderBottomColor: colors.border, padding: 16 },
     profileTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
     profileInfo: { flex: 1 },
-    displayName: { fontFamily: font.bold, fontSize: 18, color: colors.text },
-    usernameText: { fontFamily: font.regular, fontSize: 15, color: colors.muted, marginTop: 2 },
+    displayName: { fontFamily: font.bold, fontSize: 18, color: colors.textStrong },
+    usernameText: { fontFamily: font.regular, fontSize: 15, color: colors.accentAlt, marginTop: 2 },
     bio: { fontFamily: font.regular, fontSize: 15, color: colors.text, marginTop: 8 },
     counts: { flexDirection: 'row', gap: 16, marginTop: 12 },
     count: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
     countNum: { fontFamily: font.bold, color: colors.text },
-    settingsLink: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
+    settingsLink: { fontFamily: font.regular, fontSize: 14, color: colors.textStrong },
     empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
   }), [colors])
 

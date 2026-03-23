@@ -27,7 +27,7 @@ export function PostComposer({ onPosted }: Props) {
     input: {
       fontFamily: font.regular,
       fontSize: 16,
-      color: colors.text,
+      color: colors.textStrong,
       lineHeight: 24,
       minHeight: 60,
       marginBottom: 8,
