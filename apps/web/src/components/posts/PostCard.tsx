@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { toggleLike } from '@/actions/posts'
 
 interface PostCardProps {
@@ -11,36 +14,48 @@ interface PostCardProps {
   }
   likeCount: number
   likedByMe: boolean
+  disableLink?: boolean
 }
 
-export function PostCard({ id, content, createdAt, author, likeCount, likedByMe }: PostCardProps) {
+export function PostCard({ id, content, createdAt, author, likeCount, likedByMe, disableLink }: PostCardProps) {
+  const router = useRouter()
   const toggleLikeForPost = toggleLike.bind(null, id)
   const timeAgo = formatTimeAgo(createdAt)
 
   return (
-    <article className="border-b border-[var(--color-border)] px-4 py-3 hover:bg-[var(--color-surface)] transition-colors">
+    <article
+      className={`border-b border-[var(--color-border)] px-4 py-3 hover:bg-[var(--color-surface)] transition-colors ${disableLink ? '' : 'cursor-pointer'}`}
+      onClick={disableLink ? undefined : () => router.push(`/post/${id}`)}
+    >
       <div className="text-xs text-[var(--color-muted)] mb-1">
-        <Link href={`/${author.username}`} className="font-bold hover:text-[var(--color-accent)] transition-colors" style={{ color: 'var(--color-heading)' }}>
+        <Link
+          href={`/${author.username}`}
+          className="font-bold hover:text-[var(--color-accent)] transition-colors"
+          style={{ color: 'var(--color-heading)' }}
+          onClick={(e) => e.stopPropagation()}
+        >
           {author.displayName}
         </Link>
         {' '}
-        <Link href={`/${author.username}`} className="hover:text-[var(--color-accent)] transition-colors">
+        <Link
+          href={`/${author.username}`}
+          className="hover:text-[var(--color-accent)] transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
           (@{author.username})
         </Link>
         {' · '}
         <span>{timeAgo}</span>
       </div>
 
-      <Link href={`/post/${id}`}>
-        <p className="text-sm leading-relaxed whitespace-pre-wrap break-words" style={{ color: 'var(--color-text-strong)' }}>
-          {content}
-        </p>
-      </Link>
+      <p className="text-sm leading-relaxed whitespace-pre-wrap break-words mb-2" style={{ color: 'var(--color-text-strong)' }}>
+        {content}
+      </p>
 
-      <form action={toggleLikeForPost} className="mt-2">
+      <form action={toggleLikeForPost} className="w-fit" onClick={(e) => e.stopPropagation()}>
         <button
           type="submit"
-          className={`text-xs transition-colors ${
+          className={`text-xs transition-colors cursor-pointer p-2 -m-2 ${
             likedByMe ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)] hover:text-[var(--color-accent)]'
           }`}
         >

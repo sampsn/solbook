@@ -50,6 +50,7 @@ export default async function PostPage({ params }: Props) {
         }}
         likeCount={likes.length}
         likedByMe={likes.some((l: { user_id: string }) => l.user_id === session?.userId)}
+        disableLink
       />
     </div>
   )
