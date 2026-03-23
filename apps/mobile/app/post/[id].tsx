@@ -1,14 +1,14 @@
+// apps/mobile/app/post/[id].tsx
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { colors } from '@/lib/theme'
 import { PostCard } from '@/components/PostCard'
+import { ScreenHeader } from '@/components/ScreenHeader'
 import { FeedPost } from '@/lib/api'
 
 export default function PostDetailScreen() {
-  const insets = useSafeAreaInsets()
   const { id } = useLocalSearchParams<{ id: string }>()
   const [post, setPost] = useState<FeedPost | null>(null)
   const [loading, setLoading] = useState(true)
@@ -46,25 +46,19 @@ export default function PostDetailScreen() {
     load()
   }, [id])
 
-  if (loading) {
-    return <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
-  }
-
   return (
     <View style={styles.container}>
-      <View style={[styles.navBar, { paddingTop: insets.top + 12 }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.back}>← back</Text>
-        </TouchableOpacity>
-      </View>
-      {post && <PostCard {...post} />}
+      <ScreenHeader title="post" showBack />
+      {loading ? (
+        <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
+      ) : (
+        post && <PostCard {...post} />
+      )}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
-  navBar: { paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
-  back: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 })
