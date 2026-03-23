@@ -13,10 +13,9 @@ function bracketLabel(label: string, focused: boolean) {
 function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   return (
     <Text style={{
-      fontFamily: font.regular,
-      fontSize: 11,
+      fontFamily: focused ? font.bold : font.regular,
+      fontSize: 13,
       color: focused ? colors.accent : colors.muted,
-      fontWeight: focused ? 'bold' : 'normal',
     }}>
       {bracketLabel(label, focused)}
     </Text>
@@ -47,6 +46,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarIcon: () => null,
         tabBarShowIcon: false,
+        tabBarItemStyle: { justifyContent: 'center', alignItems: 'center' },
         tabBarStyle: {
           backgroundColor: colors.bg,
           borderTopColor: colors.border,
