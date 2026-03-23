@@ -4,6 +4,7 @@ import { getSession } from '@/lib/auth'
 import { TopNav } from '@/components/nav/TopNav'
 import { BottomNav } from '@/components/nav/BottomNav'
 import { AlertsProvider } from '@/components/nav/AlertsContext'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 async function getSessionProfile() {
   const session = await getSession()
@@ -12,7 +13,7 @@ async function getSessionProfile() {
   const supabase = createServerClient()
   const { data } = await supabase
     .from('profiles')
-    .select('username, alerts_last_seen_at')
+    .select('username, alerts_last_seen_at, theme')
     .eq('id', session.userId)
     .single()
 
@@ -43,6 +44,7 @@ async function getSessionProfile() {
   return {
     username: data.username,
     hasUnseenAlerts: (recentLike ?? []).length > 0 || (recentFollow ?? []).length > 0,
+    theme: (data.theme ?? 'system') as 'system' | 'dark' | 'light',
   }
 }
 
@@ -51,12 +53,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (!profile) redirect('/login')
 
   return (
-    <AlertsProvider hasUnseenAlerts={profile.hasUnseenAlerts}>
-      <div className="flex flex-col min-h-screen">
-        <TopNav username={profile.username} />
-        <main className="flex-1 min-w-0 pb-16 md:pb-0">{children}</main>
-        <BottomNav username={profile.username} />
-      </div>
-    </AlertsProvider>
+    <ThemeProvider initialTheme={profile.theme}>
+      <AlertsProvider hasUnseenAlerts={profile.hasUnseenAlerts}>
+        <div className="flex flex-col min-h-screen">
+          <TopNav username={profile.username} />
+          <main className="flex-1 min-w-0 pb-16 md:pb-0">{children}</main>
+          <BottomNav username={profile.username} />
+        </div>
+      </AlertsProvider>
+    </ThemeProvider>
   )
 }

@@ -20,6 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <meta name="robots" content="noai, noimageai, noindex, noarchive, nositelinkssearchbox" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var h=localStorage.getItem('solbook-theme-hint');if(h==='dark'||h==='light')document.documentElement.setAttribute('data-theme',h)}catch(_){}`,
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>

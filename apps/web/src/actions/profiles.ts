@@ -50,3 +50,12 @@ export async function updateProfile(formData: FormData): Promise<void> {
 
   revalidatePath('/settings')
 }
+
+export async function updateTheme(theme: 'system' | 'dark' | 'light'): Promise<void> {
+  const session = await requireSession()
+  const supabase = createServerClient()
+  await supabase
+    .from('profiles')
+    .update({ theme })
+    .eq('id', session.userId)
+}
