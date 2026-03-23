@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   backBtn: { minWidth: 48 },
   back: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
-  title: { fontFamily: font.bold, fontSize: 14, color: colors.accent },
+  title: { fontFamily: font.bold, fontSize: 16, color: colors.accent },
   bellBtn: { padding: 4 },
   placeholder: { minWidth: 48 },
 })

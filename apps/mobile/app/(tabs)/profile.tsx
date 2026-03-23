@@ -61,7 +61,7 @@ export default function OwnProfileScreen() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ScreenHeader title={username ? `@${username}` : '@me'} />
+        <ScreenHeader title={username ? `@${username}` : '@me'} showBell />
         <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
       </View>
     )
@@ -71,7 +71,7 @@ export default function OwnProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title={`@${profile.username}`} />
+      <ScreenHeader title={`@${profile.username}`} showBell />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
