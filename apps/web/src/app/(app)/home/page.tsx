@@ -25,9 +25,9 @@ export default async function HomePage({ searchParams }: Props) {
     .select('following_id')
     .eq('follower_id', session.userId)
 
-  const followingIds = (follows ?? []).map((f) => f.following_id)
+  const followingIds = [session.userId, ...(follows ?? []).map((f) => f.following_id)]
 
-  let query = supabase
+  const query = supabase
     .from('posts')
     .select(`
       id,
@@ -36,13 +36,10 @@ export default async function HomePage({ searchParams }: Props) {
       profiles!posts_user_id_fkey ( username, display_name ),
       likes ( id, user_id )
     `)
+    .in('user_id', followingIds)
     .order('created_at', { ascending: false })
     .order('id', { ascending: false })
     .limit(PAGE_SIZE + 1)
-
-  if (followingIds.length > 0) {
-    query = query.in('user_id', followingIds)
-  }
 
   if (cursor) {
     const [cursorCreatedAt] = Buffer.from(cursor, 'base64url').toString().split('|')
@@ -80,14 +77,9 @@ export default async function HomePage({ searchParams }: Props) {
     <div className="max-w-xl mx-auto">
       <PageHeader title="home" />
       <PostComposer />
-      {followingIds.length === 0 && (
-        <p className="text-[#888880] text-xs px-4 py-2 border-b border-[#333333]">
-          follow people to see their posts here · showing all posts for now
-        </p>
-      )}
       {feed.length === 0 ? (
         <p className="text-[#888880] text-center py-12 text-sm">
-          {followingIds.length > 0 ? 'no posts from people you follow yet.' : 'no posts yet. be the first!'}
+          no posts yet. follow people to see their posts here.
         </p>
       ) : (
         <>
