@@ -24,7 +24,12 @@ export default function DiscoverScreen() {
   function onRefresh() { setRefreshing(true); load() }
 
   if (loading) {
-    return <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
+    return (
+      <View style={styles.container}>
+        <ScreenHeader title="discover" showBell />
+        <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
+      </View>
+    )
   }
 
   return (

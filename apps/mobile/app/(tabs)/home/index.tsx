@@ -45,8 +45,9 @@ export default function HomeScreen() {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={colors.accent} />
+      <View style={styles.container}>
+        <ScreenHeader title="home" showBell />
+        <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
       </View>
     )
   }
