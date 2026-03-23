@@ -1,16 +1,44 @@
+// apps/mobile/app/(tabs)/_layout.tsx
+import { useEffect, useState } from 'react'
 import { Tabs } from 'expo-router'
 import { Text } from 'react-native'
+import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
+
+function bracketLabel(label: string, focused: boolean) {
+  return focused ? `[${label}]` : label
+}
 
 function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   return (
-    <Text style={{ fontFamily: font.regular, fontSize: 10, color: focused ? colors.accent : colors.muted }}>
-      {label}
+    <Text style={{
+      fontFamily: font.regular,
+      fontSize: 10,
+      color: focused ? colors.accent : colors.muted,
+      fontWeight: focused ? 'bold' : 'normal',
+    }}>
+      {bracketLabel(label, focused)}
     </Text>
   )
 }
 
 export default function TabsLayout() {
+  const [username, setUsername] = useState('@me')
+
+  useEffect(() => {
+    async function loadUsername() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single()
+      if (profile?.username) setUsername(`@${profile.username}`)
+    }
+    loadUsername()
+  }, [])
+
   return (
     <Tabs
       screenOptions={{
@@ -34,16 +62,8 @@ export default function TabsLayout() {
         options={{ tabBarLabel: ({ focused }) => <TabLabel label="discover" focused={focused} /> }}
       />
       <Tabs.Screen
-        name="compose"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label="new" focused={focused} /> }}
-      />
-      <Tabs.Screen
-        name="notifications"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label="alerts" focused={focused} /> }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label="settings" focused={focused} /> }}
+        name="profile"
+        options={{ tabBarLabel: ({ focused }) => <TabLabel label={username} focused={focused} /> }}
       />
     </Tabs>
   )
