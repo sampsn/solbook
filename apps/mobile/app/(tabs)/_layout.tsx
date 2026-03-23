@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Tabs } from 'expo-router'
 import { Text } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
 
@@ -13,7 +14,7 @@ function TabLabel({ label, focused }: { label: string; focused: boolean }) {
   return (
     <Text style={{
       fontFamily: font.regular,
-      fontSize: 10,
+      fontSize: 11,
       color: focused ? colors.accent : colors.muted,
       fontWeight: focused ? 'bold' : 'normal',
     }}>
@@ -24,6 +25,7 @@ function TabLabel({ label, focused }: { label: string; focused: boolean }) {
 
 export default function TabsLayout() {
   const [username, setUsername] = useState('@me')
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     async function loadUsername() {
@@ -43,14 +45,16 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarIcon: () => null,
+        tabBarShowIcon: false,
         tabBarStyle: {
           backgroundColor: colors.bg,
           borderTopColor: colors.border,
           borderTopWidth: 1,
-          height: 56,
-          paddingBottom: 8,
+          height: 52 + insets.bottom,
+          paddingBottom: insets.bottom,
+          paddingTop: 10,
         },
-        tabBarShowIcon: false,
       }}
     >
       <Tabs.Screen

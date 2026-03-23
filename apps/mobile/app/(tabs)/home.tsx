@@ -1,4 +1,4 @@
-// apps/mobile/app/(tabs)/home/index.tsx
+// apps/mobile/app/(tabs)/home.tsx
 import React, { useCallback, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { useFocusEffect } from 'expo-router'
