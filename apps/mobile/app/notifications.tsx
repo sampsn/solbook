@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
-  itemText: { fontFamily: font.regular, fontSize: 14, lineHeight: 20 },
+  itemText: { fontFamily: font.regular, fontSize: 16, lineHeight: 24 },
   accent: { color: colors.accent },
   muted: { color: colors.muted },
-  empty: { fontFamily: font.regular, fontSize: 14, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
+  empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
 })

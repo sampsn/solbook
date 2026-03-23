@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   centered: { flex: 1, backgroundColor: colors.bg, justifyContent: 'center', alignItems: 'center' },
   hint: { paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: colors.border },
-  hintText: { fontFamily: font.regular, fontSize: 11, color: colors.muted },
-  empty: { fontFamily: font.regular, fontSize: 14, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
+  hintText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
+  empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
   loadMore: { paddingHorizontal: 16, paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border },
-  loadMoreText: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
+  loadMoreText: { fontFamily: font.regular, fontSize: 16, color: colors.muted },
 })

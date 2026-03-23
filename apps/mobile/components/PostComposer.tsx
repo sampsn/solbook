@@ -71,9 +71,9 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: font.regular,
-    fontSize: 14,
+    fontSize: 16,
     color: colors.text,
-    lineHeight: 22,
+    lineHeight: 24,
     minHeight: 60,
     marginBottom: 8,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   counter: {
     fontFamily: font.regular,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.muted,
   },
   counterOver: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: font.bold,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.bg,
   },
 })

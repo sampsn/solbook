@@ -41,7 +41,7 @@ function CustomTabBar({ state, navigation, username }: BottomTabBarProps & { use
           >
             <Text style={{
               fontFamily: focused ? font.bold : font.regular,
-              fontSize: 15,
+              fontSize: 16,
               color: focused ? colors.accent : colors.muted,
             }}>
               {displayLabel}

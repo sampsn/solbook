@@ -76,29 +76,29 @@ const styles = StyleSheet.create({
   },
   displayName: {
     fontFamily: font.bold,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.text,
   },
   username: {
     fontFamily: font.regular,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.muted,
   },
   separator: {
     fontFamily: font.regular,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.muted,
   },
   time: {
     fontFamily: font.regular,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.muted,
   },
   content: {
     fontFamily: font.regular,
-    fontSize: 14,
+    fontSize: 16,
     color: colors.text,
-    lineHeight: 22,
+    lineHeight: 24,
     marginBottom: 8,
   },
   likeRow: {
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   likeBtn: {
     fontFamily: font.regular,
-    fontSize: 12,
+    fontSize: 14,
     color: colors.muted,
   },
   likeBtnActive: {
