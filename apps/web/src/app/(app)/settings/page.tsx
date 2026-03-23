@@ -4,6 +4,7 @@ import { requireSession } from '@/lib/auth'
 import { logout } from '@/actions/auth'
 import { updateProfile } from '@/actions/profiles'
 import { PageHeader } from '@/components/nav/PageHeader'
+import { ThemeToggle } from '@/components/settings/ThemeToggle'
 
 export const metadata: Metadata = { title: 'Settings' }
 
@@ -13,7 +14,7 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('username, display_name, bio')
+    .select('username, display_name, bio, theme')
     .eq('id', session.userId)
     .single()
 
@@ -52,6 +53,11 @@ export default async function SettingsPage() {
             save changes
           </button>
         </form>
+      </div>
+
+      <div className="border-b border-[#333333] px-4 py-4">
+        <h2 className="text-xs text-[#888880] uppercase tracking-wide mb-3">appearance</h2>
+        <ThemeToggle initialTheme={(profile?.theme ?? 'system') as 'system' | 'dark' | 'light'} />
       </div>
 
       <div className="px-4 py-4">
