@@ -1,17 +1,23 @@
 // apps/mobile/app/post/[id].tsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
 import { PostCard } from '@/components/PostCard'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { FeedPost } from '@/lib/api'
 
 export default function PostDetailScreen() {
+  const { colors } = useTheme()
   const { id } = useLocalSearchParams<{ id: string }>()
   const [post, setPost] = useState<FeedPost | null>(null)
   const [loading, setLoading] = useState(true)
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.bg },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  }), [colors])
 
   useEffect(() => {
     async function load() {
@@ -57,8 +63,3 @@ export default function PostDetailScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-})

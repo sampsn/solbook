@@ -1,18 +1,30 @@
 // apps/mobile/app/notifications.tsx
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { View, Text, FlatList, RefreshControl, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { router, useFocusEffect } from 'expo-router'
 import { supabase } from '@/lib/supabase'
-import { colors, font } from '@/lib/theme'
+import { useTheme } from '@/lib/ThemeContext'
+import { font } from '@/lib/theme'
 import { getNotifications, Notification } from '@/lib/api'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { useRefreshAlerts } from '@/components/AlertsContext'
 
 export default function NotificationsScreen() {
+  const { colors } = useTheme()
   const [items, setItems] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const refreshAlerts = useRefreshAlerts()
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.bg },
+    centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
+    itemText: { fontFamily: font.regular, fontSize: 16, lineHeight: 24 },
+    accent: { color: colors.accent },
+    muted: { color: colors.muted },
+    empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
+  }), [colors])
 
   async function load() {
     try {
@@ -81,13 +93,3 @@ export default function NotificationsScreen() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
-  itemText: { fontFamily: font.regular, fontSize: 16, lineHeight: 24 },
-  accent: { color: colors.accent },
-  muted: { color: colors.muted },
-  empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
-})
