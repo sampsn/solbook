@@ -51,6 +51,7 @@ export default function SignupPage() {
               required
               placeholder="Your name"
               className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+          style={{ fontSize: '16px' }}
             />
           </div>
           <div className="space-y-1">
@@ -66,6 +67,7 @@ export default function SignupPage() {
                 required
                 placeholder="username"
                 className="flex-1 bg-transparent px-0 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none"
+                style={{ fontSize: '16px' }}
               />
             </div>
           </div>
@@ -78,6 +80,7 @@ export default function SignupPage() {
               required
               placeholder="you@example.com"
               className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+          style={{ fontSize: '16px' }}
             />
           </div>
           <div className="space-y-1">
@@ -90,6 +93,7 @@ export default function SignupPage() {
               required
               placeholder="Min. 6 characters"
               className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+          style={{ fontSize: '16px' }}
             />
           </div>
 

@@ -32,6 +32,7 @@ export default function LoginForm() {
           required
           placeholder="you@example.com"
           className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+          style={{ fontSize: '16px' }}
         />
       </div>
       <div className="space-y-1">
@@ -43,6 +44,7 @@ export default function LoginForm() {
           required
           placeholder="••••••••"
           className="w-full bg-[#242424] border border-[#333333] px-3 py-2 text-sm text-[#e8e6d9] placeholder:text-[#555550] focus:outline-none focus:border-[#ff6600]"
+          style={{ fontSize: '16px' }}
         />
       </div>
       {error && <p className="text-red-400 text-sm">{error}</p>}
