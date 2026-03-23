@@ -19,7 +19,7 @@ export default function SettingsScreen() {
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      if (!user) { router.replace('/(auth)/login'); return }
       const { data } = await supabase
         .from('profiles')
         .select('username, display_name, bio')
