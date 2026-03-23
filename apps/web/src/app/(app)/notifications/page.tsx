@@ -12,6 +12,12 @@ export default async function NotificationsPage() {
   const session = await requireSession()
   const supabase = createServerClient()
 
+  // Mark alerts as seen
+  await supabase
+    .from('profiles')
+    .update({ alerts_last_seen_at: new Date().toISOString() })
+    .eq('id', session.userId)
+
   // Likes on my posts in the last 7 days
   const { data: likes } = await supabase
     .from('likes')
