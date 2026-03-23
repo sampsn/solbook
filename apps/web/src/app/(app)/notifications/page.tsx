@@ -46,44 +46,49 @@ export default async function NotificationsPage() {
     .order('created_at', { ascending: false })
     .limit(20)
 
-  const hasNotifications = (likes ?? []).length > 0 || (newFollowers ?? []).length > 0
+  type AlertItem =
+    | { kind: 'follow'; createdAt: string; username: string; key: string }
+    | { kind: 'like'; createdAt: string; username: string; postId: string; postContent: string; key: string }
+
+  const alerts: AlertItem[] = [
+    ...(newFollowers ?? []).map((f: any) => {
+      const p = Array.isArray(f.profiles) ? f.profiles[0] : f.profiles
+      return { kind: 'follow' as const, createdAt: f.created_at, username: p?.username ?? '', key: `follow-${f.created_at}` }
+    }),
+    ...(likes ?? []).flatMap((l: any) => {
+      const post = Array.isArray(l.posts) ? l.posts[0] : l.posts
+      const p = Array.isArray(l.profiles) ? l.profiles[0] : l.profiles
+      if (!post || !p) return []
+      return [{ kind: 'like' as const, createdAt: l.created_at, username: p.username, postId: post.id, postContent: post.content, key: l.id }]
+    }),
+  ].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
   return (
     <div className="max-w-xl mx-auto">
       <MarkAlertsSeen />
       <PageHeader title="alerts" showBack />
 
-      {!hasNotifications ? (
+      {alerts.length === 0 ? (
         <p className="text-[#888880] text-center py-12 text-sm">no alerts yet. when someone likes your posts or follows you, you'll see it here.</p>
       ) : (
         <div>
-          {(newFollowers ?? []).map((f: any) => {
-            const p = Array.isArray(f.profiles) ? f.profiles[0] : f.profiles
-            return (
-              <div key={`follow-${f.created_at}`} className="border-b border-[#333333] px-4 py-3 text-sm">
-                <Link href={`/${p?.username}`} className="text-[#ff6600] hover:underline">
-                  @{p?.username}
-                </Link>
+          {alerts.map((alert) => (
+            <div key={alert.key} className="border-b border-[#333333] px-4 py-3 text-sm">
+              <Link href={`/${alert.username}`} className="text-[#ff6600] hover:underline">
+                @{alert.username}
+              </Link>
+              {alert.kind === 'follow' ? (
                 <span className="text-[#888880]"> followed you</span>
-              </div>
-            )
-          })}
-          {(likes ?? []).map((l: any) => {
-            const post = Array.isArray(l.posts) ? l.posts[0] : l.posts
-            const p = Array.isArray(l.profiles) ? l.profiles[0] : l.profiles
-            if (!post || !p) return null
-            return (
-              <div key={l.id} className="border-b border-[#333333] px-4 py-3 text-sm">
-                <Link href={`/${p.username}`} className="text-[#ff6600] hover:underline">
-                  @{p.username}
-                </Link>
-                <span className="text-[#888880]"> liked · </span>
-                <Link href={`/post/${post.id}`} className="text-[#888880] hover:text-[#ff6600] transition-colors">
-                  {post.content.slice(0, 60)}{post.content.length > 60 ? '…' : ''}
-                </Link>
-              </div>
-            )
-          })}
+              ) : (
+                <>
+                  <span className="text-[#888880]"> liked · </span>
+                  <Link href={`/post/${alert.postId}`} className="text-[#888880] hover:text-[#ff6600] transition-colors">
+                    {alert.postContent.slice(0, 60)}{alert.postContent.length > 60 ? '…' : ''}
+                  </Link>
+                </>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>
