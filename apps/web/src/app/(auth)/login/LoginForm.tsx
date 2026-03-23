@@ -24,34 +24,35 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1">
-        <label className="text-sm font-medium text-[var(--color-text)]">Email</label>
+        <label className="text-sm font-medium" style={{ color: 'var(--color-text-strong)' }}>Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="you@example.com"
-          className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
-          style={{ fontSize: '16px' }}
+          className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
+          style={{ color: 'var(--color-text-strong)', fontSize: '16px' }}
         />
       </div>
       <div className="space-y-1">
-        <label className="text-sm font-medium text-[var(--color-text)]">Password</label>
+        <label className="text-sm font-medium" style={{ color: 'var(--color-text-strong)' }}>Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
           placeholder="••••••••"
-          className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm text-[var(--color-text)] placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
-          style={{ fontSize: '16px' }}
+          className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
+          style={{ color: 'var(--color-text-strong)', fontSize: '16px' }}
         />
       </div>
       {error && <p className="text-[var(--color-danger)] text-sm">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[var(--color-brand)] text-[var(--color-bg)] py-2 text-sm font-bold disabled:opacity-40 hover:opacity-90 transition-opacity"
+        className="w-full bg-[var(--color-brand)] py-2 text-sm font-bold disabled:opacity-40 hover:opacity-90 transition-opacity"
+        style={{ color: '#073642' }}
       >
         {loading ? 'Signing in…' : 'Sign in'}
       </button>

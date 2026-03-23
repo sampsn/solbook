@@ -9,7 +9,7 @@ export default function LoginPage() {
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="max-w-sm w-full space-y-6">
         <div className="text-center space-y-1">
-          <h1 className="text-2xl font-bold">Sign in to solbook</h1>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-strong)' }}>Sign in to solbook</h1>
           <p className="text-[var(--color-muted)] text-sm">Sign in with your email and password.</p>
         </div>
         <LoginForm />

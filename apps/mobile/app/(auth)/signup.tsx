@@ -34,7 +34,7 @@ export default function SignupScreen() {
     usernameInput: { flex: 1, borderWidth: 0, backgroundColor: 'transparent' },
     button: { backgroundColor: colors.brand, paddingVertical: 12, alignItems: 'center', marginTop: 4 },
     buttonDisabled: { opacity: 0.4 },
-    buttonText: { fontFamily: font.bold, fontSize: 14, color: colors.bg },
+    buttonText: { fontFamily: font.bold, fontSize: 14, color: '#073642' },
     link: { alignSelf: 'center' },
     linkText: { fontFamily: font.regular, fontSize: 13, color: colors.muted },
     linkAccent: { color: colors.accent },
