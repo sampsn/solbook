@@ -15,20 +15,23 @@ export default function NotificationsScreen() {
   const refreshAlerts = useRefreshAlerts()
 
   async function load() {
-    const data = await getNotifications()
-    setItems(data)
-    setLoading(false)
-    setRefreshing(false)
+    try {
+      const data = await getNotifications()
+      setItems(data)
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
   }
 
   async function markSeen() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
-    await supabase
+    const { error } = await supabase
       .from('profiles')
       .update({ alerts_last_seen_at: new Date().toISOString() })
       .eq('id', user.id)
-    refreshAlerts()
+    if (!error) refreshAlerts()
   }
 
   useEffect(() => {
