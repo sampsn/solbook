@@ -1,30 +1,60 @@
 // apps/mobile/app/(tabs)/_layout.tsx
 import { useEffect, useState } from 'react'
 import { Tabs } from 'expo-router'
-import { Text } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { supabase } from '@/lib/supabase'
 import { colors, font } from '@/lib/theme'
 
-function bracketLabel(label: string, focused: boolean) {
-  return focused ? `[${label}]` : label
-}
+function CustomTabBar({ state, navigation, username }: BottomTabBarProps & { username: string }) {
+  const insets = useSafeAreaInsets()
 
-function TabLabel({ label, focused }: { label: string; focused: boolean }) {
+  function getLabel(routeName: string) {
+    if (routeName === 'profile') return username
+    return routeName
+  }
+
   return (
-    <Text style={{
-      fontFamily: focused ? font.bold : font.regular,
-      fontSize: 13,
-      color: focused ? colors.accent : colors.muted,
+    <View style={{
+      flexDirection: 'row',
+      backgroundColor: colors.bg,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      height: 52 + insets.bottom,
+      paddingBottom: insets.bottom,
     }}>
-      {bracketLabel(label, focused)}
-    </Text>
+      {state.routes.map((route, index) => {
+        const focused = state.index === index
+        const label = getLabel(route.name)
+        const displayLabel = focused ? `[${label}]` : label
+
+        return (
+          <Pressable
+            key={route.key}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            onPress={() => {
+              const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true })
+              if (!focused && !event.defaultPrevented) navigation.navigate(route.name)
+            }}
+            onLongPress={() => navigation.emit({ type: 'tabLongPress', target: route.key })}
+          >
+            <Text style={{
+              fontFamily: focused ? font.bold : font.regular,
+              fontSize: 14,
+              color: focused ? colors.accent : colors.muted,
+            }}>
+              {displayLabel}
+            </Text>
+          </Pressable>
+        )
+      })}
+    </View>
   )
 }
 
 export default function TabsLayout() {
   const [username, setUsername] = useState('@me')
-  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     async function loadUsername() {
@@ -42,33 +72,12 @@ export default function TabsLayout() {
 
   return (
     <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarIcon: () => null,
-        tabBarShowIcon: false,
-        tabBarItemStyle: { justifyContent: 'center', alignItems: 'center' },
-        tabBarStyle: {
-          backgroundColor: colors.bg,
-          borderTopColor: colors.border,
-          borderTopWidth: 1,
-          height: 52 + insets.bottom,
-          paddingBottom: insets.bottom,
-          paddingTop: 10,
-        },
-      }}
+      tabBar={(props) => <CustomTabBar {...props} username={username} />}
+      screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen
-        name="home"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label="home" focused={focused} /> }}
-      />
-      <Tabs.Screen
-        name="discover"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label="discover" focused={focused} /> }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{ tabBarLabel: ({ focused }) => <TabLabel label={username} focused={focused} /> }}
-      />
+      <Tabs.Screen name="home" />
+      <Tabs.Screen name="discover" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   )
 }
