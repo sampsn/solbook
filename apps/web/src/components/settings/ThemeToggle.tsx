@@ -24,7 +24,7 @@ export function ThemeToggle({ initialTheme }: { initialTheme: ThemePref }) {
   }
 
   return (
-    <div className="flex rounded-lg overflow-hidden border border-[var(--color-border)]">
+    <div className="inline-flex overflow-hidden border border-[var(--color-border)]">
       {OPTIONS.map(({ label, value }) => (
         <button
           key={value}

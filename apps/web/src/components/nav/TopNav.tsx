@@ -45,37 +45,39 @@ export function TopNav({ username }: TopNavProps) {
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
 
   return (
-    <header className="hidden md:flex items-center bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-2 sticky top-0 z-10">
-      <Link
-        href="/home"
-        className="font-bold transition-colors mr-auto"
-        style={{ color: 'var(--color-brand)' }}
-      >
-        solbook
-      </Link>
-      <nav className="flex items-center gap-5">
-        {NAV_ITEMS(username).map(({ href, label }) => {
-          const active = pathname === href || pathname.startsWith(href + '/')
-          return (
-            <Link
-              key={href}
-              href={href}
-              className="text-sm transition-colors"
-              style={{ color: active ? 'var(--color-accent)' : 'var(--color-text)', fontWeight: active ? 'bold' : 'normal' }}
-            >
-              {bracketLabel(label, active)}
-            </Link>
-          )
-        })}
+    <header className="hidden md:block bg-[var(--color-surface)] border-b border-[var(--color-border)] sticky top-0 z-10">
+      <div className="max-w-2xl mx-auto flex items-center px-4 py-2">
         <Link
-          href="/notifications"
-          className="transition-colors"
-          style={{ color: bellColor }}
-          aria-label="alerts"
+          href="/home"
+          className="font-bold transition-colors mr-auto"
+          style={{ color: 'var(--color-brand)' }}
         >
-          <BellIcon filled={hasUnseenAlerts && !alertsActive} />
+          solbook
         </Link>
-      </nav>
+        <nav className="flex items-center gap-5">
+          {NAV_ITEMS(username).map(({ href, label }) => {
+            const active = pathname === href || pathname.startsWith(href + '/')
+            return (
+              <Link
+                key={href}
+                href={href}
+                className="text-sm transition-colors"
+                style={{ color: active ? 'var(--color-accent)' : 'var(--color-text-strong)', fontWeight: active ? 'bold' : 'normal' }}
+              >
+                {bracketLabel(label, active)}
+              </Link>
+            )
+          })}
+          <Link
+            href="/notifications"
+            className="transition-colors"
+            style={{ color: bellColor }}
+            aria-label="alerts"
+          >
+            <BellIcon filled={hasUnseenAlerts && !alertsActive} />
+          </Link>
+        </nav>
+      </div>
     </header>
   )
 }

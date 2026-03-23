@@ -78,13 +78,13 @@ export default async function ProfilePage({ params }: Props) {
   const followAction = toggleFollow.bind(null, profile.id)
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <PageHeader title={`@${username}`} />
       <div className="border-b border-[var(--color-border)] px-4 py-4">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="font-bold text-[var(--color-text)]">{profile.display_name}</h1>
-            <p className="text-[var(--color-muted)] text-sm">@{profile.username}</p>
+            <h1 className="font-bold" style={{ color: 'var(--color-text-strong)' }}>{profile.display_name}</h1>
+            <p className="text-[var(--color-accent-alt)] text-sm">@{profile.username}</p>
             {profile.bio && <p className="text-sm mt-2 text-[var(--color-text)]">{profile.bio}</p>}
             <div className="flex gap-4 mt-3 text-xs text-[var(--color-muted)]">
               <span><span className="text-[var(--color-text)] font-bold">{followerCount ?? 0}</span> followers</span>
@@ -92,7 +92,7 @@ export default async function ProfilePage({ params }: Props) {
             </div>
           </div>
           {isOwnProfile ? (
-            <Link href="/settings" className="text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
+            <Link href="/settings" className="text-xs hover:text-[var(--color-accent)] transition-colors" style={{ color: 'var(--color-text-strong)' }}>
               settings →
             </Link>
           ) : session && (

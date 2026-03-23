@@ -74,7 +74,7 @@ export default async function HomePage({ searchParams }: Props) {
       : null
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <PageHeader title="home" />
       <PostComposer />
       {feed.length === 0 ? (

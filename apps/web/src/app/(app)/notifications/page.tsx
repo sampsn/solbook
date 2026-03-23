@@ -64,7 +64,7 @@ export default async function NotificationsPage() {
   ].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <MarkAlertsSeen />
       <PageHeader title="alerts" showBack />
 
@@ -74,7 +74,7 @@ export default async function NotificationsPage() {
         <div>
           {alerts.map((alert) => (
             <div key={alert.key} className="border-b border-[var(--color-border)] px-4 py-3 text-sm">
-              <Link href={`/${alert.username}`} className="text-[var(--color-accent)] hover:underline">
+              <Link href={`/${alert.username}`} className="text-[var(--color-accent-alt)] hover:underline">
                 @{alert.username}
               </Link>
               {alert.kind === 'follow' ? (

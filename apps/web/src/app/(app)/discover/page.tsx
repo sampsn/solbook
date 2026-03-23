@@ -41,7 +41,7 @@ export default async function DiscoverPage() {
   }))
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <PageHeader title="discover" />
       {feed.length === 0 ? (
         <p className="text-[var(--color-muted)] text-center py-12 text-sm">no trending posts yet.</p>

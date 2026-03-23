@@ -42,7 +42,7 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
         <button
           onClick={() => router.back()}
           className="text-xs transition-colors"
-          style={{ color: 'var(--color-muted)' }}
+          style={{ color: 'var(--color-text-strong)' }}
         >
           ← back
         </button>

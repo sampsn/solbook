@@ -19,14 +19,14 @@ export default async function SettingsPage() {
     .single()
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-2xl mx-auto">
       <PageHeader title="settings" showBack />
 
       <div className="border-b border-[var(--color-border)] px-4 py-4">
-        <h2 className="text-xs text-[var(--color-muted)] uppercase tracking-wide mb-3">profile</h2>
+        <h2 className="text-xs text-[var(--color-accent-alt)] uppercase tracking-wide mb-3">profile</h2>
         <form action={updateProfile} className="space-y-3">
           <div>
-            <label className="text-xs text-[var(--color-muted)] block mb-1">display name</label>
+            <label className="text-xs block mb-1" style={{ color: 'var(--color-text-strong)' }}>display name</label>
             <input
               name="displayName"
               type="text"
@@ -37,7 +37,7 @@ export default async function SettingsPage() {
             />
           </div>
           <div>
-            <label className="text-xs text-[var(--color-muted)] block mb-1">bio</label>
+            <label className="text-xs block mb-1" style={{ color: 'var(--color-text-strong)' }}>bio</label>
             <textarea
               name="bio"
               defaultValue={profile?.bio ?? ''}
@@ -56,13 +56,13 @@ export default async function SettingsPage() {
       </div>
 
       <div className="border-b border-[var(--color-border)] px-4 py-4">
-        <h2 className="text-xs text-[var(--color-muted)] uppercase tracking-wide mb-3">appearance</h2>
+        <h2 className="text-xs text-[var(--color-accent-alt)] uppercase tracking-wide mb-3">appearance</h2>
         <ThemeToggle initialTheme={(profile?.theme ?? 'system') as 'system' | 'dark' | 'light'} />
       </div>
 
       <div className="px-4 py-4">
-        <h2 className="text-xs text-[var(--color-muted)] uppercase tracking-wide mb-3">account</h2>
-        <p className="text-xs text-[var(--color-muted)] mb-3">@{profile?.username}</p>
+        <h2 className="text-xs text-[var(--color-accent-alt)] uppercase tracking-wide mb-3">account</h2>
+        <p className="text-xs text-[var(--color-accent-alt)] mb-3">@{profile?.username}</p>
         <form action={logout}>
           <button
             type="submit"

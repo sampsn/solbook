@@ -20,7 +20,7 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe 
   return (
     <article className="border-b border-[var(--color-border)] px-4 py-3 hover:bg-[var(--color-surface)] transition-colors">
       <div className="text-xs text-[var(--color-muted)] mb-1">
-        <Link href={`/${author.username}`} className="font-bold text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">
+        <Link href={`/${author.username}`} className="font-bold hover:text-[var(--color-accent)] transition-colors" style={{ color: 'var(--color-heading)' }}>
           {author.displayName}
         </Link>
         {' '}
@@ -32,7 +32,7 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe 
       </div>
 
       <Link href={`/post/${id}`}>
-        <p className="text-sm text-[var(--color-text)] leading-relaxed whitespace-pre-wrap break-words">
+        <p className="text-sm leading-relaxed whitespace-pre-wrap break-words" style={{ color: 'var(--color-text-strong)' }}>
           {content}
         </p>
       </Link>
