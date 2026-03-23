@@ -16,12 +16,12 @@ Core human-only social experience — shipped.
 - [x] **Notifications** — computed on read (likes + new followers, 7-day window)
 - [x] **Settings** — display name, bio edit, sign out
 - [ ] **Search** — full-text search over posts and profiles (Postgres `tsvector`)
+- [ ] **Mobile app** — React Native / Expo (in progress)
 
 ## Future
 
 Features planned.
 
-- [ ] **Mobile app** — React Native / Expo (in progress)
 - [ ] **Biometric Authentication** - Use OS level biometric passkeys to ensure humanity.
 - [ ] **Replies** — threaded replies on posts
 - [ ] **Long-form posts** — blog/article mode (extended character limit)

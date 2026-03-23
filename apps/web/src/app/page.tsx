@@ -7,8 +7,7 @@ export default function LandingPage() {
         <div className="space-y-2">
           <h1 className="text-4xl font-bold text-[#ff6600]">solbook</h1>
           <p className="text-[#888880] text-sm leading-relaxed">
-            Text-based social for humans.<br />
-            No bots. No AI. No noise.
+            A human-only, text-based social network.
           </p>
         </div>
 
