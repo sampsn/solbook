@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
 import { requireSession } from '@/lib/auth'
 import { PageHeader } from '@/components/nav/PageHeader'
+import { MarkAlertsSeen } from '@/components/nav/MarkAlertsSeen'
 
 export const metadata: Metadata = { title: 'Alerts' }
 
@@ -49,6 +50,7 @@ export default async function NotificationsPage() {
 
   return (
     <div className="max-w-xl mx-auto">
+      <MarkAlertsSeen />
       <PageHeader title="alerts" showBack />
 
       {!hasNotifications ? (
