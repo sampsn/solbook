@@ -47,4 +47,17 @@ describe('TopNav', () => {
     expect(screen.queryByText('alerts')).not.toBeInTheDocument()
     expect(screen.queryByText('[alerts]')).not.toBeInTheDocument()
   })
+
+  it('renders a search icon link to /search', () => {
+    vi.mocked(usePathname).mockReturnValue('/home')
+    render(<TopNav username="gabriel" />)
+    const searchLink = screen.getByRole('link', { name: 'search' })
+    expect(searchLink).toHaveAttribute('href', '/search')
+  })
+
+  it('does not render search as a text nav item', () => {
+    vi.mocked(usePathname).mockReturnValue('/home')
+    render(<TopNav username="gabriel" />)
+    expect(screen.queryByText('search')).not.toBeInTheDocument()
+  })
 })

@@ -18,6 +18,25 @@ function bracketLabel(base: string, active: boolean) {
   return active ? `[${base}]` : base
 }
 
+function SearchIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  )
+}
+
 function BellIcon({ filled }: { filled: boolean }) {
   return (
     <svg
@@ -40,9 +59,11 @@ function BellIcon({ filled }: { filled: boolean }) {
 export function TopNav({ username }: TopNavProps) {
   const pathname = usePathname()
   const alertsActive = pathname.startsWith('/notifications')
+  const searchActive = pathname.startsWith('/search')
   const hasUnseenAlerts = useHasUnseenAlerts()
 
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
+  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-muted)'
 
   return (
     <header className="hidden md:block bg-[var(--color-surface)] border-b border-[var(--color-border)] sticky top-0 z-10">
@@ -68,6 +89,14 @@ export function TopNav({ username }: TopNavProps) {
               </Link>
             )
           })}
+          <Link
+            href="/search"
+            className="transition-colors"
+            style={{ color: searchColor }}
+            aria-label="search"
+          >
+            <SearchIcon />
+          </Link>
           <Link
             href="/notifications"
             className="transition-colors"
