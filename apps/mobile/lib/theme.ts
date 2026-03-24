@@ -9,8 +9,8 @@ const sharedColors = {
 
 export const darkColors = {
   ...sharedColors,
-  bg: '#052327',
-  surface: '#0b2b2e',
+  bg: '#1d2024',
+  surface: '#27292e',
   border: '#586e75',
   text: '#93a1a1',
   textStrong: '#eee8d5',
