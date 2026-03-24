@@ -9,6 +9,25 @@ interface PageHeaderProps {
   showBack?: boolean
 }
 
+function SearchIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  )
+}
+
 function BellIcon({ filled }: { filled: boolean }) {
   return (
     <svg
@@ -32,9 +51,11 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
   const pathname = usePathname()
   const router = useRouter()
   const alertsActive = pathname.startsWith('/notifications')
+  const searchActive = pathname.startsWith('/search')
   const hasUnseenAlerts = useHasUnseenAlerts()
 
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
+  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-muted)'
 
   return (
     <div className="md:hidden sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
@@ -53,16 +74,28 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
       {showBack ? (
         <h1 className="text-sm font-bold" style={{ color: 'var(--color-accent)' }}>{title}</h1>
       ) : (
-        !alertsActive && (
-          <Link
-            href="/notifications"
-            className="transition-colors"
-            style={{ color: bellColor }}
-            aria-label="alerts"
-          >
-            <BellIcon filled={hasUnseenAlerts} />
-          </Link>
-        )
+        <div className="flex items-center gap-4">
+          {!searchActive && (
+            <Link
+              href="/search"
+              className="transition-colors"
+              style={{ color: searchColor }}
+              aria-label="search"
+            >
+              <SearchIcon />
+            </Link>
+          )}
+          {!alertsActive && (
+            <Link
+              href="/notifications"
+              className="transition-colors"
+              style={{ color: bellColor }}
+              aria-label="alerts"
+            >
+              <BellIcon filled={hasUnseenAlerts} />
+            </Link>
+          )}
+        </div>
       )}
 
       {showBack && <div className="w-8" />}
