@@ -23,7 +23,7 @@ export function BottomNav({ username }: BottomNavProps) {
   const pathname = usePathname()
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[var(--color-border)] bg-[var(--color-bg)] flex">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t border-[var(--color-border)] bg-[var(--color-surface)] flex">
       {navItems(username).map(({ href, label }) => {
         const active = pathname === href || pathname.startsWith(href + '/')
         return (

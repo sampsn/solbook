@@ -37,7 +37,7 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
 
   return (
-    <div className="md:hidden sticky top-0 bg-[var(--color-bg)] border-b border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
+    <div className="md:hidden sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
       {showBack ? (
         <button
           onClick={() => router.back()}
