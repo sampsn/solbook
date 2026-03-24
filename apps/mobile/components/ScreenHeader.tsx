@@ -12,6 +12,25 @@ interface ScreenHeaderProps {
   title: string
   showBack?: boolean
   showBell?: boolean
+  showSearch?: boolean
+}
+
+function SearchIcon({ color }: { color: string }) {
+  return (
+    <Svg
+      width={16}
+      height={16}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path d="M21 21l-4.35-4.35" />
+      <Path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+    </Svg>
+  )
 }
 
 function BellIcon({ filled, color }: { filled: boolean; color: string }) {
@@ -32,7 +51,7 @@ function BellIcon({ filled, color }: { filled: boolean; color: string }) {
   )
 }
 
-export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
+export function ScreenHeader({ title, showBack, showBell, showSearch }: ScreenHeaderProps) {
   const { colors } = useTheme()
   const insets = useSafeAreaInsets()
   const hasUnseenAlerts = useHasUnseenAlerts()
@@ -52,7 +71,8 @@ export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
     backBtn: { minWidth: 48 },
     back: { fontFamily: font.regular, fontSize: 15, color: colors.textStrong },
     title: { fontFamily: font.bold, fontSize: 20, color: colors.accent },
-    bellBtn: { padding: 4 },
+    iconBtn: { padding: 4 },
+    iconsRow: { flexDirection: 'row', alignItems: 'center', gap: 16 },
     placeholder: { minWidth: 48 },
   }), [colors])
 
@@ -71,11 +91,18 @@ export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
   return (
     <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
       <Text style={styles.title}>{title}</Text>
-      {showBell && (
-        <TouchableOpacity onPress={() => router.push('/notifications')} style={styles.bellBtn}>
-          <BellIcon filled={hasUnseenAlerts} color={bellColor} />
-        </TouchableOpacity>
-      )}
+      <View style={styles.iconsRow}>
+        {showSearch && (
+          <TouchableOpacity onPress={() => router.push('/search')} style={styles.iconBtn}>
+            <SearchIcon color={colors.muted} />
+          </TouchableOpacity>
+        )}
+        {showBell && (
+          <TouchableOpacity onPress={() => router.push('/notifications')} style={styles.iconBtn}>
+            <BellIcon filled={hasUnseenAlerts} color={bellColor} />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   )
 }

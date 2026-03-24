@@ -58,7 +58,7 @@ export default function HomeScreen() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ScreenHeader title="home" showBell />
+        <ScreenHeader title="home" showBell showSearch />
         <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
       </View>
     )
@@ -66,7 +66,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="home" showBell />
+      <ScreenHeader title="home" showBell showSearch />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}

@@ -34,7 +34,7 @@ export default function DiscoverScreen() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ScreenHeader title="discover" showBell />
+        <ScreenHeader title="discover" showBell showSearch />
         <View style={styles.centered}><ActivityIndicator color={colors.accent} /></View>
       </View>
     )
@@ -42,7 +42,7 @@ export default function DiscoverScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="discover" showBell />
+      <ScreenHeader title="discover" showBell showSearch />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
