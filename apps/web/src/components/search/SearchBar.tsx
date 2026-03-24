@@ -45,7 +45,7 @@ export function SearchBar({ initialQuery }: SearchBarProps) {
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="search people and posts"
-        className="w-full border border-[var(--color-border)] rounded px-3 py-2 text-sm bg-[var(--color-bg)] text-[var(--color-text-strong)] placeholder-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
+        className="w-full border border-[var(--color-border)] rounded px-3 py-2 text-base bg-[var(--color-bg)] text-[var(--color-text-strong)] placeholder-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)]"
         autoFocus
       />
       {value && (
