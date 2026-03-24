@@ -74,15 +74,15 @@ export default async function NotificationsPage() {
         <div>
           {alerts.map((alert) => (
             <div key={alert.key} className="border-b border-[var(--color-border)] px-4 py-3 text-sm">
-              <Link href={`/${alert.username}`} className="text-[var(--color-accent-alt)] hover:underline">
+              <Link href={`/${alert.username}`} className="hover:underline" style={{ color: 'var(--color-text-strong)' }}>
                 @{alert.username}
               </Link>
               {alert.kind === 'follow' ? (
-                <span className="text-[var(--color-muted)]"> followed you</span>
+                <span style={{ color: 'var(--color-muted)' }}> followed you</span>
               ) : (
                 <>
-                  <span className="text-[var(--color-muted)]"> liked · </span>
-                  <Link href={`/post/${alert.postId}`} className="text-[var(--color-muted)] hover:text-[var(--color-accent)] transition-colors">
+                  <span style={{ color: 'var(--color-muted)' }}> liked · </span>
+                  <Link href={`/post/${alert.postId}`} className="transition-colors hover:text-[var(--color-accent)]" style={{ color: 'var(--color-text-strong)' }}>
                     {alert.postContent.slice(0, 60)}{alert.postContent.length > 60 ? '…' : ''}
                   </Link>
                 </>

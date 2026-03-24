@@ -22,6 +22,7 @@ export default function NotificationsScreen() {
     item: { borderBottomWidth: 1, borderBottomColor: colors.border, paddingHorizontal: 16, paddingVertical: 12 },
     itemText: { fontFamily: font.regular, fontSize: 16, lineHeight: 24 },
     accent: { color: colors.accentAlt },
+    strong: { color: colors.textStrong },
     muted: { color: colors.muted },
     empty: { fontFamily: font.regular, fontSize: 16, color: colors.muted, textAlign: 'center', paddingVertical: 48 },
   }), [colors])
@@ -59,7 +60,7 @@ export default function NotificationsScreen() {
       return (
         <TouchableOpacity style={styles.item} onPress={() => router.push(`/profile/${item.username}`)}>
           <Text style={styles.itemText}>
-            <Text style={styles.accent}>@{item.username}</Text>
+            <Text style={styles.strong}>@{item.username}</Text>
             <Text style={styles.muted}> followed you</Text>
           </Text>
         </TouchableOpacity>
@@ -68,9 +69,9 @@ export default function NotificationsScreen() {
     return (
       <TouchableOpacity style={styles.item} onPress={() => item.postId && router.push(`/post/${item.postId}`)}>
         <Text style={styles.itemText}>
-          <Text style={styles.accent}>@{item.username}</Text>
+          <Text style={styles.strong}>@{item.username}</Text>
           <Text style={styles.muted}> liked · </Text>
-          <Text style={styles.muted}>{item.postContent?.slice(0, 60)}{(item.postContent?.length ?? 0) > 60 ? '…' : ''}</Text>
+          <Text style={styles.strong}>{item.postContent?.slice(0, 60)}{(item.postContent?.length ?? 0) > 60 ? '…' : ''}</Text>
         </Text>
       </TouchableOpacity>
     )
