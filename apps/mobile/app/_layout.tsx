@@ -54,6 +54,7 @@ export default function RootLayout() {
         <Stack.Screen name="post/[id]" options={{ presentation: 'card' }} />
         <Stack.Screen name="notifications" options={{ presentation: 'card' }} />
         <Stack.Screen name="settings" options={{ presentation: 'card' }} />
+        <Stack.Screen name="search" options={{ presentation: 'card' }} />
         </Stack>
       </AlertsContextProvider>
     </ThemeContextProvider>
