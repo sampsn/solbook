@@ -285,3 +285,64 @@ export async function getNotifications(): Promise<Notification[]> {
 
   return notifications.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 }
+
+// ── Search ────────────────────────────────────────────────────────────────────
+
+export async function search(query: string): Promise<{ users: Profile[]; posts: FeedPost[] }> {
+  const trimmed = query.trim()
+  if (!trimmed) return { users: [], posts: [] }
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const [{ data: profiles }, { data: rawPosts }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, username, display_name, bio, created_at')
+      .textSearch('fts_doc', trimmed, { type: 'plain', config: 'english' })
+      .order('created_at', { ascending: false })
+      .limit(10),
+    supabase
+      .from('posts')
+      .select(`
+        id, content, created_at,
+        profiles!posts_user_id_fkey ( username, display_name ),
+        likes ( id, user_id )
+      `)
+      .textSearch('fts_doc', trimmed, { type: 'plain', config: 'english' })
+      .order('created_at', { ascending: false })
+      .limit(20),
+  ])
+
+  const postIds = (rawPosts ?? []).map((p: any) => p.id)
+  const { data: myLikes } = user && postIds.length > 0
+    ? await supabase.from('likes').select('post_id').eq('user_id', user.id).in('post_id', postIds)
+    : { data: [] }
+
+  const likedSet = new Set((myLikes ?? []).map((l: any) => l.post_id))
+
+  const posts: FeedPost[] = (rawPosts ?? []).map((post: any) => {
+    const profile = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
+    const likes = post.likes ?? []
+    return {
+      id: post.id,
+      content: post.content,
+      createdAt: post.created_at,
+      author: {
+        username: profile?.username ?? 'unknown',
+        displayName: profile?.display_name ?? 'Unknown',
+      },
+      likeCount: likes.length,
+      likedByMe: likedSet.has(post.id),
+    }
+  })
+
+  const users: Profile[] = (profiles ?? []).map((p: any) => ({
+    id: p.id,
+    username: p.username,
+    display_name: p.display_name,
+    bio: p.bio,
+    created_at: p.created_at,
+  }))
+
+  return { users, posts }
+}
