@@ -10,9 +10,15 @@ import {
   CourierPrime_700Bold_Italic,
 } from '@expo-google-fonts/courier-prime'
 import * as SplashScreen from 'expo-splash-screen'
-import { lightColors } from '@/lib/theme'
-import { ThemeContextProvider } from '@/lib/ThemeContext'
+import { lightColors, darkColors } from '@/lib/theme'
+import { ThemeContextProvider, useTheme } from '@/lib/ThemeContext'
 import { AlertsContextProvider } from '@/components/AlertsContext'
+
+function ThemedStatusBar() {
+  const { colors } = useTheme()
+  const isDark = colors.bg === darkColors.bg
+  return <StatusBar style={isDark ? 'light' : 'dark'} />
+}
 
 SplashScreen.preventAutoHideAsync()
 
@@ -39,7 +45,7 @@ export default function RootLayout() {
   return (
     <ThemeContextProvider>
       <AlertsContextProvider>
-        <StatusBar style="auto" />
+        <ThemedStatusBar />
         <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />

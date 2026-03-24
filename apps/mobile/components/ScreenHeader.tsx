@@ -47,7 +47,7 @@ export function ScreenHeader({ title, showBack, showBell }: ScreenHeaderProps) {
       borderBottomColor: colors.border,
       paddingHorizontal: 16,
       paddingBottom: 12,
-      backgroundColor: colors.bg,
+      backgroundColor: colors.surface,
     },
     backBtn: { minWidth: 48 },
     back: { fontFamily: font.regular, fontSize: 15, color: colors.textStrong },

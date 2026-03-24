@@ -20,7 +20,7 @@ function CustomTabBar({ state, navigation, username }: BottomTabBarProps & { use
   return (
     <View style={{
       flexDirection: 'row',
-      backgroundColor: colors.bg,
+      backgroundColor: colors.surface,
       borderTopWidth: 1,
       borderTopColor: colors.border,
       height: 52 + insets.bottom,
