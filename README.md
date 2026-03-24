@@ -23,6 +23,7 @@ solbook is built specifically to resist AI bots, scrapers, and synthetic content
 
 | Layer | Implementation | File |
 |-------|---------------|------|
+| Vercel Bot Management | AI bots and standard bots managed rulesets | - |
 | User-agent blocking | 403 for known AI/bot UAs at the edge | `apps/web/src/middleware.ts` |
 | Honeypot paths | Silent 200 to log/trap automated scanners | `apps/web/src/middleware.ts` |
 | IP blacklisting (planned) | Upstash Redis — see ROADMAP | — |
