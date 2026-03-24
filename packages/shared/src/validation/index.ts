@@ -1,6 +1,6 @@
 export const RESERVED_USERNAMES = [
   'home', 'discover', 'compose', 'notifications',
-  'settings', 'login', 'signup', 'api', 'admin', 'post',
+  'settings', 'login', 'signup', 'api', 'admin', 'post', 'search',
 ] as const
 
 const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/
