@@ -4,6 +4,8 @@ An open source, human-only, text-based social network. No AI-generated content. 
 
 The dream is to have a community built, human only social site. The potential to have one last place we can trust is human only. I am not 100% certain this is possible, so this might just be an attempt at a proof of concept.
 
+The number one priority for the Anti AI strategy is to find a way to block [OpenClaw](https://github.com/openclaw/openclaw)-like agents that are using tools like [Scrapling](https://github.com/D4Vinci/Scrapling).
+
 ## Anti-AI Protections
 
 solbook is built specifically to resist AI bots, scrapers, and synthetic content. Every contributor should understand and maintain these protections:
@@ -21,6 +23,7 @@ solbook is built specifically to resist AI bots, scrapers, and synthetic content
 
 | Layer | Implementation | File |
 |-------|---------------|------|
+| Vercel Bot Management | AI bots and standard bots managed rulesets | - |
 | User-agent blocking | 403 for known AI/bot UAs at the edge | `apps/web/src/middleware.ts` |
 | Honeypot paths | Silent 200 to log/trap automated scanners | `apps/web/src/middleware.ts` |
 | IP blacklisting (planned) | Upstash Redis — see ROADMAP | — |
