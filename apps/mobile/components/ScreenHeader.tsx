@@ -94,7 +94,7 @@ export function ScreenHeader({ title, showBack, showBell, showSearch }: ScreenHe
       <View style={styles.iconsRow}>
         {showSearch && (
           <TouchableOpacity onPress={() => router.push('/search')} style={styles.iconBtn}>
-            <SearchIcon color={colors.muted} />
+            <SearchIcon color={colors.textStrong} />
           </TouchableOpacity>
         )}
         {showBell && (

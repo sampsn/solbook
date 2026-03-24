@@ -55,7 +55,7 @@ export function PageHeader({ title, showBack }: PageHeaderProps) {
   const hasUnseenAlerts = useHasUnseenAlerts()
 
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
-  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-muted)'
+  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-text-strong)'
 
   return (
     <div className="md:hidden sticky top-0 bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-3 flex items-center justify-between">

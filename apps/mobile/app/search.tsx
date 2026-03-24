@@ -8,12 +8,31 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native'
+import Svg, { Line } from 'react-native-svg'
 import { router } from 'expo-router'
 import { useTheme } from '@/lib/ThemeContext'
 import { font } from '@/lib/theme'
 import { search, Profile, FeedPost } from '@/lib/api'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { PostCard } from '@/components/PostCard'
+
+function ClearIcon({ color }: { color: string }) {
+  return (
+    <Svg
+      width={14}
+      height={14}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Line x1="18" y1="6" x2="6" y2="18" />
+      <Line x1="6" y1="6" x2="18" y2="18" />
+    </Svg>
+  )
+}
 
 type Section =
   | { title: 'People'; data: Profile[] }
@@ -53,16 +72,25 @@ export default function SearchScreen() {
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
     },
-    input: {
-      fontFamily: font.regular,
-      fontSize: 16,
-      color: colors.textStrong,
+    inputWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: 6,
+      backgroundColor: colors.bg,
+    },
+    input: {
+      flex: 1,
+      fontFamily: font.regular,
+      fontSize: 16,
+      color: colors.textStrong,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      backgroundColor: colors.bg,
+    },
+    clearBtn: {
+      paddingHorizontal: 10,
+      paddingVertical: 8,
     },
     sectionHeader: {
       paddingHorizontal: 16,
@@ -120,16 +148,23 @@ export default function SearchScreen() {
     <View style={styles.container}>
       <ScreenHeader title="search" showBack />
       <View style={styles.inputRow}>
-        <TextInput
-          style={styles.input}
-          value={query}
-          onChangeText={setQuery}
-          onSubmitEditing={handleSubmit}
-          returnKeyType="search"
-          placeholder="search people and posts"
-          placeholderTextColor={colors.muted}
-          autoFocus
-        />
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            value={query}
+            onChangeText={setQuery}
+            onSubmitEditing={handleSubmit}
+            returnKeyType="search"
+            placeholder="search people and posts"
+            placeholderTextColor={colors.muted}
+            autoFocus
+          />
+          {query.length > 0 && (
+            <TouchableOpacity style={styles.clearBtn} onPress={() => setQuery('')}>
+              <ClearIcon color={colors.textStrong} />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       {loading ? (

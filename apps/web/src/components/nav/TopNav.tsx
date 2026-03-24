@@ -63,7 +63,7 @@ export function TopNav({ username }: TopNavProps) {
   const hasUnseenAlerts = useHasUnseenAlerts()
 
   const bellColor = alertsActive ? 'var(--color-accent)' : hasUnseenAlerts ? 'var(--color-text)' : 'var(--color-muted)'
-  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-muted)'
+  const searchColor = searchActive ? 'var(--color-accent)' : 'var(--color-text-strong)'
 
   return (
     <header className="hidden md:block bg-[var(--color-surface)] border-b border-[var(--color-border)] sticky top-0 z-10">
