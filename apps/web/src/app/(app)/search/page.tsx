@@ -22,9 +22,10 @@ export default async function SearchPage({
 
   let profiles: any[] = []
   let posts: any[] = []
+  let comments: any[] = []
 
   if (query) {
-    const [profilesResult, postsResult] = await Promise.all([
+    const [profilesResult, postsResult, commentsResult] = await Promise.all([
       supabase
         .from('profiles')
         .select('id, username, display_name, bio')
@@ -36,7 +37,17 @@ export default async function SearchPage({
         .select(`
           id, content, created_at,
           profiles!posts_user_id_fkey ( username, display_name ),
-          likes ( id, user_id )
+          likes ( id, user_id ),
+          comments ( count )
+        `)
+        .textSearch('fts_doc', query, { type: 'plain', config: 'english' })
+        .order('created_at', { ascending: false })
+        .limit(20),
+      supabase
+        .from('comments')
+        .select(`
+          id, content, created_at, post_id,
+          profiles!comments_user_id_fkey ( username, display_name )
         `)
         .textSearch('fts_doc', query, { type: 'plain', config: 'english' })
         .order('created_at', { ascending: false })
@@ -59,11 +70,24 @@ export default async function SearchPage({
         },
         likeCount: likes.length,
         likedByMe: likes.some((l: any) => l.user_id === session.userId),
+        commentCount: (post.comments as any)?.[0]?.count ?? 0,
+      }
+    })
+
+    comments = (commentsResult.data ?? []).map((c: any) => {
+      const profile = Array.isArray(c.profiles) ? c.profiles[0] : c.profiles
+      return {
+        id: c.id,
+        content: c.content,
+        createdAt: c.created_at,
+        postId: c.post_id,
+        username: profile?.username ?? 'unknown',
+        displayName: profile?.display_name ?? 'Unknown',
       }
     })
   }
 
-  const noResults = query && profiles.length === 0 && posts.length === 0
+  const noResults = query && profiles.length === 0 && posts.length === 0 && comments.length === 0
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -75,7 +99,7 @@ export default async function SearchPage({
 
       {!query && (
         <p className="text-[var(--color-muted)] text-center py-12 text-sm">
-          search for people and posts
+          search for people, posts, and comments
         </p>
       )}
 
@@ -119,6 +143,30 @@ export default async function SearchPage({
           </h2>
           {posts.map((post: any) => (
             <PostCard key={post.id} {...post} />
+          ))}
+        </section>
+      )}
+
+      {comments.length > 0 && (
+        <section>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-muted)] px-4 pt-4 pb-2">
+            Comments
+          </h2>
+          {comments.map((c: any) => (
+            <Link
+              key={c.id}
+              href={`/post/${c.postId}#comment-${c.id}`}
+              className="flex flex-col px-4 py-3 border-b border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors"
+            >
+              <div className="text-xs text-[var(--color-muted)] mb-1">
+                <span className="font-bold" style={{ color: 'var(--color-heading)' }}>{c.displayName}</span>
+                {' '}
+                <span>(@{c.username})</span>
+              </div>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap break-words" style={{ color: 'var(--color-text-strong)' }}>
+                {c.content}
+              </p>
+            </Link>
           ))}
         </section>
       )}

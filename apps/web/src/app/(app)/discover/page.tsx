@@ -18,15 +18,26 @@ export default async function DiscoverPage() {
   })
 
   const postIds = (rows ?? []).map((r: any) => r.id)
-  const { data: myLikes } = postIds.length > 0
-    ? await supabase
-        .from('likes')
-        .select('post_id')
-        .eq('user_id', session.userId)
-        .in('post_id', postIds)
-    : { data: [] }
+  const [{ data: myLikes }, { data: postCounts }] = await Promise.all([
+    postIds.length > 0
+      ? supabase
+          .from('likes')
+          .select('post_id')
+          .eq('user_id', session.userId)
+          .in('post_id', postIds)
+      : Promise.resolve({ data: [] }),
+    postIds.length > 0
+      ? supabase
+          .from('posts')
+          .select('id, comments(count)')
+          .in('id', postIds)
+      : Promise.resolve({ data: [] }),
+  ])
 
   const likedSet = new Set((myLikes ?? []).map((l: any) => l.post_id))
+  const commentCountMap = new Map(
+    (postCounts ?? []).map((p: any) => [p.id, (p.comments as any)?.[0]?.count ?? 0])
+  )
 
   const feed = (rows ?? []).map((r: any) => ({
     id: r.id,
@@ -38,6 +49,7 @@ export default async function DiscoverPage() {
     },
     likeCount: Number(r.like_count),
     likedByMe: likedSet.has(r.id),
+    commentCount: commentCountMap.get(r.id) ?? 0,
   }))
 
   return (

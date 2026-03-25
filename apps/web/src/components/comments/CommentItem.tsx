@@ -73,9 +73,6 @@ export function CommentItem({ node, postId, userId, depth, isCollapsed, onToggle
           <span style={{ color: 'var(--color-muted)' }}>
             {formatTimeAgo(node.created_at)}
           </span>
-          <span style={{ color: 'var(--color-muted)' }}>
-            ▲ {optimistic.count > 0 ? optimistic.count : '0'}
-          </span>
           {isCollapsed && replyCount > 0 && (
             <span style={{ color: 'var(--color-muted)' }}>· {replyCount} {replyCount === 1 ? 'reply' : 'replies'}</span>
           )}
@@ -97,7 +94,7 @@ export function CommentItem({ node, postId, userId, depth, isCollapsed, onToggle
                   disabled={isPending}
                   className={`transition-colors hover:text-[var(--color-accent)] ${optimistic.liked ? 'text-[var(--color-accent)]' : ''}`}
                 >
-                  {optimistic.liked ? '▲ liked' : '△ like'}
+                  {optimistic.liked ? '▲' : '△'} {optimistic.count > 0 ? optimistic.count : 'like'}
                 </button>
               )}
               {userId && (

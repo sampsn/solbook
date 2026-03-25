@@ -53,7 +53,8 @@ export default async function ProfilePage({ params }: Props) {
       content,
       created_at,
       profiles!posts_user_id_fkey ( username, display_name ),
-      likes ( id, user_id )
+      likes ( id, user_id ),
+      comments ( count )
     `)
     .eq('user_id', profile.id)
     .order('created_at', { ascending: false })
@@ -72,6 +73,7 @@ export default async function ProfilePage({ params }: Props) {
       },
       likeCount: likes.length,
       likedByMe: likes.some((l: { user_id: string }) => l.user_id === session?.userId),
+      commentCount: (post.comments as any)?.[0]?.count ?? 0,
     }
   })
 

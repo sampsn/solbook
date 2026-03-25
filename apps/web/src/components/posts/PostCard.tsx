@@ -4,6 +4,24 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toggleLike } from '@/actions/posts'
 
+function CommentIcon() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  )
+}
+
 interface PostCardProps {
   id: string
   content: string
@@ -65,8 +83,9 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
           </button>
         </form>
         {typeof commentCount === 'number' && (
-          <span className="text-xs text-[var(--color-muted)]">
-            💬 {commentCount > 0 ? commentCount : ''}
+          <span className="text-xs text-[var(--color-muted)] flex items-center gap-1">
+            <CommentIcon />
+            {commentCount > 0 ? commentCount : ''}
           </span>
         )}
       </div>
