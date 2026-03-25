@@ -9,6 +9,7 @@ interface Props extends FeedPost {
   onLikeToggled?: () => void
 }
 
+
 function formatTimeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
@@ -21,7 +22,7 @@ function formatTimeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-export function PostCard({ id, content, createdAt, author, likeCount, likedByMe, onLikeToggled }: Props) {
+export function PostCard({ id, content, createdAt, author, likeCount, likedByMe, commentCount, onLikeToggled }: Props) {
   const { colors } = useTheme()
   const [liked, setLiked] = useState(likedByMe)
   const [count, setCount] = useState(likeCount)
@@ -40,9 +41,10 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
     separator: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
     time: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
     content: { fontFamily: font.regular, fontSize: 16, color: colors.textStrong, lineHeight: 24, marginBottom: 8 },
-    likeRow: { alignSelf: 'flex-start' },
+    actionRow: { flexDirection: 'row', alignItems: 'center', gap: 16 },
     likeBtn: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
     likeBtnActive: { color: colors.accent },
+    commentCount: { fontFamily: font.regular, fontSize: 14, color: colors.muted },
   }), [colors])
 
   async function handleLike() {
@@ -69,11 +71,16 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
 
       <Text style={styles.content}>{content}</Text>
 
-      <TouchableOpacity style={styles.likeRow} onPress={handleLike}>
-        <Text style={[styles.likeBtn, liked && styles.likeBtnActive]}>
-          {liked ? '▲' : '△'} {count > 0 ? count : 'like'}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.actionRow}>
+        <TouchableOpacity onPress={handleLike}>
+          <Text style={[styles.likeBtn, liked && styles.likeBtnActive]}>
+            {liked ? '▲' : '△'} {count > 0 ? count : 'like'}
+          </Text>
+        </TouchableOpacity>
+        {typeof commentCount === 'number' && (
+          <Text style={styles.commentCount}>◻ {commentCount > 0 ? commentCount : ''}</Text>
+        )}
+      </View>
     </Pressable>
   )
 }

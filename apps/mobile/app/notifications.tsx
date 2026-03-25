@@ -56,6 +56,12 @@ export default function NotificationsScreen() {
   function onRefresh() { setRefreshing(true); load() }
 
   function renderItem({ item }: { item: Notification }) {
+    const dest = item.commentId
+      ? `/post/${item.postId}` // deep link to comment anchor not supported natively, go to post
+      : item.postId
+        ? `/post/${item.postId}`
+        : `/profile/${item.username}`
+
     if (item.type === 'follow') {
       return (
         <TouchableOpacity style={styles.item} onPress={() => router.push(`/profile/${item.username}`)}>
@@ -66,12 +72,46 @@ export default function NotificationsScreen() {
         </TouchableOpacity>
       )
     }
+    if (item.type === 'like') {
+      return (
+        <TouchableOpacity style={styles.item} onPress={() => router.push(dest as any)}>
+          <Text style={styles.itemText}>
+            <Text style={styles.strong}>@{item.username}</Text>
+            <Text style={styles.muted}> liked · </Text>
+            <Text style={styles.strong}>{item.postContent?.slice(0, 60)}{(item.postContent?.length ?? 0) > 60 ? '…' : ''}</Text>
+          </Text>
+        </TouchableOpacity>
+      )
+    }
+    if (item.type === 'comment_on_post') {
+      return (
+        <TouchableOpacity style={styles.item} onPress={() => router.push(dest as any)}>
+          <Text style={styles.itemText}>
+            <Text style={styles.strong}>@{item.username}</Text>
+            <Text style={styles.muted}> commented · </Text>
+            <Text style={styles.strong}>{item.commentContent?.slice(0, 60)}{(item.commentContent?.length ?? 0) > 60 ? '…' : ''}</Text>
+          </Text>
+        </TouchableOpacity>
+      )
+    }
+    if (item.type === 'reply_to_comment') {
+      return (
+        <TouchableOpacity style={styles.item} onPress={() => router.push(dest as any)}>
+          <Text style={styles.itemText}>
+            <Text style={styles.strong}>@{item.username}</Text>
+            <Text style={styles.muted}> replied · </Text>
+            <Text style={styles.strong}>{item.commentContent?.slice(0, 60)}{(item.commentContent?.length ?? 0) > 60 ? '…' : ''}</Text>
+          </Text>
+        </TouchableOpacity>
+      )
+    }
+    // comment_like
     return (
-      <TouchableOpacity style={styles.item} onPress={() => item.postId && router.push(`/post/${item.postId}`)}>
+      <TouchableOpacity style={styles.item} onPress={() => router.push(dest as any)}>
         <Text style={styles.itemText}>
           <Text style={styles.strong}>@{item.username}</Text>
-          <Text style={styles.muted}> liked · </Text>
-          <Text style={styles.strong}>{item.postContent?.slice(0, 60)}{(item.postContent?.length ?? 0) > 60 ? '…' : ''}</Text>
+          <Text style={styles.muted}> liked your comment · </Text>
+          <Text style={styles.strong}>{item.commentContent?.slice(0, 60)}{(item.commentContent?.length ?? 0) > 60 ? '…' : ''}</Text>
         </Text>
       </TouchableOpacity>
     )

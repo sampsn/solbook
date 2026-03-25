@@ -7,6 +7,7 @@ export interface FeedPost {
   author: { username: string; displayName: string }
   likeCount: number
   likedByMe: boolean
+  commentCount: number
 }
 
 export interface Profile {
@@ -73,7 +74,8 @@ export async function getHomeFeed(cursor?: string): Promise<{
     .select(`
       id, content, created_at,
       profiles!posts_user_id_fkey ( username, display_name ),
-      likes ( id, user_id )
+      likes ( id, user_id ),
+      comments ( count )
     `)
     .order('created_at', { ascending: false })
     .order('id', { ascending: false })
@@ -103,6 +105,7 @@ export async function getHomeFeed(cursor?: string): Promise<{
       },
       likeCount: likes.length,
       likedByMe: likes.some((l: any) => l.user_id === user.id),
+      commentCount: (post.comments as any)?.[0]?.count ?? 0,
     }
   })
 
@@ -128,19 +131,31 @@ export async function getDiscoverFeed(): Promise<FeedPost[]> {
   if (!rows) return []
 
   const postIds = rows.map((r: any) => r.id)
-  const { data: myLikes } = user && postIds.length > 0
-    ? await supabase.from('likes').select('post_id').eq('user_id', user.id).in('post_id', postIds)
-    : { data: [] }
+  const [{ data: myLikes }, { data: postCounts }] = await Promise.all([
+    user && postIds.length > 0
+      ? supabase.from('likes').select('post_id').eq('user_id', user.id).in('post_id', postIds)
+      : Promise.resolve({ data: [] }),
+    postIds.length > 0
+      ? supabase.from('posts').select('id, likes(count), comments(count)').in('id', postIds)
+      : Promise.resolve({ data: [] }),
+  ])
 
   const likedSet = new Set((myLikes ?? []).map((l: any) => l.post_id))
+  const countsMap = new Map(
+    (postCounts ?? []).map((p: any) => [p.id, {
+      likeCount: (p.likes as any)?.[0]?.count ?? 0,
+      commentCount: (p.comments as any)?.[0]?.count ?? 0,
+    }])
+  )
 
   return rows.map((r: any) => ({
     id: r.id,
     content: r.content,
     createdAt: r.created_at,
     author: { username: r.username, displayName: r.display_name },
-    likeCount: Number(r.like_count),
+    likeCount: countsMap.get(r.id)?.likeCount ?? Number(r.like_count),
     likedByMe: likedSet.has(r.id),
+    commentCount: countsMap.get(r.id)?.commentCount ?? 0,
   }))
 }
 
@@ -172,7 +187,7 @@ export async function getProfile(username: string): Promise<{
         : Promise.resolve({ data: null }),
       supabase
         .from('posts')
-        .select(`id, content, created_at, profiles!posts_user_id_fkey ( username, display_name ), likes ( id, user_id )`)
+        .select(`id, content, created_at, profiles!posts_user_id_fkey ( username, display_name ), likes ( id, user_id ), comments ( count )`)
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
         .limit(50),
@@ -188,6 +203,7 @@ export async function getProfile(username: string): Promise<{
       author: { username: p?.username ?? username, displayName: p?.display_name ?? profile.display_name },
       likeCount: likes.length,
       likedByMe: likes.some((l: any) => l.user_id === user?.id),
+      commentCount: (post.comments as any)?.[0]?.count ?? 0,
     }
   })
 
@@ -221,12 +237,14 @@ export async function toggleFollow(targetUserId: string): Promise<void> {
 // ── Notifications ────────────────────────────────────────────────────────────
 
 export interface Notification {
-  type: 'like' | 'follow'
+  type: 'like' | 'follow' | 'comment_on_post' | 'reply_to_comment' | 'comment_like'
   id: string
   username: string
   displayName: string
   postId?: string
   postContent?: string
+  commentId?: string
+  commentContent?: string
   createdAt: string
 }
 
@@ -236,7 +254,7 @@ export async function getNotifications(): Promise<Notification[]> {
 
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
 
-  const [{ data: likes }, { data: followers }] = await Promise.all([
+  const [{ data: likes }, { data: followers }, { data: commentsOnMyPosts }, { data: repliesToMyComments }, { data: commentLikes }] = await Promise.all([
     supabase
       .from('likes')
       .select(`id, created_at, posts!likes_post_id_fkey ( id, content, user_id ), profiles!likes_user_id_fkey ( username, display_name )`)
@@ -252,6 +270,32 @@ export async function getNotifications(): Promise<Notification[]> {
       .gte('created_at', since)
       .order('created_at', { ascending: false })
       .limit(20),
+    supabase
+      .from('comments')
+      .select(`id, created_at, content, post_id, profiles!comments_user_id_fkey ( username, display_name ), posts!comments_post_id_fkey ( user_id )`)
+      .eq('posts.user_id', user.id)
+      .is('parent_id', null)
+      .neq('user_id', user.id)
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(50),
+    supabase
+      .from('comments')
+      .select(`id, created_at, content, post_id, profiles!comments_user_id_fkey ( username, display_name ), comments!comments_parent_id_fkey ( user_id )`)
+      .eq('comments.user_id', user.id)
+      .neq('user_id', user.id)
+      .not('parent_id', 'is', null)
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(50),
+    supabase
+      .from('comment_likes')
+      .select(`id, created_at, comments!comment_likes_comment_id_fkey ( id, content, post_id, user_id ), profiles!comment_likes_user_id_fkey ( username, display_name )`)
+      .eq('comments.user_id', user.id)
+      .neq('user_id', user.id)
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(50),
   ])
 
   const notifications: Notification[] = []
@@ -283,18 +327,74 @@ export async function getNotifications(): Promise<Notification[]> {
     })
   }
 
+  for (const c of commentsOnMyPosts ?? []) {
+    const p = Array.isArray(c.profiles) ? c.profiles[0] : c.profiles
+    if (!p) continue
+    notifications.push({
+      type: 'comment_on_post',
+      id: `comment-on-post-${c.id}`,
+      username: p.username,
+      displayName: p.display_name,
+      postId: c.post_id,
+      commentId: c.id,
+      commentContent: c.content,
+      createdAt: c.created_at,
+    })
+  }
+
+  for (const c of repliesToMyComments ?? []) {
+    const p = Array.isArray(c.profiles) ? c.profiles[0] : c.profiles
+    if (!p) continue
+    notifications.push({
+      type: 'reply_to_comment',
+      id: `reply-${c.id}`,
+      username: p.username,
+      displayName: p.display_name,
+      postId: c.post_id,
+      commentId: c.id,
+      commentContent: c.content,
+      createdAt: c.created_at,
+    })
+  }
+
+  for (const l of commentLikes ?? []) {
+    const comment = Array.isArray(l.comments) ? l.comments[0] : l.comments
+    const p = Array.isArray(l.profiles) ? l.profiles[0] : l.profiles
+    if (!comment || !p) continue
+    notifications.push({
+      type: 'comment_like',
+      id: `comment-like-${l.id}`,
+      username: p.username,
+      displayName: p.display_name,
+      postId: comment.post_id,
+      commentId: comment.id,
+      commentContent: comment.content,
+      createdAt: l.created_at,
+    })
+  }
+
   return notifications.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
 
-export async function search(query: string): Promise<{ users: Profile[]; posts: FeedPost[] }> {
+export interface CommentResult {
+  id: string
+  content: string
+  postId: string
+  postContent: string | null
+  postAuthor: string | null
+  username: string
+  displayName: string
+}
+
+export async function search(query: string): Promise<{ users: Profile[]; posts: FeedPost[]; comments: CommentResult[] }> {
   const trimmed = query.trim()
-  if (!trimmed) return { users: [], posts: [] }
+  if (!trimmed) return { users: [], posts: [], comments: [] }
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: profiles }, { data: rawPosts }] = await Promise.all([
+  const [{ data: profiles }, { data: rawPosts }, { data: rawComments }] = await Promise.all([
     supabase
       .from('profiles')
       .select('id, username, display_name, bio, created_at')
@@ -306,7 +406,18 @@ export async function search(query: string): Promise<{ users: Profile[]; posts: 
       .select(`
         id, content, created_at,
         profiles!posts_user_id_fkey ( username, display_name ),
-        likes ( id, user_id )
+        likes ( id, user_id ),
+        comments ( count )
+      `)
+      .textSearch('fts_doc', trimmed, { type: 'plain', config: 'english' })
+      .order('created_at', { ascending: false })
+      .limit(20),
+    supabase
+      .from('comments')
+      .select(`
+        id, content, created_at, post_id,
+        profiles!comments_user_id_fkey ( username, display_name ),
+        posts!comments_post_id_fkey ( content, profiles!posts_user_id_fkey ( username ) )
       `)
       .textSearch('fts_doc', trimmed, { type: 'plain', config: 'english' })
       .order('created_at', { ascending: false })
@@ -333,6 +444,7 @@ export async function search(query: string): Promise<{ users: Profile[]; posts: 
       },
       likeCount: likes.length,
       likedByMe: likedSet.has(post.id),
+      commentCount: (post.comments as any)?.[0]?.count ?? 0,
     }
   })
 
@@ -344,5 +456,20 @@ export async function search(query: string): Promise<{ users: Profile[]; posts: 
     created_at: p.created_at,
   }))
 
-  return { users, posts }
+  const comments: CommentResult[] = (rawComments ?? []).map((c: any) => {
+    const profile = Array.isArray(c.profiles) ? c.profiles[0] : c.profiles
+    const post = Array.isArray(c.posts) ? c.posts[0] : c.posts
+    const postAuthorProfile = post ? (Array.isArray(post.profiles) ? post.profiles[0] : post.profiles) : null
+    return {
+      id: c.id,
+      content: c.content,
+      postId: c.post_id,
+      postContent: post?.content ?? null,
+      postAuthor: postAuthorProfile?.username ?? null,
+      username: profile?.username ?? 'unknown',
+      displayName: profile?.display_name ?? 'Unknown',
+    }
+  })
+
+  return { users, posts, comments }
 }

@@ -70,7 +70,6 @@ export function CommentItem({ node, postId, userId, depth, isCollapsed, onToggle
             <Text style={styles.username}>{node.profile.username}</Text>
           </TouchableOpacity>
           <Text style={styles.meta}>{formatTimeAgo(node.created_at)}</Text>
-          <Text style={styles.meta}>▲ {count}</Text>
           {isCollapsed && replyCount > 0 && (
             <Text style={styles.meta}>· {replyCount} {replyCount === 1 ? 'reply' : 'replies'}</Text>
           )}
@@ -83,7 +82,7 @@ export function CommentItem({ node, postId, userId, depth, isCollapsed, onToggle
               {userId && (
                 <TouchableOpacity onPress={handleLike}>
                   <Text style={[styles.action, liked && styles.actionActive]}>
-                    {liked ? '▲ liked' : '△ like'}
+                    {liked ? '▲' : '△'} {count > 0 ? count : 'like'}
                   </Text>
                 </TouchableOpacity>
               )}
