@@ -48,7 +48,7 @@ export default async function SearchPage({
         .select(`
           id, content, created_at, post_id,
           profiles!comments_user_id_fkey ( username, display_name ),
-          posts!comments_post_id_fkey ( content )
+          posts!comments_post_id_fkey ( content, profiles!posts_user_id_fkey ( username ) )
         `)
         .textSearch('fts_doc', query, { type: 'plain', config: 'english' })
         .order('created_at', { ascending: false })
@@ -84,6 +84,7 @@ export default async function SearchPage({
         createdAt: c.created_at,
         postId: c.post_id,
         postContent: post?.content ?? null,
+        postAuthor: (Array.isArray(post?.profiles) ? post.profiles[0] : post?.profiles)?.username ?? null,
         username: profile?.username ?? 'unknown',
         displayName: profile?.display_name ?? 'Unknown',
       }
@@ -162,9 +163,14 @@ export default async function SearchPage({
               className="flex flex-col px-4 py-3 border-b border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-colors"
             >
               {c.postContent && (
-                <p className="text-xs px-2 py-1 mb-2 border-l-2 border-[var(--color-border)] truncate" style={{ color: 'var(--color-muted)' }}>
-                  {c.postContent.slice(0, 80)}{c.postContent.length > 80 ? '…' : ''}
-                </p>
+                <div className="px-2 py-1 mb-2 border-l-2 border-[var(--color-border)]">
+                  {c.postAuthor && (
+                    <span className="text-xs font-bold mr-1" style={{ color: 'var(--color-muted)' }}>@{c.postAuthor}</span>
+                  )}
+                  <span className="text-xs truncate" style={{ color: 'var(--color-muted)' }}>
+                    {c.postContent.slice(0, 80)}{c.postContent.length > 80 ? '…' : ''}
+                  </span>
+                </div>
               )}
               <div className="text-xs text-[var(--color-muted)] mb-1">
                 <span className="font-bold" style={{ color: 'var(--color-heading)' }}>{c.displayName}</span>
