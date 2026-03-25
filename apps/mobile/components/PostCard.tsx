@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Pressable } from 'react-native'
+import Svg, { Path } from 'react-native-svg'
 import { router } from 'expo-router'
 import { useTheme } from '@/lib/ThemeContext'
 import { font } from '@/lib/theme'
@@ -78,7 +79,12 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
           </Text>
         </TouchableOpacity>
         {typeof commentCount === 'number' && (
-          <Text style={styles.commentCount}>◻ {commentCount > 0 ? commentCount : ''}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <Svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke={colors.muted} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <Path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </Svg>
+            {commentCount > 0 && <Text style={styles.commentCount}>{commentCount}</Text>}
+          </View>
         )}
       </View>
     </Pressable>
