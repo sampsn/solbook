@@ -14,10 +14,11 @@ interface PostCardProps {
   }
   likeCount: number
   likedByMe: boolean
+  commentCount?: number
   disableLink?: boolean
 }
 
-export function PostCard({ id, content, createdAt, author, likeCount, likedByMe, disableLink }: PostCardProps) {
+export function PostCard({ id, content, createdAt, author, likeCount, likedByMe, commentCount, disableLink }: PostCardProps) {
   const router = useRouter()
   const toggleLikeForPost = toggleLike.bind(null, id)
   const timeAgo = formatTimeAgo(createdAt)
@@ -52,16 +53,23 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
         {content}
       </p>
 
-      <form action={toggleLikeForPost} className="w-fit" onClick={(e) => e.stopPropagation()}>
-        <button
-          type="submit"
-          className={`text-xs transition-colors cursor-pointer p-2 -m-2 ${
-            likedByMe ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)] hover:text-[var(--color-accent)]'
-          }`}
-        >
-          {likedByMe ? '▲' : '△'} {likeCount > 0 ? likeCount : 'like'}
-        </button>
-      </form>
+      <div className="flex items-center gap-4" onClick={(e) => e.stopPropagation()}>
+        <form action={toggleLikeForPost} className="w-fit">
+          <button
+            type="submit"
+            className={`text-xs transition-colors cursor-pointer p-2 -m-2 ${
+              likedByMe ? 'text-[var(--color-accent)]' : 'text-[var(--color-muted)] hover:text-[var(--color-accent)]'
+            }`}
+          >
+            {likedByMe ? '▲' : '△'} {likeCount > 0 ? likeCount : 'like'}
+          </button>
+        </form>
+        {typeof commentCount === 'number' && (
+          <span className="text-xs text-[var(--color-muted)]">
+            💬 {commentCount > 0 ? commentCount : ''}
+          </span>
+        )}
+      </div>
     </article>
   )
 }

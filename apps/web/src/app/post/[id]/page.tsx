@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { createServerClient } from '@solbook/shared/supabase'
 import { getSession } from '@/lib/auth'
 import { PostCard } from '@/components/posts/PostCard'
+import { CommentComposer } from '@/components/comments/CommentComposer'
+import { CommentThread } from '@/components/comments/CommentThread'
 
 export const metadata: Metadata = { title: 'Post' }
 
@@ -23,7 +25,8 @@ export default async function PostPage({ params }: Props) {
       content,
       created_at,
       profiles!posts_user_id_fkey ( username, display_name ),
-      likes ( id, user_id )
+      likes ( id, user_id ),
+      comments ( count )
     `)
     .eq('id', id)
     .single()
@@ -32,6 +35,7 @@ export default async function PostPage({ params }: Props) {
 
   const profile = Array.isArray(post.profiles) ? post.profiles[0] : post.profiles
   const likes = post.likes ?? []
+  const commentCount = (post.comments as any)?.[0]?.count ?? 0
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -50,8 +54,11 @@ export default async function PostPage({ params }: Props) {
         }}
         likeCount={likes.length}
         likedByMe={likes.some((l: { user_id: string }) => l.user_id === session?.userId)}
+        commentCount={commentCount}
         disableLink
       />
+      {session && <CommentComposer postId={id} />}
+      <CommentThread postId={id} userId={session?.userId ?? null} />
     </div>
   )
 }

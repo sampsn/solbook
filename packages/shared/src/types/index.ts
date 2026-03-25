@@ -15,6 +15,7 @@ export interface Post {
   profile?: Profile
   like_count?: number
   liked_by_me?: boolean
+  comment_count?: number
 }
 
 export interface Like {
@@ -22,6 +23,23 @@ export interface Like {
   user_id: string
   post_id: string
   created_at: string
+}
+
+export interface Comment {
+  id: string
+  post_id: string
+  user_id: string
+  parent_id: string | null
+  content: string
+  depth: number
+  created_at: string
+  profile: Profile
+  like_count: number
+  liked_by_me: boolean
+}
+
+export interface CommentNode extends Comment {
+  children: CommentNode[]
 }
 
 export interface Follow {

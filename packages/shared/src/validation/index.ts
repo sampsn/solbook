@@ -45,3 +45,13 @@ export function validateDisplayName(name: string): ValidationResult {
   }
   return { valid: true }
 }
+
+export function validateComment(content: string): ValidationResult {
+  if (!content || content.trim().length === 0) {
+    return { valid: false, error: 'Comment cannot be empty.' }
+  }
+  if (content.length > 1000) {
+    return { valid: false, error: 'Comment must be 1000 characters or fewer.' }
+  }
+  return { valid: true }
+}
