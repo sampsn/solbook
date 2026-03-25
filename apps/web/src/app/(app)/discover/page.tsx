@@ -29,14 +29,17 @@ export default async function DiscoverPage() {
     postIds.length > 0
       ? supabase
           .from('posts')
-          .select('id, comments(count)')
+          .select('id, comments(count), likes(count)')
           .in('id', postIds)
       : Promise.resolve({ data: [] }),
   ])
 
   const likedSet = new Set((myLikes ?? []).map((l: any) => l.post_id))
-  const commentCountMap = new Map(
-    (postCounts ?? []).map((p: any) => [p.id, (p.comments as any)?.[0]?.count ?? 0])
+  const countsMap = new Map(
+    (postCounts ?? []).map((p: any) => [p.id, {
+      commentCount: (p.comments as any)?.[0]?.count ?? 0,
+      likeCount: (p.likes as any)?.[0]?.count ?? 0,
+    }])
   )
 
   const feed = (rows ?? []).map((r: any) => ({
@@ -47,9 +50,9 @@ export default async function DiscoverPage() {
       username: r.username,
       displayName: r.display_name,
     },
-    likeCount: Number(r.like_count),
+    likeCount: countsMap.get(r.id)?.likeCount ?? Number(r.like_count),
     likedByMe: likedSet.has(r.id),
-    commentCount: commentCountMap.get(r.id) ?? 0,
+    commentCount: countsMap.get(r.id)?.commentCount ?? 0,
   }))
 
   return (
