@@ -71,8 +71,8 @@ export function PostCard({ id, content, createdAt, author, likeCount, likedByMe,
         {content}
       </p>
 
-      <div className="flex items-center gap-4" onClick={(e) => e.stopPropagation()}>
-        <form action={toggleLikeForPost} className="w-fit">
+      <div className="flex items-center gap-4">
+        <form action={toggleLikeForPost} className="w-fit" onClick={(e) => e.stopPropagation()}>
           <button
             type="submit"
             className={`text-xs transition-colors cursor-pointer p-2 -m-2 ${
