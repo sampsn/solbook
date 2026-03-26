@@ -44,7 +44,7 @@ export function ReplyComposer({ postId, parentId, parentUsername, onCancel }: Pr
         rows={2}
         autoFocus
         className="w-full bg-transparent placeholder:text-[var(--color-muted)] resize-none focus:outline-none leading-relaxed"
-        style={{ color: 'var(--color-text-strong)', fontSize: '13px' }}
+        style={{ color: 'var(--color-text-strong)', fontSize: '16px' }}
       />
       {error && <p className="text-[var(--color-danger)] text-xs mb-1">{error}</p>}
       <div className="flex items-center justify-between">

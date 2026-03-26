@@ -40,7 +40,7 @@ export function CommentComposer({ postId }: Props) {
         placeholder="add a comment…"
         rows={3}
         className="w-full bg-transparent placeholder:text-[var(--color-muted)] resize-none focus:outline-none leading-relaxed"
-        style={{ color: 'var(--color-text-strong)', fontSize: '14px' }}
+        style={{ color: 'var(--color-text-strong)', fontSize: '16px' }}
       />
       {error && <p className="text-[var(--color-danger)] text-xs mb-1">{error}</p>}
       <div className="flex items-center justify-between">
