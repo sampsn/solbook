@@ -46,11 +46,12 @@ solbook is built specifically to resist AI bots, scrapers, and synthetic content
 
 ### Contributing
 
-If you add a new data-access endpoint or public page, ensure:
+**All content requires authentication.** There are no public-facing content routes — every page that displays posts, profiles, or feeds sits behind an auth guard. If you add a new route:
 
-1. The route is excluded from anonymous access (Supabase RLS locks down the DB — PostgREST anon role has zero permissions)
-2. The middleware matcher covers it for UA blocking
-3. New honeypot paths are added if the route could attract scanners
+1. Place it inside the `(app)` route group (web) or ensure it is only reachable after auth (mobile). Anonymous access to content routes is not permitted.
+2. Supabase RLS enforces this at the database layer — the PostgREST anon role has zero permissions; only the `authenticated` role can read data.
+3. The middleware matcher must cover it for UA blocking.
+4. Add honeypot paths if the route could attract automated scanners.
 
 ## Environment Variables
 

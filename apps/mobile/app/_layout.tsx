@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Stack } from 'expo-router'
+import { Stack, router } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { View, ActivityIndicator } from 'react-native'
 import {
@@ -13,6 +13,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { lightColors, darkColors } from '@/lib/theme'
 import { ThemeContextProvider, useTheme } from '@/lib/ThemeContext'
 import { AlertsContextProvider } from '@/components/AlertsContext'
+import { supabase } from '@/lib/supabase'
 
 function ThemedStatusBar() {
   const { colors } = useTheme()
@@ -33,6 +34,15 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded) SplashScreen.hideAsync()
   }, [fontsLoaded])
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        router.replace('/(auth)/login')
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   if (!fontsLoaded) {
     return (
